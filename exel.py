@@ -1,5 +1,5 @@
 import win32clipboard
-from QListenW import QListensW,lessonData
+from QListenW import *
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -45,16 +45,18 @@ class Table(QWidget):
             self.tableWidget.item(thing1, 0).setBackground(QColor(0,160,0))      
             thing1 += 7
         #присвоение табличного виджета
-        lessonPlace =1
+        lessonsPlace =0
         #TODO счётчик дней недели и номера пары
         for i in range(2,columns):
             for g in range(1,43):
+                
+                if lessonsPlace>6:
+                    lessonsPlace=0
+                lessonsPlace+=1
                 self.tableWidget.setCellWidget(g,i,QListensW(lessonData()))
-                lessonPlace+=1
-                if lessonPlace >7:
-                    lessonPlace = 1
-                QListensW.staticData.lessonPlace=lessonPlace
-
+                self.tableWidget.cellWidget(g,i).updateLess(lessonsPlace)
+           
+            
             
            
                 

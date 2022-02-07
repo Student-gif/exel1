@@ -17,6 +17,10 @@ class lessonData():
     def notCopyData(self,lessonPlace):
         self.lessonPlace = lessonPlace
         return True
+    def updateTeacherId(self,teacherId):
+        self.teacherId = teacherId
+        return True
+
     def updatecopydata(self,data):
         ar=data.split(';')
         self.teacher=ar[0]
@@ -70,9 +74,7 @@ class QListensW(QWidget):
         self.lineEditTeacher.setText(self.staticData.teacher)
         self.lineEditGroups.setText(self.staticData.auditory)
         self.lineEditLesson.setText(self.staticData.lesson)
-    def makeNotCopyWidget(self,lessonPlace):
-        self.staticData.notCopyData(lessonPlace)      
-
+    
     
     def CustomEventEnter(self):
         print('event')
@@ -82,5 +84,9 @@ class QListensW(QWidget):
         try:
             self.staticData.updateTeacherId(IdTeachAddic[self.staticData.teacher])
             print (self.staticData.teacherId)
+            print(self.staticData.lessonPlace)
         except:
             pass
+    def updateLess(self,lessonplace):
+        self.staticData.notCopyData(lessonplace)
+    
