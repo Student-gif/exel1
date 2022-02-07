@@ -48,8 +48,6 @@ class Table(QWidget):
         lessonPlace =1
         #TODO счётчик дней недели и номера пары
         for i in range(2,columns):
-            
-            
             for g in range(1,43):
                 self.tableWidget.setCellWidget(g,i,QListensW(lessonData()))
                 lessonPlace+=1
@@ -70,7 +68,7 @@ class Table(QWidget):
         #распаковка данных Аудитории с бд  
         h=[x[0] for x in Logick.Auditories]
         #конфигурация виджетов аудиторий
-        for i in range(2,len(h)):
+        for i in range(2,columns):
             self.tableWidget.setItem(0, i, QTableWidgetItem())
             self.tableWidget.item(0, i).setBackground(QColor(220,0,0)) 
             self.tableWidget.item(0, i).setText(h[i-2])

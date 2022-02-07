@@ -1,7 +1,4 @@
-
-from multiprocessing import Event
-from Logick import Lessons,Prepods,Auditories,Groups
-from dataclasses import dataclass
+from Logick import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
@@ -82,3 +79,8 @@ class QListensW(QWidget):
         self.staticData.auditory = self.lineEditGroups.text()
         self.staticData.lesson = self.lineEditLesson.text()
         self.staticData.teacher = self.lineEditTeacher.text()
+        try:
+            self.staticData.updateTeacherId(IdTeachAddic[self.staticData.teacher])
+            print (self.staticData.teacherId)
+        except:
+            pass
