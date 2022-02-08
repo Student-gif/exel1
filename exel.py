@@ -1,4 +1,3 @@
-
 import win32clipboard
 from OutputLogick import saveTocsv
 from QListenW import *
@@ -94,7 +93,10 @@ class Table(QWidget):
         #инициализация таблицы
         layout.addWidget(self.tableWidget)
         self.setLayout(layout)
-    
+     
+
+                
+        
     def generateMenu(self, pos):
     
         menu = QMenu()
@@ -108,10 +110,8 @@ class Table(QWidget):
         if action == item1:
             
             #self.indexData = self.tableWidget.cellWidget(index[0].row(),index[0].column())
-            addToClipBoard = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData.teacher
-            addToClipBoard2 = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData.group
-            addToClipBoard3 = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData.lesson
-            data = addToClipBoard+';'+addToClipBoard2+';'+addToClipBoard3
+            addToClipBoard = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData
+            data = addToClipBoard.lesson+';'+addToClipBoard.teacher+';'+addToClipBoard.group
             print(data)
             win32clipboard.OpenClipboard()
             win32clipboard.EmptyClipboard()
@@ -141,8 +141,9 @@ class Table(QWidget):
         for i in range(2,29):
             for g in range(1,43):
                 cel =self.tableWidget.cellWidget(g,i).real()
-                if cel[5]!='':
+                if cel.lesson!='':
                     lister.append(cel)
+
         saveTocsv(lister)
                 
         

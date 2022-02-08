@@ -72,14 +72,7 @@ class QListensW(QWidget):
         self.uploadUi()
     #забирает данные
     def real(self):
-        try:
-            self.staticData.updateTeacherId(IdTeachAddic[self.staticData.teacher])
-           
-            
-        except:
-            pass
-        zarm=[self.staticData.teacherId,self.staticData.lessonPlace,self.staticData.weekday,self.staticData.teacher,self.staticData.group,self.staticData.lesson,self.staticData.auditory]
-        return zarm
+        return self.staticData
     def update(self,data):
         self.staticData.updatecopydata(data)
         self.uploadUi()
