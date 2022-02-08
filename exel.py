@@ -1,11 +1,13 @@
-from calendar import weekday
+
 import win32clipboard
+from OutputLogick import saveTocsv
 from QListenW import *
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.Qt import *
+from OutputLogick import saveTocsv
 import Logick
 lister =[]
 layout = QHBoxLayout()
@@ -34,9 +36,13 @@ class Table(QWidget):
         self.tableWidget.setColumnWidth(0,40)
         self.tableWidget.setSpan(0,0,1,2)
         #кнопка
+        
+        
         btn = QPushButton("Some button")
         self.tableWidget.setCellWidget(0, 0, btn)
-
+        btn.clicked.connect(self.giveData)
+        
+        
         thing1 = 1  
         # конфигурация колон таблицы
         weekdays = ['п\nо\nн\nе\nд\nе\nл\nь\nн\nи\nк','в\nт\nо\nр\nн\nи\nк','с\nр\nе\nд\nа','ч\nе\nт\nв\nе\nр\nг','п\nя\nт\nн\nи\nц\nа','С\nу\nб\nб\nо\nт\nа']        
@@ -54,14 +60,12 @@ class Table(QWidget):
         weekDay= 1
         #TODO счётчик дней недели и номера пары
         for i in range(2,columns):
-            
             for g in range(1,43):
-                
                 if lessonsPlace>6:
                     lessonsPlace=0
                 lessonsPlace+=1
                 self.tableWidget.setCellWidget(g,i,QListensW(lessonData()))
-                self.tableWidget.cellWidget(g,i).updateLess(lessonsPlace,weekDay,(x[0]for x in Logick.groupList))
+                self.tableWidget.cellWidget(g,i).updateLess(lessonsPlace,weekDay, Logick.groupList[i-2] )
                 if g%7==0:
                     weekDay+=1
                     if weekDay>6:
@@ -104,8 +108,11 @@ class Table(QWidget):
         if action == item1:
             
             #self.indexData = self.tableWidget.cellWidget(index[0].row(),index[0].column())
-            addToClipBoard = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData
-            data = addToClipBoard.__str__()
+            addToClipBoard = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData.teacher
+            addToClipBoard2 = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData.group
+            addToClipBoard3 = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData.lesson
+            data = addToClipBoard+';'+addToClipBoard2+';'+addToClipBoard3
+            print(data)
             win32clipboard.OpenClipboard()
             win32clipboard.EmptyClipboard()
             win32clipboard.SetClipboardText(data)
@@ -117,6 +124,7 @@ class Table(QWidget):
             #self.v = self.tableWidget.setCellWidget(index[0].row(),index[0].column(),QListensW(self.index2.staticData))
             win32clipboard.OpenClipboard()
             data = win32clipboard.GetClipboardData()
+            print(data)
             win32clipboard.EmptyClipboard()
             win32clipboard.CloseClipboard()
             
@@ -127,9 +135,21 @@ class Table(QWidget):
             print ('Вы выбрали третий вариант, текущее содержание текста строки:', )
             w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
             w.uploadUi()
+    
+    
+    def giveData(self):
+        for i in range(2,29):
+            for g in range(1,43):
+                cel =self.tableWidget.cellWidget(g,i).real()
+                if cel[5]!='':
+                    lister.append(cel)
+        saveTocsv(lister)
+                
+        
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    example = Table()
-    example.show()
-    sys.exit(app.exec_())
+        
+    
+app = QApplication(sys.argv)
+example = Table()
+example.show()
+sys.exit(app.exec_())

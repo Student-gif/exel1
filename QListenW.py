@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
-from Logick import Lessons
     
 class lessonData():
     teacher: str = ""
@@ -24,9 +23,13 @@ class lessonData():
         return True
     def updatecopydata(self,data):
         ar=data.split(';')
+        print(ar)
         self.teacher=ar[0]
-        self.auditory =ar[1]
+        print(self.teacher)
+        self.group =ar[1]
+        print(self.group)
         self.lesson=ar[2]
+        print(self.lesson)
         return True
     def __str__(self) -> str:
         return f'{self.teacher.__str__()};{self.group.__str__()};{self.lesson.__str__()};{self.week.__str__()};{self.weekday.__str__()};{self.teacherId.__str__()};{self.lessonPlace.__str__()};{self.lessonPlace.__str__()};{self.auditory.__str__()}'
@@ -40,6 +43,8 @@ class QListensW(QWidget):
         super(QListensW, self).__init__(*args, **kwargs)
         lay = QVBoxLayout(self)
 
+
+
         self.setLayout(lay)
         self.lineEditTeacher = QLineEdit()
       
@@ -49,6 +54,8 @@ class QListensW(QWidget):
         completerTeacher = QCompleter([s[0].__str__() for s in Prepods], self.lineEditTeacher)
         completerGroup = QCompleter([s[0].__str__() for s in Groups], self.lineEditGroups)
         completerLesson = QCompleter([s[0].__str__() for s in Lessons], self.lineEditLesson)
+
+    
 
         self.lineEditTeacher.setCompleter(completerTeacher)
         self.lineEditGroups.setCompleter(completerGroup)
@@ -63,7 +70,10 @@ class QListensW(QWidget):
         self.lineEditGroups.editingFinished.connect(self.CustomEventEnter)
 
         self.uploadUi()
-
+    #забирает данные
+    def real(self):
+        zarm=[self.staticData.teacherId,self.staticData.lessonPlace,self.staticData.weekday,self.staticData.teacher,self.staticData.group,self.staticData.lesson,self.staticData.auditory]
+        return zarm
     def update(self,data):
         self.staticData.updatecopydata(data)
         self.uploadUi()
@@ -76,20 +86,16 @@ class QListensW(QWidget):
     
     def CustomEventEnter(self):
         self.staticData.group = self.lineEditGroups.text()
-        self.staticData.lesson = self.lineEditLesson.text()
         self.staticData.teacher = self.lineEditTeacher.text()
+        self.staticData.lesson = self.lineEditLesson.text()
+
         try:
             self.staticData.updateTeacherId(IdTeachAddic[self.staticData.teacher])
         except:
-            pass
+            self.staticData.group = self.lineEditGroups.text()
+            self.staticData.lesson = self.lineEditLesson.text()
+            self.staticData.teacher = self.lineEditTeacher.text()
     def updateLess(self,lessonplace,weekDay,audit):
         self.staticData.notCopyData(lessonplace,weekDay,audit)
    
-    def backDataHome(self):
-        print (self.staticData.teacherId)
-        print(self.staticData.lessonPlace)
-        print(self.staticData.weekday)
-        print(self.staticData.teacher)
-        print(self.staticData.group)
-        print(self.staticData.lesson)
-        print(self.staticData.auditory)
+  
