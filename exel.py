@@ -93,7 +93,11 @@ class Table(QWidget):
         #инициализация таблицы
         layout.addWidget(self.tableWidget)
         self.setLayout(layout)
-     
+        for g in range(2,columns):
+            for h in range(2,columns):    
+                first= self.tableWidget
+                second = self.tableWidget
+                print(first.cellWidget(1,g).staticData.teacher)
 
                 
         
