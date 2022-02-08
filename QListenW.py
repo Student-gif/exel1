@@ -72,6 +72,12 @@ class QListensW(QWidget):
         self.uploadUi()
     #забирает данные
     def real(self):
+        try:
+            self.staticData.updateTeacherId(IdTeachAddic[self.staticData.teacher])
+           
+            
+        except:
+            pass
         zarm=[self.staticData.teacherId,self.staticData.lessonPlace,self.staticData.weekday,self.staticData.teacher,self.staticData.group,self.staticData.lesson,self.staticData.auditory]
         return zarm
     def update(self,data):
@@ -88,7 +94,6 @@ class QListensW(QWidget):
         self.staticData.group = self.lineEditGroups.text()
         self.staticData.teacher = self.lineEditTeacher.text()
         self.staticData.lesson = self.lineEditLesson.text()
-
         try:
             self.staticData.updateTeacherId(IdTeachAddic[self.staticData.teacher])
         except:
