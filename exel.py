@@ -7,8 +7,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.Qt import *
 import Logick
-from checkdata import checkdata
- 
+lister =[]
 layout = QHBoxLayout()
 class Table(QWidget):
     def __init__(self):
@@ -19,6 +18,8 @@ class Table(QWidget):
                  # Установить заголовок и начальный размер
         self.setWindowTitle('Ядро Расписание')
         
+       
+
         columns =len(Logick.Auditories)  
         self.tableWidget = QTableWidget(43,columns)
         #ширина ячеек
@@ -32,7 +33,9 @@ class Table(QWidget):
         self.tableWidget.setColumnWidth(1,60)
         self.tableWidget.setColumnWidth(0,40)
         self.tableWidget.setSpan(0,0,1,2)
-
+        #кнопка
+        btn = QPushButton("Some button")
+        self.tableWidget.setCellWidget(0, 0, btn)
 
         thing1 = 1  
         # конфигурация колон таблицы
@@ -46,20 +49,19 @@ class Table(QWidget):
             self.tableWidget.item(thing1, 0).setBackground(QColor(0,160,0))      
             thing1 += 7
         #присвоение табличного виджета
-        
+        Logick.groupList
         lessonsPlace =0
         weekDay= 1
         #TODO счётчик дней недели и номера пары
         for i in range(2,columns):
             
             for g in range(1,43):
-    
+                
                 if lessonsPlace>6:
                     lessonsPlace=0
                 lessonsPlace+=1
                 self.tableWidget.setCellWidget(g,i,QListensW(lessonData()))
-                self.tableWidget.cellWidget(g,i).updateLess(lessonsPlace)
-                self.tableWidget.cellWidget(g,i).updateWeekDay(weekDay)
+                self.tableWidget.cellWidget(g,i).updateLess(lessonsPlace,weekDay,(x[0]for x in Logick.groupList))
                 if g%7==0:
                     weekDay+=1
                     if weekDay>6:
@@ -67,10 +69,6 @@ class Table(QWidget):
 
            
             
-            
-           
-                
-           
         #Конфигурации столбца с занятиями 
         for i in range(2,43,7):
             for j in range(0,7):              
@@ -129,7 +127,6 @@ class Table(QWidget):
             print ('Вы выбрали третий вариант, текущее содержание текста строки:', )
             w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
             w.uploadUi()
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -13,14 +13,14 @@ class lessonData():
     weekday: int = -1
     teacherId:int = -1
     lessonPlace:int = 0
-    def notCopyData(self,lessonPlace):
+    auditory:int = 0
+    def notCopyData(self,lessonPlace,WeekDay,auditory):
+        self.auditory = auditory
         self.lessonPlace = lessonPlace
+        self.weekday = WeekDay
         return True
     def updateTeacherId(self,teacherId):
         self.teacherId = teacherId
-        return True
-    def nextweekday(self,WeekDay):
-        self.weekday = WeekDay
         return True
     def updatecopydata(self,data):
         ar=data.split(';')
@@ -29,7 +29,7 @@ class lessonData():
         self.lesson=ar[2]
         return True
     def __str__(self) -> str:
-        return f'{self.teacher.__str__()};{self.group.__str__()};{self.lesson.__str__()};{self.week.__str__()};{self.weekday.__str__()};{self.teacherId.__str__()};{self.lessonPlace.__str__()};{self.lessonPlace.__str__()}'
+        return f'{self.teacher.__str__()};{self.group.__str__()};{self.lesson.__str__()};{self.week.__str__()};{self.weekday.__str__()};{self.teacherId.__str__()};{self.lessonPlace.__str__()};{self.lessonPlace.__str__()};{self.auditory.__str__()}'
 
 class QListensW(QWidget):
     
@@ -75,22 +75,21 @@ class QListensW(QWidget):
     
     
     def CustomEventEnter(self):
-        print('event')
         self.staticData.group = self.lineEditGroups.text()
         self.staticData.lesson = self.lineEditLesson.text()
         self.staticData.teacher = self.lineEditTeacher.text()
         try:
             self.staticData.updateTeacherId(IdTeachAddic[self.staticData.teacher])
-            print (self.staticData.teacherId)
-            print(self.staticData.lessonPlace)
-            print(self.staticData.weekday)
-            print(self.staticData.teacher)
-            print(self.staticData.group)
-            print(self.staticData.lesson)
         except:
             pass
-    def updateLess(self,lessonplace):
-        self.staticData.notCopyData(lessonplace)
-    def updateWeekDay(self,weekDay):
-        self.staticData.nextweekday(weekDay)
-    
+    def updateLess(self,lessonplace,weekDay,audit):
+        self.staticData.notCopyData(lessonplace,weekDay,audit)
+   
+    def backDataHome(self):
+        print (self.staticData.teacherId)
+        print(self.staticData.lessonPlace)
+        print(self.staticData.weekday)
+        print(self.staticData.teacher)
+        print(self.staticData.group)
+        print(self.staticData.lesson)
+        print(self.staticData.auditory)
