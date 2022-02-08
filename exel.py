@@ -1,3 +1,4 @@
+from calendar import weekday
 import win32clipboard
 from QListenW import *
 import sys
@@ -45,16 +46,25 @@ class Table(QWidget):
             self.tableWidget.item(thing1, 0).setBackground(QColor(0,160,0))      
             thing1 += 7
         #присвоение табличного виджета
+        
         lessonsPlace =0
+        weekDay= 1
         #TODO счётчик дней недели и номера пары
         for i in range(2,columns):
+            
             for g in range(1,43):
-                
+    
                 if lessonsPlace>6:
                     lessonsPlace=0
                 lessonsPlace+=1
                 self.tableWidget.setCellWidget(g,i,QListensW(lessonData()))
                 self.tableWidget.cellWidget(g,i).updateLess(lessonsPlace)
+                self.tableWidget.cellWidget(g,i).updateWeekDay(weekDay)
+                if g%7==0:
+                    weekDay+=1
+                    if weekDay>6:
+                        weekDay = 1
+
            
             
             
@@ -67,6 +77,7 @@ class Table(QWidget):
                 self.tableWidget.setItem(i+j-1, 1, QTableWidgetItem())
                 self.tableWidget.item(i+j-1,1).setText(str(j+1))
                 self.tableWidget.item(i+j-1,1).setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
+            
         #распаковка данных Аудитории с бд  
         h=[x[0] for x in Logick.Auditories]
         #конфигурация виджетов аудиторий
