@@ -10,6 +10,7 @@ from OutputLogick import saveTocsv
 import Logick
 lister =[]
 layout = QHBoxLayout()
+columns =len(Logick.Auditories)  
 class Table(QWidget):
     def __init__(self):
         super(Table, self).__init__()
@@ -20,8 +21,6 @@ class Table(QWidget):
         self.setWindowTitle('Ядро Расписание')
         
        
-
-        columns =len(Logick.Auditories)  
         self.tableWidget = QTableWidget(43,columns)
         #ширина ячеек
         for i in range(43):
@@ -93,12 +92,8 @@ class Table(QWidget):
         #инициализация таблицы
         layout.addWidget(self.tableWidget)
         self.setLayout(layout)
-        for g in range(2,columns):
-            for h in range(2,columns):    
-                first= self.tableWidget
-                second = self.tableWidget
-                print(first.cellWidget(1,g).staticData.teacher)
-
+        
+        
                 
         
     def generateMenu(self, pos):
@@ -142,17 +137,29 @@ class Table(QWidget):
     
     
     def giveData(self):
-        for i in range(2,29):
+        self.checker()
+        for i in range(2,columns):
             for g in range(1,43):
                 cel =self.tableWidget.cellWidget(g,i).real()
                 if cel.lesson!='':
                     lister.append(cel)
 
         saveTocsv(lister)
+        
                 
-        
+    def checker(self):
+            row= 2
+            first= self.tableWidget
+            second = self.tableWidget
+            for y in range(1,43):
+                for g in range(row,columns):
+                    for h in range(row,columns):    
+                    
+                        if first.cellWidget(y,g).staticData.teacher==second.cellWidget(y,h).staticData.teacher and first.cellWidget(y,g).staticData.teacher !=''  and g!=h:
+                                print(y,g,h)
 
-        
+
+                    
     
 app = QApplication(sys.argv)
 example = Table()
