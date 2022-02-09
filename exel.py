@@ -148,15 +148,19 @@ class Table(QWidget):
         
                 
     def checker(self):
-            row= 2
+            start= 2
             first= self.tableWidget
             second = self.tableWidget
             for y in range(1,43):
-                for g in range(row,columns):
-                    for h in range(row,columns):    
+                for g in range(start,columns):
+                    for h in range(start,columns):    
                     
-                        if first.cellWidget(y,g).staticData.teacher==second.cellWidget(y,h).staticData.teacher and first.cellWidget(y,g).staticData.teacher !=''  and g!=h:
-                                print(y,g,h)
+                        if first.cellWidget(y,g).staticData.teacher==second.cellWidget(y,h).staticData.teacher and first.cellWidget(y,g).staticData.teacher !=''and g!=h:
+    
+                                print(y,g+1,h+1)
+                        if first.cellWidget(y,g).staticData.group==second.cellWidget(y,h).staticData.group and first.cellWidget(y,g).staticData.group !=''and g!=h:
+                                 QMessageBox.critical(self, "Ошибка ", "Совпали ячейки груп:{g},{h} на строке {y} ".format(g=g+1,h=h+1,y=y), QMessageBox.Ok)
+                                 print(y,g+1,h+1,'group') 
 
 
                     
