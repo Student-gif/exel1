@@ -1,3 +1,4 @@
+from turtle import colormode
 import win32clipboard
 from OutputLogick import saveTocsv
 from QListenW import *
@@ -145,7 +146,7 @@ class Table(QWidget):
                     lister.append(cel)
 
         saveTocsv(lister)
-        
+#Анализ      
                 
     def checker(self):
             start= 2
@@ -153,14 +154,22 @@ class Table(QWidget):
             second = self.tableWidget
             for y in range(1,43):
                 for g in range(start,columns):
-                    for h in range(start,columns):    
+                    for h in range(start+g-1,columns):    
                     
                         if first.cellWidget(y,g).staticData.teacher==second.cellWidget(y,h).staticData.teacher and first.cellWidget(y,g).staticData.teacher !=''and g!=h:
-    
-                                print(y,g+1,h+1)
+                                 print(y,g+1,h+1)
+                                 QMessageBox.critical(self, "Ошибка ", "Совпали ячейки педагогов:{g},{h} на строке {y} ".format(g=g+1,h=h+1,y=y), QMessageBox.Ok)
+                            
+                                 
                         if first.cellWidget(y,g).staticData.group==second.cellWidget(y,h).staticData.group and first.cellWidget(y,g).staticData.group !=''and g!=h:
                                  QMessageBox.critical(self, "Ошибка ", "Совпали ячейки груп:{g},{h} на строке {y} ".format(g=g+1,h=h+1,y=y), QMessageBox.Ok)
-                                 print(y,g+1,h+1,'group') 
+                                 first.cellWidget(y,g).setAutoFillBackground(True)
+                                 first.cellWidget(y,g).setBackgroundRole(QPalette.Dark)
+                                 second.cellWidget(y,h).setAutoFillBackground(True)
+                                 second.cellWidget(y,h).setBackgroundRole(QPalette.Dark)
+                                 
+                                 print(y,g+1,h+1,'group')
+                            
 
 
                     
