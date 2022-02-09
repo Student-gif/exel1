@@ -179,10 +179,10 @@ class Table(QWidget):
             second = self.tableWidget
             for y in range(1,43):
                 first.item(y, 1).setBackground(QColor(255,255,255))
-               
+              
                 
                 for g in range(start,columns):
-                    first.cellWidget(y,g).setBackgroundRole(QPalette.Light)
+                   
                     for h in range(start+g-1,columns): 
                         
                         
@@ -210,10 +210,14 @@ class Table(QWidget):
                                 print(y,g+1,h+1,'group')
                                 itWas= True
                     
-                    second.cellWidget(y,h).setBackgroundRole(QPalette.Light)   
+                       
             if itWas==True:
                 self.logs_show(y,faust=faust) 
-
+            else:
+                second.cellWidget(y,h).setBackgroundRole(QPalette.Light)
+                first.cellWidget(y,g).setBackgroundRole(QPalette.Light)
+                
+                
             
                             
 
