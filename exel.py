@@ -186,7 +186,9 @@ class Table(QWidget):
                     for h in range(start+g-1,columns): 
                         
                         
-                        
+                        if itWas==False:
+                            second.cellWidget(y,h).setBackgroundRole(QPalette.Light)
+                            first.cellWidget(y,g).setBackgroundRole(QPalette.Light)
                         if first.cellWidget(y,g).staticData.teacher==second.cellWidget(y,h).staticData.teacher and first.cellWidget(y,g).staticData.teacher !=''and g!=h:
                                 itWas= True
                                 print(y,g+1,h+1)
@@ -213,9 +215,7 @@ class Table(QWidget):
                        
             if itWas==True:
                 self.logs_show(y,faust=faust) 
-            else:
-                second.cellWidget(y,h).setBackgroundRole(QPalette.Light)
-                first.cellWidget(y,g).setBackgroundRole(QPalette.Light)
+            
                 
                 
             
