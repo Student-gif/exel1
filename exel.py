@@ -1,4 +1,4 @@
-from turtle import colormode
+from tkinter import Button
 import win32clipboard
 from OutputLogick import saveTocsv
 from QListenW import *
@@ -11,7 +11,9 @@ from OutputLogick import saveTocsv
 import Logick
 lister =[]
 layout = QHBoxLayout()
-columns =len(Logick.Auditories)  
+columns =len(Logick.Auditories)
+  
+ 
 class Table(QWidget):
     def __init__(self):
         super(Table, self).__init__()
@@ -147,8 +149,18 @@ class Table(QWidget):
 
         saveTocsv(lister)
 #Анализ      
-                
+   
+   
+    def logs_show(self):
+                pass
+    
+   
     def checker(self):
+          
+            button = QPushButton()
+            button.setText("A Button")
+            button.clicked.connect(self.logs_show) 
+        
             start= 2
             first= self.tableWidget
             second = self.tableWidget
@@ -157,18 +169,23 @@ class Table(QWidget):
                     for h in range(start+g-1,columns):    
                     
                         if first.cellWidget(y,g).staticData.teacher==second.cellWidget(y,h).staticData.teacher and first.cellWidget(y,g).staticData.teacher !=''and g!=h:
-                                 print(y,g+1,h+1)
-                                 QMessageBox.critical(self, "Ошибка ", "Совпали ячейки педагогов:{g},{h} на строке {y} ".format(g=g+1,h=h+1,y=y), QMessageBox.Ok)
-                            
+                                print(y,g+1,h+1)
+                                QMessageBox.critical(self, "Ошибка ", "Совпали ячейки педагогов:{g},{h} на строке {y} ".format(g=g+1,h=h+1,y=y), QMessageBox.Ok|QMessageBox.Cancel,defaultButton=button)
+                                first.cellWidget(y,g).setAutoFillBackground(True)
+                                first.cellWidget(y,g).setBackgroundRole(QPalette.Midlight)
+                                second.cellWidget(y,h).setAutoFillBackground(True)
+                                second.cellWidget(y,h).setBackgroundRole(QPalette.Midlight)
+                                first.item(y, 1).setBackground(QColor(220,0,0)) 
+                                
                                  
                         if first.cellWidget(y,g).staticData.group==second.cellWidget(y,h).staticData.group and first.cellWidget(y,g).staticData.group !=''and g!=h:
-                                 QMessageBox.critical(self, "Ошибка ", "Совпали ячейки груп:{g},{h} на строке {y} ".format(g=g+1,h=h+1,y=y), QMessageBox.Ok)
-                                 first.cellWidget(y,g).setAutoFillBackground(True)
-                                 first.cellWidget(y,g).setBackgroundRole(QPalette.Dark)
-                                 second.cellWidget(y,h).setAutoFillBackground(True)
-                                 second.cellWidget(y,h).setBackgroundRole(QPalette.Dark)
-                                 
-                                 print(y,g+1,h+1,'group')
+                                QMessageBox.critical(self, "Ошибка ", "Совпали ячейки груп:{g},{h} на строке {y} ".format(g=g+1,h=h+1,y=y), QMessageBox.Ok|QMessageBox.Cancel)
+                                first.cellWidget(y,g).setAutoFillBackground(True)
+                                first.cellWidget(y,g).setBackgroundRole(QPalette.Dark)
+                                second.cellWidget(y,h).setAutoFillBackground(True)
+                                second.cellWidget(y,h).setBackgroundRole(QPalette.Dark)
+                                first.item(y, 1).setBackground(QColor(220,0,0))
+                                print(y,g+1,h+1,'group')
                             
 
 
