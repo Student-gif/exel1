@@ -148,44 +148,73 @@ class Table(QWidget):
                     lister.append(cel)
 
         saveTocsv(lister)
-#Анализ      
+#Анализ на совпадения   
    
    
-    def logs_show(self):
-                pass
+    def logs_show(self,y,faust):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Critical)
+        msg.setText(' "Ошибка "')
+        msg.setInformativeText('Совпали ячейки',)
+        msg.setStandardButtons(QMessageBox.Ok|QMessageBox.Ignore,)
+        msg.setDetailedText("miror eror {faust}".format(faust=faust))
+        msg.setTextInteractionFlags(Qt.TextSelectableByMouse)
+  
+        pname = 'QMessageBox'
+        cname = 'QTextEdit'
+        msg.setStyleSheet(
+            """{} {} {{ background-color: white; color: black; font-family: Courier; }}""".format(pname, cname))
+        msg.exec_()
+        if msg.clickedButton()==QMessageBox.Ignore:
+            self.tableWidget.item(y, 1).setBackground(QColor(0,0,0)) 
     
-   
-    def checker(self):
-          
+    def checker(self,):
+            faust = []
             button = QPushButton()
             button.setText("A Button")
             button.clicked.connect(self.logs_show) 
-        
+            itWas = False
             start= 2
             first= self.tableWidget
             second = self.tableWidget
             for y in range(1,43):
+                first.item(y, 1).setBackground(QColor(255,255,255))
+               
+                
                 for g in range(start,columns):
-                    for h in range(start+g-1,columns):    
-                    
+                    first.cellWidget(y,g).setBackgroundRole(QPalette.Light)
+                    for h in range(start+g-1,columns): 
+                        
+                        
+                        
                         if first.cellWidget(y,g).staticData.teacher==second.cellWidget(y,h).staticData.teacher and first.cellWidget(y,g).staticData.teacher !=''and g!=h:
+                                itWas= True
                                 print(y,g+1,h+1)
-                                QMessageBox.critical(self, "Ошибка ", "Совпали ячейки педагогов:{g},{h} на строке {y} ".format(g=g+1,h=h+1,y=y), QMessageBox.Ok|QMessageBox.Cancel,defaultButton=button)
+                               
+                                faust.append((y,g+1,h+1))
+
                                 first.cellWidget(y,g).setAutoFillBackground(True)
                                 first.cellWidget(y,g).setBackgroundRole(QPalette.Midlight)
                                 second.cellWidget(y,h).setAutoFillBackground(True)
                                 second.cellWidget(y,h).setBackgroundRole(QPalette.Midlight)
                                 first.item(y, 1).setBackground(QColor(220,0,0)) 
-                                
-                                 
+                               
+                        
+                               
                         if first.cellWidget(y,g).staticData.group==second.cellWidget(y,h).staticData.group and first.cellWidget(y,g).staticData.group !=''and g!=h:
-                                QMessageBox.critical(self, "Ошибка ", "Совпали ячейки груп:{g},{h} на строке {y} ".format(g=g+1,h=h+1,y=y), QMessageBox.Ok|QMessageBox.Cancel)
                                 first.cellWidget(y,g).setAutoFillBackground(True)
                                 first.cellWidget(y,g).setBackgroundRole(QPalette.Dark)
                                 second.cellWidget(y,h).setAutoFillBackground(True)
                                 second.cellWidget(y,h).setBackgroundRole(QPalette.Dark)
                                 first.item(y, 1).setBackground(QColor(220,0,0))
                                 print(y,g+1,h+1,'group')
+                                itWas= True
+                    
+                    second.cellWidget(y,h).setBackgroundRole(QPalette.Light)   
+            if itWas==True:
+                self.logs_show(y,faust=faust) 
+
+            
                             
 
 
