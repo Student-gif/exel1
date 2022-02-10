@@ -113,7 +113,7 @@ class Table(QWidget):
             
             #self.indexData = self.tableWidget.cellWidget(index[0].row(),index[0].column())
             addToClipBoard = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData
-            data = addToClipBoard.lesson+';'+addToClipBoard.teacher+';'+addToClipBoard.group
+            data = addToClipBoard.teacher+';'+addToClipBoard.lesson+';'+addToClipBoard.group
             print(data)
             win32clipboard.OpenClipboard()
             win32clipboard.EmptyClipboard()
@@ -157,7 +157,7 @@ class Table(QWidget):
         msg.setText(' "Ошибка "')
         msg.setInformativeText('Совпали ячейки',)
         msg.setStandardButtons(QMessageBox.Ok|QMessageBox.Ignore,)
-        msg.setDetailedText("miror eror {faust}".format(faust=faust))
+        msg.setDetailedText("miror eror stroka: {faustrow},\n столбцы{faustcolumn},".format(faustrow=[x[0] for x in faust],faustcolumn= [(x[1],x[2]) for x in faust]))
         msg.setTextInteractionFlags(Qt.TextSelectableByMouse)
   
         pname = 'QMessageBox'
@@ -166,7 +166,7 @@ class Table(QWidget):
             """{} {} {{ background-color: white; color: black; font-family: Courier; }}""".format(pname, cname))
         msg.exec_()
         if msg.clickedButton()==QMessageBox.Ignore:
-            self.tableWidget.item(y, 1).setBackground(QColor(0,0,0)) 
+            pass 
     
     def checker(self,):
             faust = []
@@ -179,26 +179,24 @@ class Table(QWidget):
             second = self.tableWidget
             for y in range(1,43):
                 first.item(y, 1).setBackground(QColor(255,255,255))
-              
-                
                 for g in range(start,columns):
-                   
                     for h in range(start+g-1,columns): 
-                        
-                        
                         if itWas==False:
-                            second.cellWidget(y,h).setBackgroundRole(QPalette.Light)
-                            first.cellWidget(y,g).setBackgroundRole(QPalette.Light)
+                            second.cellWidget(y,h).setBackgroundRole(9)
+                            first.cellWidget(y,g).setBackgroundRole(9)
+                            first.cellWidget(y,g).setAutoFillBackground(False)
+                        
+                        
                         if first.cellWidget(y,g).staticData.teacher==second.cellWidget(y,h).staticData.teacher and first.cellWidget(y,g).staticData.teacher !=''and g!=h:
                                 itWas= True
                                 print(y,g+1,h+1)
+                                print(first.cellWidget(y,g).backgroundRole())
                                
                                 faust.append((y,g+1,h+1))
-
                                 first.cellWidget(y,g).setAutoFillBackground(True)
-                                first.cellWidget(y,g).setBackgroundRole(QPalette.Midlight)
+                                first.cellWidget(y,g).setBackgroundRole(111)
                                 second.cellWidget(y,h).setAutoFillBackground(True)
-                                second.cellWidget(y,h).setBackgroundRole(QPalette.Midlight)
+                                second.cellWidget(y,h).setBackgroundRole(111)
                                 first.item(y, 1).setBackground(QColor(220,0,0)) 
                                
                         

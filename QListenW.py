@@ -28,7 +28,7 @@ class lessonData():
         print(self.teacher)
         self.group =ar[1]
         print(self.group)
-        self.lesson=ar[2]
+        self.lesson=ar[1]
         print(self.lesson)
         return True
     def __str__(self) -> str:
