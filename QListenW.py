@@ -1,3 +1,4 @@
+from datetime import date, datetime
 from Logick import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -13,6 +14,7 @@ class lessonData():
     teacherId:int = -1
     lessonPlace:int = 0
     auditory:int = 0
+    weekdate:date= date.today()
     def notCopyData(self,lessonPlace,WeekDay,auditory):
         self.auditory = auditory
         self.lessonPlace = lessonPlace
@@ -32,7 +34,10 @@ class lessonData():
         print(self.lesson)
         return True
     def __str__(self) -> str:
-        return f'{self.teacher.__str__()};{self.group.__str__()};{self.lesson.__str__()};{self.week.__str__()};{self.weekday.__str__()};{self.teacherId.__str__()};{self.lessonPlace.__str__()};{self.lessonPlace.__str__()};{self.auditory.__str__()}'
+        return f'{self.teacher.__str__()};{self.group.__str__()};{self.lesson.__str__()};{self.week.__str__()};{self.weekday.__str__()};{self.teacherId.__str__()};{self.lessonPlace.__str__()};{self.lessonPlace.__str__()};{self.auditory.__str__()};{self.weekdate.__str__}'
+
+        
+
 
 class QListensW(QWidget):
     

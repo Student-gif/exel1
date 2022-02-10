@@ -198,5 +198,5 @@ toodayday = 0
 oldtime=datetime.date.today()
 day = datetime.date.weekday(datetime.date.today())
 startweek =oldtime-datetime.timedelta(days=day)
-
-
+weeknum = febrary[oldtime.day]
+print(weeknum)

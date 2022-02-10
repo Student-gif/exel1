@@ -1,3 +1,4 @@
+import datetime
 from tkinter import Button
 import win32clipboard
 from OutputLogick import saveTocsv
@@ -218,8 +219,7 @@ class Table(QWidget):
                 
     #дата дня недели 
    #TODO считать дату дня недели и номер недели
-    
-  
+
 
 
 

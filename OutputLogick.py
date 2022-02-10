@@ -1,6 +1,7 @@
 import csv
 import json
 from random import random
+from datemodul import weeknum
 def saveTocsv(lister):
     filename = str(random())+'.csv'
     csv.register_dialect('my_dialect', delimiter=',', lineterminator="\r")
@@ -14,7 +15,7 @@ def saveTocsv(lister):
         
         
         for i in range(len(lister)):
-            newDataforCsv = [lister[i].group,0,lister[i].weekday,lister[i].lessonPlace,lister[i].auditory,23,0,lister[i].teacher,15,lister[i].lesson,"л.","data",0,lister[i].teacherId,'По теме занятия',"","","","","","",""]
+            newDataforCsv = [lister[i].group,0,lister[i].weekday,lister[i].lessonPlace,lister[i].auditory,weeknum,0,lister[i].teacher,15,lister[i].lesson,"л.","data",0,lister[i].teacherId,'По теме занятия',"","","","","","",""]
             file_writer.writerow(newDataforCsv)
 
             
