@@ -59,7 +59,7 @@ class Table(QWidget):
         Logick.groupList
         lessonsPlace =0
         weekDay= 1
-        #TODO счётчик дней недели и номера пары
+      
         for i in range(2,columns):
             for g in range(1,43):
                 if lessonsPlace>6:
@@ -157,7 +157,7 @@ class Table(QWidget):
         msg.setText(' "Ошибка "')
         msg.setInformativeText('Совпали ячейки',)
         msg.setStandardButtons(QMessageBox.Ok|QMessageBox.Ignore,)
-        msg.setDetailedText("miror eror stroka: {faustrow},\n столбцы{faustcolumn},".format(faustrow=[x[0] for x in faust],faustcolumn= [(x[1],x[2]) for x in faust]))
+        msg.setDetailedText("miror eror строка: {faustrow},\n столбцы{faustcolumn},".format(faustrow=[x[0] for x in faust],faustcolumn= [(x[1],x[2]) for x in faust]))
         msg.setTextInteractionFlags(Qt.TextSelectableByMouse)
   
         pname = 'QMessageBox'
@@ -194,18 +194,19 @@ class Table(QWidget):
                                
                                 faust.append((y,g+1,h+1))
                                 first.cellWidget(y,g).setAutoFillBackground(True)
-                                first.cellWidget(y,g).setBackgroundRole(111)
+                                first.cellWidget(y,g).setBackgroundRole(14)
                                 second.cellWidget(y,h).setAutoFillBackground(True)
-                                second.cellWidget(y,h).setBackgroundRole(111)
+                                second.cellWidget(y,h).setBackgroundRole(14)
                                 first.item(y, 1).setBackground(QColor(220,0,0)) 
                                
                         
                                
                         if first.cellWidget(y,g).staticData.group==second.cellWidget(y,h).staticData.group and first.cellWidget(y,g).staticData.group !=''and g!=h:
+                            
                                 first.cellWidget(y,g).setAutoFillBackground(True)
-                                first.cellWidget(y,g).setBackgroundRole(QPalette.Dark)
+                                first.cellWidget(y,g).setBackgroundRole(15)
                                 second.cellWidget(y,h).setAutoFillBackground(True)
-                                second.cellWidget(y,h).setBackgroundRole(QPalette.Dark)
+                                second.cellWidget(y,h).setBackgroundRole(15)
                                 first.item(y, 1).setBackground(QColor(220,0,0))
                                 print(y,g+1,h+1,'group')
                                 itWas= True
@@ -215,9 +216,15 @@ class Table(QWidget):
                 self.logs_show(y,faust=faust) 
             
                 
-                
-            
-                            
+    #дата дня недели 
+   #TODO считать дату дня недели и номер недели
+    
+  
+
+
+
+
+
 
 
                     
