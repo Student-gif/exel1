@@ -162,6 +162,33 @@ febrary={
 28:27,
 29:27,
 }
+febraryreverse={
+    23:1,
+    23:2,
+    23:3,
+    23:4,
+    23:5,
+    24:7,
+    24:8,
+    24:9,
+    24:10,
+    24:11,
+    24:12,
+    25:14,
+    25:15,
+    25:16,
+    25:17,
+    25:18,
+    25:19,
+    26:21,
+    26:22,
+    26:23,
+    26:24,
+    26:25,
+    26:26,
+    27:28,
+    27:29,
+}
 march = {
 1:27,
 2:27,
@@ -195,8 +222,11 @@ toodayday = 0
 
 
 
-oldtime=datetime.date.today()
+daytime=datetime.date.today()
+
 day = datetime.date.weekday(datetime.date.today())
-startweek =oldtime-datetime.timedelta(days=day)
-weeknum = febrary[oldtime.day]
+startweek =daytime-datetime.timedelta(days=day)
+weeknum = febrary[daytime.day]
 print(weeknum)
+
+        

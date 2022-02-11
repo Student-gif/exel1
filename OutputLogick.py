@@ -10,12 +10,12 @@ def saveTocsv(lister):
     
         file_writer = csv.writer(w_file, 'my_dialect')
     
-        file_writer.writerow(["Group","StudInLesson","Day","Les","Aud","Week","Subg","Name","CafI","Subj","Subj_type","Date","Subj_CafID","PrepID","Themas","Substitution_Name","Substitution_PrepID","Substitution_Subject","Substitution_Subj_type","Substitution_Subj_CafID","Lesson_ID","Lesson_Num"])
+        file_writer.writerow(["Group","StudInLesson","Day","Les","Aud","Week","Subg","Name","CafI","Subject","Subj_type","Date","Subj_CafID","PrepID","Themas","Substitution_Name","Substitution_PrepID","Substitution_Subject","Substitution_Subj_type","Substitution_Subj_CafID","Lesson_ID","Lesson_Num"])
         
         
         
         for i in range(len(lister)):
-            newDataforCsv = [lister[i].group,0,lister[i].weekday,lister[i].lessonPlace,lister[i].auditory,weeknum,0,lister[i].teacher,15,lister[i].lesson,"л.","data",0,lister[i].teacherId,'По теме занятия',"","","","","","",""]
+            newDataforCsv = [lister[i].group,0,lister[i].weekday,lister[i].lessonPlace,lister[i].auditory,weeknum,0,lister[i].teacher,15,lister[i].lesson,"л.",lister[i].weekdate,15,lister[i].teacherId,'По теме занятия',"","","","","","",""]
             file_writer.writerow(newDataforCsv)
 
             

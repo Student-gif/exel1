@@ -1,4 +1,5 @@
-from datetime import date, datetime
+from calendar import weekday
+from datetime import date, datetime, timedelta
 from Logick import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -16,7 +17,7 @@ class lessonData():
     auditory:int = 0
     weekdate:date= date.today()
     
-    def notCopyData(self,lessonPlace,WeekDay,auditory):
+    def notCopyData(self,lessonPlace,WeekDay,auditory,):
         self.auditory = auditory
         self.lessonPlace = lessonPlace
         self.weekday = WeekDay
@@ -25,15 +26,14 @@ class lessonData():
         self.teacherId = teacherId
         return True
     def updatecopydata(self,data):
+
         ar=data.split(';')
-        print(ar)
         self.teacher=ar[0]
-        print(self.teacher)
         self.group =ar[1]
-        print(self.group)
         self.lesson=ar[1]
-        print(self.lesson)
         return True
+    def updateWeekDate(self,dateweekday):
+        self.weekdate=dateweekday
     def __str__(self) -> str:
         return f'{self.teacher.__str__()};{self.group.__str__()};{self.lesson.__str__()};{self.week.__str__()};{self.weekday.__str__()};{self.teacherId.__str__()};{self.lessonPlace.__str__()};{self.lessonPlace.__str__()};{self.auditory.__str__()};{self.weekdate.__str__}'
 
@@ -94,12 +94,35 @@ class QListensW(QWidget):
         self.staticData.teacher = self.lineEditTeacher.text()
         self.staticData.lesson = self.lineEditLesson.text()
         try:
+            self.staticData.updateWeekDate(self.setdateweekday())
             self.staticData.updateTeacherId(IdTeachAddic[self.staticData.teacher])
         except:
             self.staticData.group = self.lineEditGroups.text()
             self.staticData.lesson = self.lineEditLesson.text()
             self.staticData.teacher = self.lineEditTeacher.text()
+    def setdateweekday(self):
+        startday = date.weekday(date.today())
+        controlday =  self.staticData.weekday
+        startweek = date.today()-timedelta(days=startday)
+        if controlday >= startday:
+            dateweekday=startweek + timedelta(controlday-1)
+        elif controlday <= startday:
+            dateweekday=startweek + timedelta(controlday-1)
+            
+        else:
+            pass
+       
+        
+
+        
+        dateweekday=dateweekday.strftime("%m.%d.%Y")
+        print(dateweekday)
+        return dateweekday
+
+
+
     def updateLess(self,lessonplace,weekDay,audit):
+       
         self.staticData.notCopyData(lessonplace,weekDay,audit)
-   
+
   
