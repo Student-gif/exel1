@@ -165,10 +165,25 @@ class Table(QWidget):
         cname = 'QTextEdit'
         msg.setStyleSheet(
             """{} {} {{ background-color: white; color: black; font-family: Courier; }}""".format(pname, cname))
-        msg.exec_()
-        if msg.clickedButton()==QMessageBox.Ignore:
-            pass 
-    
+        
+        if msg.exec_()==QMessageBox.Ignore:
+                faustrow=[x[0] for x in faust]
+                faustcolumn= [x[1]for x in faust]
+                faustcolumn2= [x[2] for x in faust]
+                print(faustrow,faustcolumn,faustcolumn2)
+                for i in faustrow:
+                    self.tableWidget.item(i,1).setBackground(QColor(255,255,255))
+                    for g in faustcolumn:
+                        self.tableWidget.cellWidget(i,g-1).setBackgroundRole(9)
+                        self.tableWidget.cellWidget(i,g-1).setAutoFillBackground(False)
+                        for h in faustcolumn2:
+                            print(g,h)
+                            
+                            self.tableWidget.cellWidget(i,h-1).setBackgroundRole(9)
+                            self.tableWidget.cellWidget(i,h-1).setAutoFillBackground(False)
+                            
+
+                    
     def checker(self,):
             faust = []
             button = QPushButton()
@@ -190,8 +205,6 @@ class Table(QWidget):
                         
                         if first.cellWidget(y,g).staticData.teacher==second.cellWidget(y,h).staticData.teacher and first.cellWidget(y,g).staticData.teacher !=''and g!=h:
                                 itWas= True
-                                print(y,g+1,h+1)
-                                print(first.cellWidget(y,g).backgroundRole())
                                
                                 faust.append((y,g+1,h+1))
                                 first.cellWidget(y,g).setAutoFillBackground(True)
@@ -209,7 +222,6 @@ class Table(QWidget):
                                 second.cellWidget(y,h).setAutoFillBackground(True)
                                 second.cellWidget(y,h).setBackgroundRole(15)
                                 first.item(y, 1).setBackground(QColor(220,0,0))
-                                print(y,g+1,h+1,'group')
                                 itWas= True
                     
                        

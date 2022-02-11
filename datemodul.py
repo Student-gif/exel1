@@ -227,6 +227,5 @@ daytime=datetime.date.today()
 day = datetime.date.weekday(datetime.date.today())
 startweek =daytime-datetime.timedelta(days=day)
 weeknum = febrary[daytime.day]
-print(weeknum)
 
         

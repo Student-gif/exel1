@@ -116,7 +116,6 @@ class QListensW(QWidget):
 
         
         dateweekday=dateweekday.strftime("%m.%d.%Y")
-        print(dateweekday)
         return dateweekday
 
 
