@@ -15,6 +15,7 @@ class lessonData():
     lessonPlace:int = 0
     auditory:int = 0
     weekdate:date= date.today()
+    
     def notCopyData(self,lessonPlace,WeekDay,auditory):
         self.auditory = auditory
         self.lessonPlace = lessonPlace
