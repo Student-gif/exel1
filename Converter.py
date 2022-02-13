@@ -52,8 +52,8 @@ audits = []
 for index, audit in enumerate(data[1]):
     if index > AUDIT[0] and index < AUDIT[1]:
         audits.append((index, audit))
-
 week = data[0][0]
+
 
 lessons = []
 for ind_day, day in enumerate(days):
@@ -99,21 +99,17 @@ for ind_day, day in enumerate(days):
 
                         lessons.append(les1)
                         lessons.append(les2)
-                        print("SPLIT")
-                        print(les1.__str__())
-                        print(les2.__str__())
                     else:
                         les = lesson()
-                        les.group = au[1]
+                        les.group = data[index+1][au[0]].strip()
                         les.teather = cell.strip()
-                        les.audit = data[index+1][au[0]].strip()
+                        les.audit = au[1] 
                         les.dis = data[index+2][au[0]].strip()
                         les.week = week
                         les.weak_day = ind_day+1
                         les.num = n
                         lessons.append(les)
-                        print(les.__str__())
-
+                        #print(les.__str__())
 
 with open("outout.csv", "w", encoding='UTF-8') as file:
     file.write(
@@ -140,73 +136,74 @@ with open("outout.csv", "w", encoding='UTF-8') as file:
 #          }]
 #        }
 
-groups = []
-for g in audits:
-    js = {
-        "group_name": g[1],
-        "course": datetime.date.today().year-2000-int(g[1].split('-')[2]),
-        "days": [{
-            "weekday": 1,
-            "lessons": []
-        }, {
-            "weekday": 2,
-            "lessons": []
-        }, {
-            "weekday": 3,
-            "lessons": []
-        }, {
-            "weekday": 4,
-            "lessons": []
-        }, {
-            "weekday": 5,
-            "lessons": []
-        }, {
-            "weekday": 6,
-            "lessons": []
-        }]
-    }
-    if js not in groups:
-        groups.append(js)
-tims = [
-    ('08:00', '09:30'),
-    ('09:40', '11:10'),
-    ('11:30', '12:50'),
-    ('13:30', '15:00'),
-    ('15:10', '16:40'),
-    ('16:50', '18:20'),
-    ('18:30', '20:00'),
-    ('20:10', '21:40')
-]
-for g in groups:
-    for weekday in range(6):
-        for l in lessons:
-            if(l.group == g["group_name"]):
-                if(l.weak_day == weekday):
-                    t = tims[l.num]
-                    g["days"][weekday]["lessons"].append({
-                        "subject": l.dis,
-                        "type": "л.",
-                        "subgroup": 0,
-                        "time_start":  t[0],
-                        "time_end":  t[1],
-                        "time": l.num,
-                        "week": weekday+1,
-                        "date": "",
-                        "teachers": [{
-                            "teacher_name": l.teather
-                        }],
-                        "auditories": [{
-                            "auditory_name": l.audit.replace('- ', '-')
-                        }]
-                    })
-
-
-with open("outout.json", "w", encoding='UTF-8') as file:
-    js = {
-        "faculty_name": 'null',
-        "date_start": 'null',
-        "date_end": 'null',
-        "groups": [gr for gr in groups]
-    }
-    jsAll = {"faculties" : [js]}
-    file.write(jsAll.__str__().replace("'",'"'))
+#groups = []
+#for g in audits:
+#    js = {
+#        "group_name": g[1],
+#       "course": datetime.date.today().year-2000-int(g[1].split('-')[2]),
+#        "days": [{
+#            "weekday": 1,
+#            "lessons": []
+#        }, {
+#            "weekday": 2,
+#            "lessons": []
+#        }, {
+#            "weekday": 3,
+#            "lessons": []
+#        }, {
+#            "weekday": 4,
+#            "lessons": []
+#        }, {
+#            "weekday": 5,
+#            "lessons": []
+#        }, {
+#            "weekday": 6,
+#            "lessons": []
+#        }]
+#    }
+#    if js not in groups:
+#        groups.append(js)
+#tims = [
+#    ('08:00', '09:30'),
+#    ('09:40', '11:10'),
+#    ('11:30', '12:50'),
+#    ('13:30', '15:00'),
+#    ('15:10', '16:40'),
+#    ('16:50', '18:20'),
+#    ('18:30', '20:00'),
+#    ('20:10', '21:40')
+#]
+#for g in groups:
+#    for weekday in range(6):
+#        for l in lessons:
+#            if(l.group == g["group_name"]):
+#                if(l.weak_day == weekday):
+#                    t = tims[l.num]
+#                    g["days"][weekday]["lessons"].append({
+#                        "subject": l.dis,
+#                        "type": "л.",
+#                        "subgroup": 0,
+#                        "time_start":  t[0],
+#                        "time_end":  t[1],
+#                        "time": l.num,
+#                        "week": weekday+1,
+#                        "date": "",
+#                        "teachers": [{
+#                            "teacher_name": l.teather
+#                        }],
+#                        "auditories": [{
+#                            "auditory_name": l.audit.replace('- ', '-')
+#                        }]
+#                    })
+#
+#
+#with open("outout.json", "w", encoding='UTF-8') as file:
+#    js = {
+#        "faculty_name": 'null',
+#        "date_start": 'null',
+#        "date_end": 'null',
+#        "groups": [gr for gr in groups]
+#    }
+#    jsAll = {"faculties" : [js]}
+#    file.write(jsAll.__str__().replace("'",'"'))
+#

@@ -229,4 +229,5 @@ startweek =daytime-datetime.timedelta(days=day)
 
 try:weeknum = febrary[daytime.day]
 except:
+    weeknum = febrary[daytime.day+1] 
     pass      

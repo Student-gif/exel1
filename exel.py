@@ -1,4 +1,5 @@
 import datetime
+from Converter import lessons as les
 from tkinter import Button
 import win32clipboard
 from OutputLogick import saveTocsv
@@ -19,7 +20,7 @@ class Table(QWidget):
     def __init__(self):
         super(Table, self).__init__()
         self.initUI()
-      
+    
     def initUI(self):
                  # Установить заголовок и начальный размер
         self.setWindowTitle('Ядро Расписание')
@@ -227,10 +228,16 @@ class Table(QWidget):
                        
             if itWas==True:
                 self.logs_show(y,faust=faust) 
-            
-                
-    #дата дня недели 
-   #TODO считать дату дня недели и номер недели
+    def importxl(self):
+        widget= self.tableWidget
+        for l in les:
+            print(l.audit)
+            for i in range(2,columns):
+                for g in range(1,43):
+                    
+                    if widget.cellWidget(i,g).staticData.audit == l.auditory and widget.cellWidget(i,g).staticData.lessonPlace == l.num and  widget.cellWidget(i,g).staticData.weekday ==  l.weak_day:
+                        print('yep')
+                        
 
 
 

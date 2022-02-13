@@ -87,7 +87,10 @@ class QListensW(QWidget):
         self.lineEditTeacher.setText(self.staticData.teacher)
         self.lineEditGroups.setText(self.staticData.group)
         self.lineEditLesson.setText(self.staticData.lesson)
-    
+    def helptoimport(self,teacher,group,lesson):
+        self.lineEditTeacher.setText(teacher)
+        self.lineEditGroups.setText(group)
+        self.lineEditLesson.setText(lesson)
     
     def CustomEventEnter(self):
         self.staticData.group = self.lineEditGroups.text()
