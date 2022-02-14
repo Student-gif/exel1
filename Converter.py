@@ -135,7 +135,6 @@ with open("outout.csv", "w", encoding='UTF-8') as file:
 #            "auditory_name" : "2-5"
 #          }]
 #        }
-
 #groups = []
 #for g in audits:
 #    js = {

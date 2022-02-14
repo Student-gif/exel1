@@ -14,8 +14,7 @@ import Logick
 lister =[]
 layout = QHBoxLayout()
 columns =len(Logick.Auditories)
-  
- 
+
 class Table(QWidget):
     def __init__(self):
         super(Table, self).__init__()
@@ -25,26 +24,24 @@ class Table(QWidget):
                  # Установить заголовок и начальный размер
         self.setWindowTitle('Ядро Расписание')
         
-       
+               
         self.tableWidget = QTableWidget(43,columns)
+        
         #ширина ячеек
         for i in range(43):
             self.tableWidget.setRowHeight(i,80)
-
         # Установить горизонтальный заголовок таблицы
         for i in range(2,columns):
-            self.tableWidget.setColumnWidth(i,80)
+            self.tableWidget.setColumnWidth(i,120)
         # отрисовка окна индикации
-        self.tableWidget.setColumnWidth(1,60)
+        self.tableWidget.setColumnWidth(1,20)
         self.tableWidget.setColumnWidth(0,40)
         self.tableWidget.setSpan(0,0,1,2)
         #кнопка
-        
-        
         btn = QPushButton("Some button")
         self.tableWidget.setCellWidget(0, 0, btn)
         btn.clicked.connect(self.giveData)
-        btn.clicked.connect(self.importxl)
+        
         
         
         thing1 = 1  
@@ -57,6 +54,7 @@ class Table(QWidget):
             self.tableWidget.item(thing1,0).setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
             self.tableWidget.item(thing1,0).setFont(QFont("Arial", 16))
             self.tableWidget.item(thing1, 0).setBackground(QColor(0,160,0))      
+            self.tableWidget.item(thing1, 0).setFlags(Qt.NoItemFlags|Qt.ItemIsEnabled)
             thing1 += 7
         #присвоение табличного виджета
         Logick.groupList
@@ -83,6 +81,7 @@ class Table(QWidget):
                 self.tableWidget.setItem(i+j-1, 1, QTableWidgetItem())
                 self.tableWidget.item(i+j-1,1).setText(str(j+1))
                 self.tableWidget.item(i+j-1,1).setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
+                self.tableWidget.item(i+j-1,1).setFlags(Qt.NoItemFlags|Qt.ItemIsEnabled)
             
         #распаковка данных Аудитории с бд  
         h=[x[0] for x in Logick.Auditories]
@@ -91,12 +90,23 @@ class Table(QWidget):
             self.tableWidget.setItem(0, i, QTableWidgetItem())
             self.tableWidget.item(0, i).setBackground(QColor(220,0,0)) 
             self.tableWidget.item(0, i).setText(h[i-2])
+            self.tableWidget.item(0, i).setFlags(Qt.NoItemFlags|Qt.ItemIsEnabled)
+        
                  # Разрешить щелчок правой кнопкой мыши для создания меню
         self.tableWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
                  # Привязать контекстное меню к функции слота generateMenu
         self.tableWidget.customContextMenuRequested.connect(self.generateMenu)
         #инициализация таблицы
         layout.addWidget(self.tableWidget)
+        ##
+        ## меню бар для импорта
+        menu_bar = QMenuBar()
+        menu_file = menu_bar.addMenu('File')
+        action_exit = menu_file.addAction('взять csv')
+        action_exit.triggered.connect(self.importxl)
+        layout.setMenuBar(menu_bar)
+        ##
+        ##
         self.setLayout(layout)
         
         
@@ -153,6 +163,7 @@ class Table(QWidget):
         for i in range(2,columns):
             for g in range(1,43):
                 cel =self.tableWidget.cellWidget(g,i).real()
+                print(cel)
                 if cel.lesson!='':
                     lister.append(cel)
 
@@ -237,7 +248,6 @@ class Table(QWidget):
     def importxl(self):
         widget= self.tableWidget
         for l in les:
-           
             for i in range(2,columns):
                 for g in range(1,43):
 

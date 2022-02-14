@@ -34,6 +34,11 @@ class lessonData():
         return True
     def updateWeekDate(self,dateweekday):
         self.weekdate=dateweekday
+    def updateImportData(self,teacher,group,lesson):
+        self.teacher=teacher
+        self.group =group
+        self.lesson=lesson
+        
     def __str__(self) -> str:
         return f'{self.teacher.__str__()};{self.group.__str__()};{self.lesson.__str__()};{self.week.__str__()};{self.weekday.__str__()};{self.teacherId.__str__()};{self.lessonPlace.__str__()};{self.lessonPlace.__str__()};{self.auditory.__str__()};{self.weekdate.__str__}'
 
@@ -91,7 +96,7 @@ class QListensW(QWidget):
         self.lineEditTeacher.setText(teacher)
         self.lineEditGroups.setText(group)
         self.lineEditLesson.setText(lesson)
-    
+        self.staticData.updateImportData(teacher,group,lesson)
     def CustomEventEnter(self):
         self.staticData.group = self.lineEditGroups.text()
         self.staticData.teacher = self.lineEditTeacher.text()
