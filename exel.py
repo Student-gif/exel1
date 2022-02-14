@@ -1,4 +1,5 @@
 import datetime
+from Converter import lessons as les
 from tkinter import Button
 import win32clipboard
 from OutputLogick import saveTocsv
@@ -19,7 +20,7 @@ class Table(QWidget):
     def __init__(self):
         super(Table, self).__init__()
         self.initUI()
-      
+    
     def initUI(self):
                  # Установить заголовок и начальный размер
         self.setWindowTitle('Ядро Расписание')
@@ -43,6 +44,7 @@ class Table(QWidget):
         btn = QPushButton("Some button")
         self.tableWidget.setCellWidget(0, 0, btn)
         btn.clicked.connect(self.giveData)
+        btn.clicked.connect(self.importxl)
         
         
         thing1 = 1  
@@ -132,7 +134,13 @@ class Table(QWidget):
             win32clipboard.CloseClipboard()
             
             w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
-            w.update(data)
+            
+            if data != None:
+                w.update(data)
+            else:
+                data = ""
+                pass
+            
                      
         if action == item3:
             print ('Вы выбрали третий вариант, текущее содержание текста строки:', )
@@ -186,9 +194,7 @@ class Table(QWidget):
                     
     def checker(self,):
             faust = []
-            button = QPushButton()
-            button.setText("A Button")
-            button.clicked.connect(self.logs_show) 
+            
             itWas = False
             start= 2
             first= self.tableWidget
@@ -227,10 +233,18 @@ class Table(QWidget):
                        
             if itWas==True:
                 self.logs_show(y,faust=faust) 
-            
-                
-    #дата дня недели 
-   #TODO считать дату дня недели и номер недели
+    
+    def importxl(self):
+        widget= self.tableWidget
+        for l in les:
+           
+            for i in range(2,columns):
+                for g in range(1,43):
+
+                    if widget.cellWidget(g,i).staticData.auditory == l.audit.replace('- ', '-') and widget.cellWidget(g,i).staticData.lessonPlace == l.num and  widget.cellWidget(g,i).staticData.weekday ==  l.weak_day:
+                        widget.cellWidget(g,i).helptoimport(teacher=l.teather,group=l.group,lesson=l.dis)
+                    #print(widget.cellWidget(g,i).staticData.auditory,l.audit.replace('- ', '-'))
+                        
 
 
 
