@@ -105,7 +105,7 @@ class Table(QWidget):
         action_exit = menu_file.addAction('взять csv')
         action_exit.triggered.connect(self.importxl)
         layout.setMenuBar(menu_bar)
-        ##
+        ##/////////////
         ##
         self.setLayout(layout)
         
@@ -127,7 +127,6 @@ class Table(QWidget):
             #self.indexData = self.tableWidget.cellWidget(index[0].row(),index[0].column())
             addToClipBoard = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData
             data = addToClipBoard.teacher+';'+addToClipBoard.lesson+';'+addToClipBoard.group
-            print(data)
             win32clipboard.OpenClipboard()
             win32clipboard.EmptyClipboard()
             win32clipboard.SetClipboardText(data)
@@ -135,11 +134,9 @@ class Table(QWidget):
 
 
         if action == item2:
-            print ('Вы выбрали второй вариант, текущее содержание текста строки:',)
             #self.v = self.tableWidget.setCellWidget(index[0].row(),index[0].column(),QListensW(self.index2.staticData))
             win32clipboard.OpenClipboard()
             data = win32clipboard.GetClipboardData()
-            print(data)
             win32clipboard.EmptyClipboard()
             win32clipboard.CloseClipboard()
             
@@ -153,7 +150,6 @@ class Table(QWidget):
             
                      
         if action == item3:
-            print ('Вы выбрали третий вариант, текущее содержание текста строки:', )
             w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
             w.uploadUi()
     
@@ -163,7 +159,7 @@ class Table(QWidget):
         for i in range(2,columns):
             for g in range(1,43):
                 cel =self.tableWidget.cellWidget(g,i).real()
-                print(cel)
+             
                 if cel.lesson!='':
                     lister.append(cel)
 
@@ -189,14 +185,13 @@ class Table(QWidget):
                 faustrow=[x[0] for x in faust]
                 faustcolumn= [x[1]for x in faust]
                 faustcolumn2= [x[2] for x in faust]
-                print(faustrow,faustcolumn,faustcolumn2)
                 for i in faustrow:
                     self.tableWidget.item(i,1).setBackground(QColor(255,255,255))
                     for g in faustcolumn:
                         self.tableWidget.cellWidget(i,g-1).setBackgroundRole(9)
                         self.tableWidget.cellWidget(i,g-1).setAutoFillBackground(False)
                         for h in faustcolumn2:
-                            print(g,h)
+                           
                             
                             self.tableWidget.cellWidget(i,h-1).setBackgroundRole(9)
                             self.tableWidget.cellWidget(i,h-1).setAutoFillBackground(False)
@@ -233,13 +228,14 @@ class Table(QWidget):
                         
                                
                         if first.cellWidget(y,g).staticData.group==second.cellWidget(y,h).staticData.group and first.cellWidget(y,g).staticData.group !=''and g!=h:
-                            
+                                itWas= True
+                                faust.append((y,g+1,h+1))
                                 first.cellWidget(y,g).setAutoFillBackground(True)
                                 first.cellWidget(y,g).setBackgroundRole(15)
                                 second.cellWidget(y,h).setAutoFillBackground(True)
                                 second.cellWidget(y,h).setBackgroundRole(15)
                                 first.item(y, 1).setBackground(QColor(220,0,0))
-                                itWas= True
+                              
                     
                        
             if itWas==True:
@@ -254,6 +250,7 @@ class Table(QWidget):
                     if widget.cellWidget(g,i).staticData.auditory == l.audit.replace('- ', '-') and widget.cellWidget(g,i).staticData.lessonPlace == l.num and  widget.cellWidget(g,i).staticData.weekday ==  l.weak_day:
                         widget.cellWidget(g,i).helptoimport(teacher=l.teather,group=l.group,lesson=l.dis)
                     #print(widget.cellWidget(g,i).staticData.auditory,l.audit.replace('- ', '-'))
+
                         
 
 
