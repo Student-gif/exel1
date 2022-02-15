@@ -40,7 +40,7 @@ class Table(QWidget):
         btn = QPushButton("Сохранить")
         self.tableWidget.setCellWidget(0, 0, btn)
         btn.clicked.connect(self.giveData)
-        btn.clicked.connect(self.initFileDialog)
+    
         
         
         
