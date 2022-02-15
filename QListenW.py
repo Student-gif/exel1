@@ -54,7 +54,7 @@ class QListensW(QWidget):
         super(QListensW, self).__init__(*args, **kwargs)
         lay = QVBoxLayout(self)
 
-
+       
 
         self.setLayout(lay)
         self.lineEditTeacher = QLineEdit()
@@ -79,6 +79,9 @@ class QListensW(QWidget):
         self.lineEditLesson.editingFinished.connect(self.CustomEventEnter)
         self.lineEditTeacher.editingFinished.connect(self.CustomEventEnter)
         self.lineEditGroups.editingFinished.connect(self.CustomEventEnter)
+        self
+        
+        
 
         self.uploadUi()
     #забирает данные
@@ -97,39 +100,47 @@ class QListensW(QWidget):
         self.lineEditGroups.setText(group)
         self.lineEditLesson.setText(lesson)
         self.staticData.updateImportData(teacher,group,lesson)
+        try:
+            self.staticData.updateTeacherId(IdTeachAddic[self.staticData.teacher])
+        except:
+            pass
     def CustomEventEnter(self):
         self.staticData.group = self.lineEditGroups.text()
         self.staticData.teacher = self.lineEditTeacher.text()
         self.staticData.lesson = self.lineEditLesson.text()
         try:
-            self.staticData.updateWeekDate(self.setdateweekday())
             self.staticData.updateTeacherId(IdTeachAddic[self.staticData.teacher])
         except:
             self.staticData.group = self.lineEditGroups.text()
             self.staticData.lesson = self.lineEditLesson.text()
             self.staticData.teacher = self.lineEditTeacher.text()
     def setdateweekday(self):
+        
         startday = date.weekday(date.today())
+        
         controlday =  self.staticData.weekday
+        
         startweek = date.today()-timedelta(days=startday)
         if controlday >= startday:
             dateweekday=startweek + timedelta(controlday-1)
+            dateweekday.strftime("%m.%d.%Y")
+            self.staticData.updateWeekDate(dateweekday)
         elif controlday <= startday:
             dateweekday=startweek + timedelta(controlday-1)
+            dateweekday.strftime("%m.%d.%Y")
+            self.staticData.updateWeekDate(dateweekday)
             
+        
         else:
+            
             pass
+        
        
-        
-
-        
-        dateweekday=dateweekday.strftime("%m.%d.%Y")
-        return dateweekday
-
+    
 
 
     def updateLess(self,lessonplace,weekDay,audit):
-       
+        
         self.staticData.notCopyData(lessonplace,weekDay,audit)
 
   

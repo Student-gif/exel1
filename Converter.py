@@ -2,10 +2,7 @@ from calendar import c
 import csv
 import datetime
 import math
-from operator import le
-from pickle import NONE
 import time
-from pydantic import NoneBytes, NoneStr
 
 days = [
     [1, 21],
@@ -17,7 +14,6 @@ days = [
 ]
 week = 23
 AUDIT = [1, 53]
-
 
 class lesson():
     audit = ""
@@ -38,8 +34,6 @@ class lesson():
             "dis": self.dis,
             "num": self.num
         }
-
-
 with open('input.csv', encoding='utf-8') as f:
     reader = csv.reader(f, delimiter=';')
     data = []
@@ -74,7 +68,7 @@ for ind_day, day in enumerate(days):
                         les1.group = au[1]
                         les1.teather = cell.split("/")[0].strip()
                         if('/' in data[index+1][au[0]]):
-                            les1.audit = data[index+1][au[0]
+                            les1.group = data[index+1][au[0]
                                                        ].split("/")[0].strip()
                         else:
                             les1.audit = data[index+1][au[0]].strip()

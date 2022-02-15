@@ -9,11 +9,11 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.Qt import *
-from OutputLogick import saveTocsv
 import Logick
 lister =[]
 layout = QHBoxLayout()
 columns =len(Logick.Auditories)
+inputFilename = ''
 
 class Table(QWidget):
     def __init__(self):
@@ -72,6 +72,7 @@ class Table(QWidget):
                     weekDay+=1
                     if weekDay>6:
                         weekDay = 1
+                self.tableWidget.cellWidget(g,i).setdateweekday()
 
            
             
@@ -159,7 +160,6 @@ class Table(QWidget):
         for i in range(2,columns):
             for g in range(1,43):
                 cel =self.tableWidget.cellWidget(g,i).real()
-             
                 if cel.lesson!='':
                     lister.append(cel)
 
@@ -249,10 +249,15 @@ class Table(QWidget):
 
                     if widget.cellWidget(g,i).staticData.auditory == l.audit.replace('- ', '-') and widget.cellWidget(g,i).staticData.lessonPlace == l.num and  widget.cellWidget(g,i).staticData.weekday ==  l.weak_day:
                         widget.cellWidget(g,i).helptoimport(teacher=l.teather,group=l.group,lesson=l.dis)
+                        
                     #print(widget.cellWidget(g,i).staticData.auditory,l.audit.replace('- ', '-'))
 
-                        
-
+                 
+#    def initFileDialog(self):
+#        filedia=QFileDialog
+#        filename= filedia.getOpenFileName(self,'open',filter='exel files (*.csv)')
+#        return filename[0]   
+        
 
 
 
