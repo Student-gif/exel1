@@ -12,7 +12,7 @@ class lessonData():
     lesson:str = ""
     week: int = -1
     weekday: int = -1
-    teacherId:int = -1
+    teacherId:int = 0
     lessonPlace:int = 0
     auditory:int = 0
     weekdate:date= date.today()

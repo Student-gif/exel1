@@ -1,12 +1,13 @@
+import datetime
 import csv
 import json
 from random import random
 from datemodul import weeknum
 def saveTocsv(lister):
-    filename = str(random())+'.csv'
+    filename = 'output'+datetime.date.today().__str__()+'.csv'
     csv.register_dialect('my_dialect', delimiter=',', lineterminator="\r")
 
-    with open(filename, mode="w", encoding='utf-8') as w_file:
+    with open(filename, mode="w", encoding='utf-8-sig') as w_file:
     
         file_writer = csv.writer(w_file, 'my_dialect')
     
@@ -15,8 +16,22 @@ def saveTocsv(lister):
         
         
         for i in range(len(lister)):
+            lister[i].lesson = lister[i].lesson.replace(',',"")
+            lister[i].lesson = lister[i].lesson.replace(',',"")
+            
+            if ('/' in lister[i].group):
+                h=lister[i].group.split("/")
+                lister[i].group = h[0].replace('/',"")
+                secondsubgroup = h[1].replace('/',"")
+                if('/' in lister[i].lesson):
+                    l = lister[i].lesson.split("/")[1]
+                    lister[i].lesson = lister[i].lesson.split("/")[0]
+                else:
+                    l = lister[i].lesson
+                newDataforCsv = [secondsubgroup,0,lister[i].weekday,lister[i].lessonPlace,lister[i].auditory,weeknum,0,lister[i].teacher,15,l,"л.",lister[i].weekdate,15,lister[i].teacherId,'По теме занятия',"","","","","","",""]
+                file_writer.writerow(newDataforCsv)
+            if ('/' in lister[i].lesson):
+                lister[i].lesson = lister[i].lesson.replace('/',"") 
+            
             newDataforCsv = [lister[i].group,0,lister[i].weekday,lister[i].lessonPlace,lister[i].auditory,weeknum,0,lister[i].teacher,15,lister[i].lesson,"л.",lister[i].weekdate,15,lister[i].teacherId,'По теме занятия',"","","","","","",""]
             file_writer.writerow(newDataforCsv)
-
-            
-            

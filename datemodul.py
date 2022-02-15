@@ -1,4 +1,5 @@
 import datetime
+
 weeknum = {
 1-4:1,
 6-11:2,
@@ -218,7 +219,7 @@ march = {
 30:31,
 31:31,
 }
-toodayday = 0
+
 
 
 
