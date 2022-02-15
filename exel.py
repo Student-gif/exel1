@@ -1,4 +1,3 @@
-import datetime
 from Converter import lessons as les
 from tkinter import Button
 import win32clipboard
