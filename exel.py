@@ -38,7 +38,7 @@ class Table(QWidget):
         self.tableWidget.setColumnWidth(0,40)
         self.tableWidget.setSpan(0,0,1,2)
         #кнопка
-        btn = QPushButton("Some button")
+        btn = QPushButton("Сохранить")
         self.tableWidget.setCellWidget(0, 0, btn)
         btn.clicked.connect(self.giveData)
         
@@ -101,7 +101,7 @@ class Table(QWidget):
         ##
         ## меню бар для импорта
         menu_bar = QMenuBar()
-        menu_file = menu_bar.addMenu('File')
+        menu_file = menu_bar.addMenu('Import')
         action_exit = menu_file.addAction('взять csv')
         action_exit.triggered.connect(self.importxl)
         layout.setMenuBar(menu_bar)
