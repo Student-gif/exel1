@@ -1,4 +1,4 @@
-from calendar import c
+
 import csv
 import datetime
 import math
@@ -34,7 +34,7 @@ class lesson():
             "dis": self.dis,
             "num": self.num
         }
-with open('input.csv', encoding='utf-8') as f:
+with open("input.csv", encoding='utf-8') as f:
     reader = csv.reader(f, delimiter=';')
     data = []
     for i, row in enumerate(reader):

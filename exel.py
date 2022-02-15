@@ -1,4 +1,4 @@
-from Converter import lessons as les
+import Converter
 from tkinter import Button
 import win32clipboard
 from OutputLogick import saveTocsv
@@ -12,7 +12,7 @@ import Logick
 lister =[]
 layout = QHBoxLayout()
 columns =len(Logick.Auditories)
-inputFilename = ''
+global inputFilename
 
 class Table(QWidget):
     def __init__(self):
@@ -40,6 +40,7 @@ class Table(QWidget):
         btn = QPushButton("Сохранить")
         self.tableWidget.setCellWidget(0, 0, btn)
         btn.clicked.connect(self.giveData)
+        btn.clicked.connect(self.initFileDialog)
         
         
         
@@ -101,8 +102,13 @@ class Table(QWidget):
         ##
         ## меню бар для импорта
         menu_bar = QMenuBar()
-        menu_file = menu_bar.addMenu('Import')
+        menu_file = menu_bar.addMenu('menu')
         action_exit = menu_file.addAction('взять csv')
+        action_change = menu_file.addAction('неделю назад')
+        action_changeNext = menu_file.addAction('неделю вперед')
+
+
+
         action_exit.triggered.connect(self.importxl)
         layout.setMenuBar(menu_bar)
         ##/////////////
@@ -242,7 +248,7 @@ class Table(QWidget):
     
     def importxl(self):
         widget= self.tableWidget
-        for l in les:
+        for l in Converter.lessons:
             for i in range(2,columns):
                 for g in range(1,43):
 
@@ -252,13 +258,14 @@ class Table(QWidget):
                     #print(widget.cellWidget(g,i).staticData.auditory,l.audit.replace('- ', '-'))
 
                  
-#    def initFileDialog(self):
-#        filedia=QFileDialog
-#        filename= filedia.getOpenFileName(self,'open',filter='exel files (*.csv)')
-#        return filename[0]   
-        
-
-
+   # def initFileDialog(self):
+   #    filedia=QFileDialog
+   #    filename= filedia.getOpenFileName(self,'open',filter='exel files (*.csv)')
+   #    inputFilename = filename
+    #    return filename[0]   
+    #    
+#
+#
 
 
 
