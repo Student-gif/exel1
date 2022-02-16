@@ -35,15 +35,7 @@ class Table(QWidget):
         # отрисовка окна индикации
         self.tableWidget.setColumnWidth(1,20)
         self.tableWidget.setColumnWidth(0,40)
-        self.tableWidget.setSpan(0,0,1,2)
-        #кнопка
-        btn = QPushButton("Сохранить")
-        self.tableWidget.setCellWidget(0, 0, btn)
-        btn.clicked.connect(self.giveData)
-    
-        
-        
-        
+        self.tableWidget.setSpan(0,0,1,2)     
         thing1 = 1  
         # конфигурация колон таблицы
         weekdays = ['п\nо\nн\nе\nд\nе\nл\nь\nн\nи\nк','в\nт\nо\nр\nн\nи\nк','с\nр\nе\nд\nа','ч\nе\nт\nв\nе\nр\nг','п\nя\nт\nн\nи\nц\nа','С\nу\nб\nб\nо\nт\nа']        
@@ -73,7 +65,7 @@ class Table(QWidget):
                     if weekDay>6:
                         weekDay = 1
                 self.tableWidget.cellWidget(g,i).setdateweekday()
-
+        
            
             
         #Конфигурации столбца с занятиями 
@@ -83,7 +75,7 @@ class Table(QWidget):
                 self.tableWidget.item(i+j-1,1).setText(str(j+1))
                 self.tableWidget.item(i+j-1,1).setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
                 self.tableWidget.item(i+j-1,1).setFlags(Qt.NoItemFlags|Qt.ItemIsEnabled)
-            
+               
         #распаковка данных Аудитории с бд  
         h=[x[0] for x in Logick.Auditories]
         #конфигурация виджетов аудиторий
@@ -104,18 +96,23 @@ class Table(QWidget):
         menu_bar = QMenuBar()
         menu_file = menu_bar.addMenu('menu')
         action_exit = menu_file.addAction('взять csv')
+        action_save = menu_file.addAction('Сохранить')
         action_change = menu_file.addAction('неделю назад')
         action_changeNext = menu_file.addAction('неделю вперед')
 
-
-
         action_exit.triggered.connect(self.importxl)
+        action_save.triggered.connect(self.giveData)
+        action_changeNext.triggered.connect(self.nextweek)
+        action_change.triggered.connect(self.previusweek)
+        
+
         layout.setMenuBar(menu_bar)
         ##/////////////
         ##
         self.setLayout(layout)
-        
-        
+        self.weeknumCheck()
+       
+    
                 
         
     def generateMenu(self, pos):
@@ -202,7 +199,7 @@ class Table(QWidget):
                             self.tableWidget.cellWidget(i,h-1).setAutoFillBackground(False)
                             
 
-                    
+      
     def checker(self,):
             faust = []
             
@@ -257,7 +254,12 @@ class Table(QWidget):
                         
                     #print(widget.cellWidget(g,i).staticData.auditory,l.audit.replace('- ', '-'))
 
-                 
+    def weeknumCheck(self):
+        self.tableWidget.setItem(0, 0, QTableWidgetItem())
+
+        self.tableWidget.item(0, 0).setText("номер недели "+self.tableWidget.cellWidget(6,6).staticData.week.__str__())      
+      
+        self.tableWidget.item(0, 0).setFlags(Qt.NoItemFlags|Qt.ItemIsEnabled)
    # def initFileDialog(self):
    #    filedia=QFileDialog
    #    filename= filedia.getOpenFileName(self,'open',filter='exel files (*.csv)')
@@ -267,9 +269,16 @@ class Table(QWidget):
 #
 #
 
-
-
-
+    def nextweek(self):
+          for i in range(2,columns):
+            for g in range(1,43):
+                self.tableWidget.cellWidget(g,i).updateDateWeekdate()
+                self.weeknumCheck()
+    def previusweek(self):
+          for i in range(2,columns):
+            for g in range(1,43):
+                self.tableWidget.cellWidget(g,i).degadeweekDate()
+                self.weeknumCheck()
 
                     
     

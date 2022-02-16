@@ -224,10 +224,6 @@ march = {
 
 
 daytime=datetime.date.today()
-
-day = datetime.date.weekday(datetime.date.today())
-startweek =daytime-datetime.timedelta(days=day)
-
 try:weeknum = febrary[daytime.day]
 except:
     weeknum = febrary[daytime.day+1] 

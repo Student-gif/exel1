@@ -4,13 +4,13 @@ from Logick import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-
+from datemodul import weeknum
     
 class lessonData():
     teacher: str = ""
     group:str = ""
     lesson:str = ""
-    week: int = -1
+    week: int = 0
     weekday: int = -1
     teacherId:int = 0
     lessonPlace:int = 0
@@ -32,7 +32,8 @@ class lessonData():
         self.group =ar[1]
         self.lesson=ar[1]
         return True
-    def updateWeekDate(self,dateweekday):
+    def updateWeekDate(self,dateweekday, newweek):
+        self.week = newweek
         self.weekdate=dateweekday
     def updateImportData(self,teacher,group,lesson):
         self.teacher=teacher
@@ -79,7 +80,7 @@ class QListensW(QWidget):
         self.lineEditLesson.editingFinished.connect(self.CustomEventEnter)
         self.lineEditTeacher.editingFinished.connect(self.CustomEventEnter)
         self.lineEditGroups.editingFinished.connect(self.CustomEventEnter)
-        self
+    
         
         
 
@@ -124,20 +125,33 @@ class QListensW(QWidget):
         if controlday >= startday:
             dateweekday=startweek + timedelta(controlday-1)
             dateweekday.strftime("%m.%d.%Y")
-            self.staticData.updateWeekDate(dateweekday)
+            self.staticData.updateWeekDate(dateweekday, weeknum)
         elif controlday <= startday:
             dateweekday=startweek + timedelta(controlday-1)
             dateweekday.strftime("%m.%d.%Y")
-            self.staticData.updateWeekDate(dateweekday)
+            self.staticData.updateWeekDate(dateweekday, weeknum)
             
         
         else:
             
             pass
         
-       
-    
+    def updateDateWeekdate(self):
+        nowdate=self.staticData.weekdate
+        nowweek = self.staticData.week
+        nextdate=nowdate+timedelta(7)
+        newweek = nowweek + 1
 
+        self.staticData.updateWeekDate(nextdate, newweek)
+        
+    def degadeweekDate(self):
+        nowdate=self.staticData.weekdate
+        nowweek = self.staticData.week
+        nextdate=nowdate+timedelta(7)
+        newweek = nowweek -1
+
+        self.staticData.updateWeekDate(nextdate, newweek)
+       
 
     def updateLess(self,lessonplace,weekDay,audit):
         
