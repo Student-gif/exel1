@@ -29,7 +29,7 @@ class lessonData():
 
         ar=data.split(';')
         self.teacher=ar[0]
-        self.group =ar[1]
+        self.group =ar[2]
         self.lesson=ar[1]
         return True
     def updateWeekDate(self,dateweekday, newweek):
