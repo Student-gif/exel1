@@ -24,10 +24,10 @@ class Table(QWidget):
         self.setWindowTitle('Ядро Расписание')
         
                
-        self.tableWidget = QTableWidget(43,columns)
+        self.tableWidget = QTableWidget(49,columns)
         
         #ширина ячеек
-        for i in range(43):
+        for i in range(49):
             self.tableWidget.setRowHeight(i,80)
         # Установить горизонтальный заголовок таблицы
         for i in range(2,columns):
@@ -40,28 +40,27 @@ class Table(QWidget):
         # конфигурация колон таблицы
         weekdays = ['п\nо\nн\nе\nд\nе\nл\nь\nн\nи\nк','в\nт\nо\nр\nн\nи\nк','с\nр\nе\nд\nа','ч\nе\nт\nв\nе\nр\nг','п\nя\nт\nн\nи\nц\nа','С\nу\nб\nб\nо\nт\nа']        
         for i in range(6):
-            self.tableWidget.setSpan(thing1,0,7,1)
+            self.tableWidget.setSpan(thing1,0,8,1)
             self.tableWidget.setItem(thing1, 0, QTableWidgetItem())
             self.tableWidget.item(thing1,0).setText(weekdays[i])
             self.tableWidget.item(thing1,0).setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
             self.tableWidget.item(thing1,0).setFont(QFont("Arial", 16))
             self.tableWidget.item(thing1, 0).setBackground(QColor(0,160,0))      
             self.tableWidget.item(thing1, 0).setFlags(Qt.NoItemFlags|Qt.ItemIsEnabled)
-            thing1 += 7
+            thing1 += 8
         #присвоение табличного виджета
         Logick.groupList
         lessonsPlace =0
         weekDay= 1
       
         for i in range(2,columns):
-            for g in range(1,43):
-                if lessonsPlace>6:
+            for g in range(1,49):
+                if lessonsPlace>7:
                     lessonsPlace=0
                 lessonsPlace+=1
                 self.tableWidget.setCellWidget(g,i,QListensW(lessonData()))
-                #Вернуть как было
-                self.tableWidget.cellWidget(g,i).updateLess(lessonsPlace+1,weekDay, Logick.groupList[i-2] )
-                if g%7==0:
+                self.tableWidget.cellWidget(g,i).updateLess(lessonsPlace,weekDay, Logick.groupList[i-2] )
+                if g%8==0:
                     weekDay+=1
                     if weekDay>6:
                         weekDay = 1
@@ -70,10 +69,10 @@ class Table(QWidget):
            
             
         #Конфигурации столбца с занятиями 
-        for i in range(2,43,7):
-            for j in range(0,7):              
+        for i in range(2,49,8):
+            for j in range(0,8):              
                 self.tableWidget.setItem(i+j-1, 1, QTableWidgetItem())
-                self.tableWidget.item(i+j-1,1).setText(str(j+2))
+                self.tableWidget.item(i+j-1,1).setText(str(j+1))
                 self.tableWidget.item(i+j-1,1).setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
                 self.tableWidget.item(i+j-1,1).setFlags(Qt.NoItemFlags|Qt.ItemIsEnabled)
                
@@ -160,9 +159,8 @@ class Table(QWidget):
     
     def giveData(self):
         self.checker()
-        lister.clear()
         for i in range(2,columns):
-            for g in range(1,43):
+            for g in range(1,49):
                 cel =self.tableWidget.cellWidget(g,i).real()
                 if cel.lesson!='':
                     lister.append(cel)
@@ -209,7 +207,7 @@ class Table(QWidget):
             start= 2
             first= self.tableWidget
             second = self.tableWidget
-            for y in range(1,43):
+            for y in range(1,49):
                 first.item(y, 1).setBackground(QColor(255,255,255))
                 for g in range(start,columns):
                     for h in range(start+g-1,columns): 
@@ -249,7 +247,7 @@ class Table(QWidget):
         widget= self.tableWidget
         for l in Converter.lessons:
             for i in range(2,columns):
-                for g in range(1,43):
+                for g in range(1,49):
 
                     if widget.cellWidget(g,i).staticData.auditory == l.audit.replace('- ', '-') and widget.cellWidget(g,i).staticData.lessonPlace == l.num and  widget.cellWidget(g,i).staticData.weekday ==  l.weak_day:
                         widget.cellWidget(g,i).helptoimport(teacher=l.teather,group=l.group,lesson=l.dis)
@@ -273,12 +271,12 @@ class Table(QWidget):
 
     def nextweek(self):
           for i in range(2,columns):
-            for g in range(1,43):
+            for g in range(1,49):
                 self.tableWidget.cellWidget(g,i).updateDateWeekdate()
                 self.weeknumCheck()
     def previusweek(self):
           for i in range(2,columns):
-            for g in range(1,43):
+            for g in range(1,49):
                 self.tableWidget.cellWidget(g,i).degadeweekDate()
                 self.weeknumCheck()
 

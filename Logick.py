@@ -1,5 +1,5 @@
 import sqlite3
-conn = sqlite3.connect("exl.db")
+conn = sqlite3.connect("exl1.db")
 cursor = conn.cursor()
 Groups = cursor.execute('SELECT * FROM GROUPS').fetchall()
 Auditories = cursor.execute('SELECT Auditories FROM AUDITORIES').fetchall()
