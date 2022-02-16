@@ -72,7 +72,7 @@ class Table(QWidget):
         for i in range(2,43,7):
             for j in range(0,7):              
                 self.tableWidget.setItem(i+j-1, 1, QTableWidgetItem())
-                self.tableWidget.item(i+j-1,1).setText(str(j+1))
+                self.tableWidget.item(i+j-1,1).setText(str(j+2))
                 self.tableWidget.item(i+j-1,1).setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
                 self.tableWidget.item(i+j-1,1).setFlags(Qt.NoItemFlags|Qt.ItemIsEnabled)
                
@@ -159,6 +159,7 @@ class Table(QWidget):
     
     def giveData(self):
         self.checker()
+        lister.clear()
         for i in range(2,columns):
             for g in range(1,43):
                 cel =self.tableWidget.cellWidget(g,i).real()
