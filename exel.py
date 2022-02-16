@@ -65,9 +65,7 @@ class Table(QWidget):
                     if weekDay>6:
                         weekDay = 1
                 self.tableWidget.cellWidget(g,i).setdateweekday()
-        
-           
-            
+      
         #Конфигурации столбца с занятиями 
         for i in range(2,49,8):
             for j in range(0,8):              
@@ -75,7 +73,9 @@ class Table(QWidget):
                 self.tableWidget.item(i+j-1,1).setText(str(j+1))
                 self.tableWidget.item(i+j-1,1).setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
                 self.tableWidget.item(i+j-1,1).setFlags(Qt.NoItemFlags|Qt.ItemIsEnabled)
-               
+                #конфигурация вертикального хедера
+                header_item = QTableWidgetItem(str(j+1))
+                self.tableWidget.setVerticalHeaderItem(i+j-1,header_item)
         #распаковка данных Аудитории с бд  
         h=[x[0] for x in Logick.Auditories]
         #конфигурация виджетов аудиторий
@@ -84,6 +84,14 @@ class Table(QWidget):
             self.tableWidget.item(0, i).setBackground(QColor(220,0,0)) 
             self.tableWidget.item(0, i).setText(h[i-2])
             self.tableWidget.item(0, i).setFlags(Qt.NoItemFlags|Qt.ItemIsEnabled)
+              #конфигурация горизонтального хедера таблицы
+            header_item = QTableWidgetItem(h[i-2])
+            self.tableWidget.setHorizontalHeaderItem(i,header_item)
+      
+       
+        
+           
+            
         
                  # Разрешить щелчок правой кнопкой мыши для создания меню
         self.tableWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
@@ -111,9 +119,10 @@ class Table(QWidget):
         ##
         self.setLayout(layout)
         self.weeknumCheck()
+        
        
     
-                
+            
         
     def generateMenu(self, pos):
     
@@ -158,12 +167,14 @@ class Table(QWidget):
     
     
     def giveData(self):
+        lister.clear()
         self.checker()
         for i in range(2,columns):
             for g in range(1,49):
                 cel =self.tableWidget.cellWidget(g,i).real()
                 if cel.lesson!='':
                     lister.append(cel)
+      
 
         saveTocsv(lister)
 #Анализ на совпадения   
