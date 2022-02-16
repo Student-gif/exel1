@@ -118,14 +118,16 @@ class Table(QWidget):
         layout.setMenuBar(menu_bar)
         ##/////////////
         ##
-        
+        btn = TwoButton()
         self.setLayout(layout)
         self.weeknumCheck()
-        self.tableWidget.setCellWidget(0,1,TwoButton())
-        self.btn = TwoButton()
+        self.tableWidget.setCellWidget(0,1,btn)
+       
     
-        self.h=self.btn.buttom1
-        self.h.clicked.connect(self.nextweek)
+        butup=btn.button1
+        butdow=btn.button2 
+        butup.clicked.connect(self.previusweek)
+        butdow.clicked.connect(self.nextweek)
             
         
     def generateMenu(self, pos):

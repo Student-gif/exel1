@@ -135,13 +135,14 @@ class QListensW(QWidget):
         else:
             
             pass
-        
+      #TODO поправить даты   
     def updateDateWeekdate(self):
         nowdate=self.staticData.weekdate
         nowweek = self.staticData.week
         nextdate=nowdate+timedelta(7)
         newweek = nowweek + 1
-
+        if newweek>= 48:
+            newweek=48
         self.staticData.updateWeekDate(nextdate, newweek)
         
     def degadeweekDate(self):
@@ -149,6 +150,8 @@ class QListensW(QWidget):
         nowweek = self.staticData.week
         nextdate=nowdate-timedelta(7)
         newweek = nowweek -1
+        if newweek<= 0:
+            newweek=0
 
         self.staticData.updateWeekDate(nextdate, newweek)
        
