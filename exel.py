@@ -124,7 +124,7 @@ class Table(QWidget):
         self.tableWidget.setCellWidget(0,1,TwoButton())
         self.btn = TwoButton()
     
-        self.h=self.btn.buttonm()
+        self.h=self.btn.buttom1
         self.h.clicked.connect(self.nextweek)
             
         
