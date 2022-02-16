@@ -3,6 +3,7 @@ from tkinter import Button
 import win32clipboard
 from OutputLogick import saveTocsv
 from QListenW import *
+from twobutton import TwoButton
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -22,10 +23,10 @@ class Table(QWidget):
     def initUI(self):
                  # Установить заголовок и начальный размер
         self.setWindowTitle('Ядро Расписание')
-        
+       
                
         self.tableWidget = QTableWidget(49,columns)
-        
+    
         #ширина ячеек
         for i in range(49):
             self.tableWidget.setRowHeight(i,80)
@@ -35,7 +36,7 @@ class Table(QWidget):
         # отрисовка окна индикации
         self.tableWidget.setColumnWidth(1,20)
         self.tableWidget.setColumnWidth(0,40)
-        self.tableWidget.setSpan(0,0,1,2)     
+           
         thing1 = 1  
         # конфигурация колон таблицы
         weekdays = ['п\nо\nн\nе\nд\nе\nл\nь\nн\nи\nк','в\nт\nо\nр\nн\nи\nк','с\nр\nе\nд\nа','ч\nе\nт\nв\nе\nр\nг','п\nя\nт\nн\nи\nц\nа','С\nу\nб\nб\nо\nт\nа']        
@@ -117,11 +118,14 @@ class Table(QWidget):
         layout.setMenuBar(menu_bar)
         ##/////////////
         ##
+        
         self.setLayout(layout)
         self.weeknumCheck()
-        
-       
+        self.tableWidget.setCellWidget(0,1,TwoButton())
+        self.btn = TwoButton()
     
+        self.h=self.btn.buttonm()
+        self.h.clicked.connect(self.nextweek)
             
         
     def generateMenu(self, pos):
