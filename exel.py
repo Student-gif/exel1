@@ -59,7 +59,8 @@ class Table(QWidget):
                     lessonsPlace=0
                 lessonsPlace+=1
                 self.tableWidget.setCellWidget(g,i,QListensW(lessonData()))
-                self.tableWidget.cellWidget(g,i).updateLess(lessonsPlace,weekDay, Logick.groupList[i-2] )
+                #Вернуть как было
+                self.tableWidget.cellWidget(g,i).updateLess(lessonsPlace+1,weekDay, Logick.groupList[i-2] )
                 if g%7==0:
                     weekDay+=1
                     if weekDay>6:
