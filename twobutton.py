@@ -17,5 +17,4 @@ class TwoButton(QWidget):
         lay.addWidget(self.button2)
         lay.addWidget(self.button1)
     
-    def retbut(self):
-        return self.button1
+  

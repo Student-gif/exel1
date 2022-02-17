@@ -13,7 +13,8 @@ import Logick
 lister =[]
 layout = QHBoxLayout()
 columns =len(Logick.Auditories)
-global inputFilename
+import filedio
+
 
 class Table(QWidget):
     def __init__(self):
@@ -118,17 +119,18 @@ class Table(QWidget):
         layout.setMenuBar(menu_bar)
         ##/////////////
         ##
-        btn = TwoButton()
+    
         self.setLayout(layout)
         self.weeknumCheck()
+        #кнопки
+        btn = TwoButton()
         self.tableWidget.setCellWidget(0,1,btn)
-       
-    
         butup=btn.button1
         butdow=btn.button2 
         butup.clicked.connect(self.previusweek)
         butdow.clicked.connect(self.nextweek)
-            
+        #диалог файловый
+      
         
     def generateMenu(self, pos):
     
@@ -259,17 +261,23 @@ class Table(QWidget):
                        
             if itWas==True:
                 self.logs_show(y,faust=faust) 
-    
+    #импорт exl 
     def importxl(self):
         widget= self.tableWidget
-        for l in Converter.lessons:
+        self.file = filedio.filemanger.init(filedio.filemanger)
+        self.lessons =  Converter.openFFFF( self.file)
+        print (self.file)
+        for l in self.lessons:
             for i in range(2,columns):
                 for g in range(1,49):
-
                     if widget.cellWidget(g,i).staticData.auditory == l.audit.replace('- ', '-') and widget.cellWidget(g,i).staticData.lessonPlace == l.num and  widget.cellWidget(g,i).staticData.weekday ==  l.weak_day:
                         widget.cellWidget(g,i).helptoimport(teacher=l.teather,group=l.group,lesson=l.dis)
-                        
+        
                     #print(widget.cellWidget(g,i).staticData.auditory,l.audit.replace('- ', '-'))
+#    def takesafe(self):
+
+
+
 
     def weeknumCheck(self):
         self.tableWidget.setItem(0, 0, QTableWidgetItem())
