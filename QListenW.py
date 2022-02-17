@@ -160,4 +160,8 @@ class QListensW(QWidget):
         
         self.staticData.notCopyData(lessonplace,weekDay,audit)
 
-  
+
+
+
+
+
