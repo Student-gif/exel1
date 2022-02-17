@@ -111,7 +111,9 @@ class Table(QWidget):
         action_save = menu_file.addAction('Сохранить')
         action_change = menu_file.addAction('неделю назад')
         action_changeNext = menu_file.addAction('неделю вперед')
-        
+        action_сlear = menu_file.addAction('очистить')
+
+        action_сlear.triggered.connect(self.clearField)
         action_takeSave.triggered.connect(self.sorted)
         action_exit.triggered.connect(self.importxl)
         action_save.triggered.connect(self.giveData)
@@ -140,7 +142,8 @@ class Table(QWidget):
         menu = QMenu()
         item1 = menu.addAction (u'копировать')
         item2 = menu.addAction (u'вставить')
-        item3 = menu.addAction (u'закрыть')
+        item3 = menu.addAction (u'очистить')
+
         action = menu.exec_(self.tableWidget.mapToGlobal(pos))
                          # Показать текст данных выбранной строки
         # копипаста 
@@ -158,23 +161,31 @@ class Table(QWidget):
 
         if action == item2:
             #self.v = self.tableWidget.setCellWidget(index[0].row(),index[0].column(),QListensW(self.index2.staticData))
-            win32clipboard.OpenClipboard()
-            data = win32clipboard.GetClipboardData()
-            win32clipboard.EmptyClipboard()
-            win32clipboard.CloseClipboard()
+            try:
+                win32clipboard.OpenClipboard()
+                data = win32clipboard.GetClipboardData()
+                win32clipboard.EmptyClipboard()
+                win32clipboard.CloseClipboard()
+           
             
-            w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
+                w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
             
-            if data != None:
-                w.update(data)
-            else:
-                data = ""
+                if data != None:
+                    w.update(data)
+                else:
+                    data = ""
+            except:
                 pass
+        
             
                      
         if action == item3:
-            w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
-            w.uploadUi()
+            try: 
+                w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
+                 
+                w.helptoimport("","","")
+            except:
+                pass
     
     
     def giveData(self):
@@ -269,22 +280,32 @@ class Table(QWidget):
         widget= self.tableWidget
         self.file = filedio.filemanger.init(filedio.filemanger)
         self.lessons =  Converter.openFFFF( self.file)
-        for l in self.lessons:
-            for i in range(2,columns):
-                for g in range(1,49):
-                    if widget.cellWidget(g,i).staticData.auditory == l.audit.replace('- ', '-') and widget.cellWidget(g,i).staticData.lessonPlace == l.num and  widget.cellWidget(g,i).staticData.weekday ==  l.weak_day:
-                        widget.cellWidget(g,i).helptoimport(teacher=l.teather,group=l.group,lesson=l.dis)
-        
+        self.clearField()
+        try:
+            for l in self.lessons:
+                for i in range(2,columns):
+                    for g in range(1,49):
+                        
+                        if widget.cellWidget(g,i).staticData.auditory == l.audit.replace('- ', '-') and widget.cellWidget(g,i).staticData.lessonPlace == l.num and  widget.cellWidget(g,i).staticData.weekday ==  l.weak_day:
+                            widget.cellWidget(g,i).helptoimport(teacher=l.teather,group=l.group,lesson=l.dis)
+        except:
+            pass
+
                     #print(widget.cellWidget(g,i).staticData.auditory,l.audit.replace('- ', '-'))
     def sorted(self):
         widget= self.tableWidget
         self.file = filedio.filemanger.init(filedio.filemanger)
-        self.needData = savecsvGohome.saveCsv(self.file)
-        for n in self.needData: 
-            for i in range(2,columns):
-                for g in range(1,49):
-                    if widget.cellWidget(g,i).staticData.auditory == n[4] and widget.cellWidget(g,i).staticData.lessonPlace == int(n[3]) and  widget.cellWidget(g,i).staticData.weekday ==  int(n[2]):
-                        widget.cellWidget(g,i).helptoimport(teacher=n[7],group=n[0],lesson=n[9])
+        self.clearField()
+        try:
+            self.needData = savecsvGohome.saveCsv(self.file)
+            for n in self.needData: 
+                 for i in range(2,columns):
+                     for g in range(1,49):
+                         if widget.cellWidget(g,i).staticData.auditory == n[4] and widget.cellWidget(g,i).staticData.lessonPlace == int(n[3]) and  widget.cellWidget(g,i).staticData.weekday ==  int(n[2]):
+                             widget.cellWidget(g,i).helptoimport(teacher=n[7],group=n[0],lesson=n[9])
+        except:
+            pass
+        
 #    def takesafe(self):
 
 
@@ -315,7 +336,10 @@ class Table(QWidget):
             for g in range(1,49):
                 self.tableWidget.cellWidget(g,i).degadeweekDate()
                 self.weeknumCheck()
-
+    def clearField(self):
+        for i in range(2,columns):
+            for g in range(1,49):
+                self.tableWidget.cellWidget(g,i).helptoimport("","","")
                     
     
 app = QApplication(sys.argv)

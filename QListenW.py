@@ -139,7 +139,7 @@ class QListensW(QWidget):
         else:
             
             pass
-      #TODO поправить даты   
+      #TODO поправить даты  !!!!! 
     def updateDateWeekdate(self):
         nowdate=self.staticData.weekdate
         nowweek = self.staticData.week
