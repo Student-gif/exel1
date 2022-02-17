@@ -1,4 +1,5 @@
 import Converter
+import savecsvGohome
 from tkinter import Button
 import win32clipboard
 from OutputLogick import saveTocsv
@@ -28,15 +29,15 @@ class Table(QWidget):
                
         self.tableWidget = QTableWidget(49,columns)
     
-        #ширина ячеек
+        #высота ячеек
         for i in range(49):
-            self.tableWidget.setRowHeight(i,80)
+            self.tableWidget.setRowHeight(i,90)
         # Установить горизонтальный заголовок таблицы
         for i in range(2,columns):
-            self.tableWidget.setColumnWidth(i,120)
+            self.tableWidget.setColumnWidth(i,150)
         # отрисовка окна индикации
         self.tableWidget.setColumnWidth(1,20)
-        self.tableWidget.setColumnWidth(0,40)
+        self.tableWidget.setColumnWidth(0,20)
            
         thing1 = 1  
         # конфигурация колон таблицы
@@ -106,10 +107,12 @@ class Table(QWidget):
         menu_bar = QMenuBar()
         menu_file = menu_bar.addMenu('menu')
         action_exit = menu_file.addAction('взять csv')
+        action_takeSave = menu_file.addAction('взять сохранённый csv ')
         action_save = menu_file.addAction('Сохранить')
         action_change = menu_file.addAction('неделю назад')
         action_changeNext = menu_file.addAction('неделю вперед')
-
+        
+        action_takeSave.triggered.connect(self.sorted)
         action_exit.triggered.connect(self.importxl)
         action_save.triggered.connect(self.giveData)
         action_changeNext.triggered.connect(self.nextweek)
@@ -180,7 +183,7 @@ class Table(QWidget):
         for i in range(2,columns):
             for g in range(1,49):
                 cel =self.tableWidget.cellWidget(g,i).real()
-                if cel.lesson!='':
+                if cel.lesson!=''or cel.group !='':
                     lister.append(cel)
       
 
@@ -266,7 +269,6 @@ class Table(QWidget):
         widget= self.tableWidget
         self.file = filedio.filemanger.init(filedio.filemanger)
         self.lessons =  Converter.openFFFF( self.file)
-        print (self.file)
         for l in self.lessons:
             for i in range(2,columns):
                 for g in range(1,49):
@@ -274,6 +276,15 @@ class Table(QWidget):
                         widget.cellWidget(g,i).helptoimport(teacher=l.teather,group=l.group,lesson=l.dis)
         
                     #print(widget.cellWidget(g,i).staticData.auditory,l.audit.replace('- ', '-'))
+    def sorted(self):
+        widget= self.tableWidget
+        self.file = filedio.filemanger.init(filedio.filemanger)
+        self.needData = savecsvGohome.saveCsv(self.file)
+        for n in self.needData: 
+            for i in range(2,columns):
+                for g in range(1,49):
+                    if widget.cellWidget(g,i).staticData.auditory == n[4] and widget.cellWidget(g,i).staticData.lessonPlace == int(n[3]) and  widget.cellWidget(g,i).staticData.weekday ==  int(n[2]):
+                        widget.cellWidget(g,i).helptoimport(teacher=n[7],group=n[0],lesson=n[9])
 #    def takesafe(self):
 
 

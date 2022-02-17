@@ -59,9 +59,13 @@ class QListensW(QWidget):
 
         self.setLayout(lay)
         self.lineEditTeacher = QLineEdit()
-      
+        fixheigt = 25
         self.lineEditGroups = QLineEdit()
         self.lineEditLesson = QLineEdit()
+        self.lineEditGroups.setFixedHeight(fixheigt)
+        self.lineEditLesson.setFixedHeight(fixheigt)
+        self.lineEditTeacher.setFixedHeight(fixheigt)
+        
                   
         completerTeacher = QCompleter([s[0].__str__() for s in Prepods], self.lineEditTeacher)
         completerGroup = QCompleter([s[0].__str__() for s in Groups], self.lineEditGroups)
