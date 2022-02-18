@@ -11,10 +11,18 @@ class FileDiolog(QWidget):
             self.filedio=QFileDialog()
             super(FileDiolog, self).__init__(*args, **kwargs)
             self.filedioObj = self.filedio
+
             
 class filemanger():
     fild = None
     def init(self):  
         self.fild = FileDiolog()
+       
         return self.fild.filedioObj.getOpenFileName(filter='exel files (*.csv)')[0]
 
+class SaveFileManager():
+
+    fild = None
+    def init(self):  
+        self.fild = FileDiolog()
+        return  self.fild.filedioObj.getSaveFileName(filter='exel files (*.csv)')[0]

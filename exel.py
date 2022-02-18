@@ -186,19 +186,28 @@ class Table(QWidget):
                 w.helptoimport("","","")
             except:
                 pass
-    
+    #сохраняет данные
     
     def giveData(self):
-        lister.clear()
-        self.checker()
-        for i in range(2,columns):
-            for g in range(1,49):
-                cel =self.tableWidget.cellWidget(g,i).real()
-                if cel.lesson!=''or cel.group !='':
-                    lister.append(cel)
-      
+        self.cleardb()
+        try:
+           
+            self.file = filedio.SaveFileManager.init(filedio.SaveFileManager)
+            lister.clear()
+            #TODO сделать предложение автоисправления
+            self.checker()
 
-        saveTocsv(lister)
+            for i in range(2,columns):
+                for g in range(1,49):
+                    cel =self.tableWidget.cellWidget(g,i).real()
+                    if cel.lesson!=''or cel.group !='':
+                        lister.append(cel)
+
+            
+            saveTocsv(lister,self.file)
+        except:
+            pass
+        
 #Анализ на совпадения   
    
    
@@ -277,11 +286,11 @@ class Table(QWidget):
                 self.logs_show(y,faust=faust) 
     #импорт exl 
     def importxl(self):
-        widget= self.tableWidget
-        self.file = filedio.filemanger.init(filedio.filemanger)
-        self.lessons =  Converter.openFFFF( self.file)
-        self.clearField()
         try:
+            widget= self.tableWidget
+            self.file = filedio.filemanger.init(filedio.filemanger)
+            self.lessons =  Converter.openFFFF( self.file)
+            self.clearField()
             for l in self.lessons:
                 for i in range(2,columns):
                     for g in range(1,49):
@@ -294,10 +303,10 @@ class Table(QWidget):
                     #print(widget.cellWidget(g,i).staticData.auditory,l.audit.replace('- ', '-'))
     def sorted(self):
         widget= self.tableWidget
-        self.file = filedio.filemanger.init(filedio.filemanger)
-        self.clearField()
         try:
+            self.file = filedio.filemanger.init(filedio.filemanger)
             self.needData = savecsvGohome.saveCsv(self.file)
+            self.clearField()
             for n in self.needData: 
                  for i in range(2,columns):
                      for g in range(1,49):
@@ -317,14 +326,6 @@ class Table(QWidget):
         self.tableWidget.item(0, 0).setText("номер недели "+self.tableWidget.cellWidget(6,6).staticData.week.__str__())      
       
         self.tableWidget.item(0, 0).setFlags(Qt.NoItemFlags|Qt.ItemIsEnabled)
-   # def initFileDialog(self):
-   #    filedia=QFileDialog
-   #    filename= filedia.getOpenFileName(self,'open',filter='exel files (*.csv)')
-   #    inputFilename = filename
-    #    return filename[0]   
-    #    
-#
-#
 
     def nextweek(self):
           for i in range(2,columns):
@@ -340,8 +341,20 @@ class Table(QWidget):
         for i in range(2,columns):
             for g in range(1,49):
                 self.tableWidget.cellWidget(g,i).helptoimport("","","")
-                    
-    
+#TODO открытие последнего сохранённого файла через работу с бд      
+    def databaseCash(self,lister):
+        conn = sqlite3.connect("cash.db")
+        cursor = conn.cursor()
+        for i in range(len(lister)):
+            cursor.execute('INSERT INTO cash VALUES(?,?,?,?,?,?,?,?)',(lister[i].group.__str__(),lister[i].lesson.__str__(),lister[i].weekday.__str__(),lister[i].teacherId.__str__(),lister[i].teacher.__str__(),lister[i].weekdate.__str__(),lister[i].auditory.__str__(),lister[i].lessonPlace.__str__()))
+        conn.commit()
+            
+    def cleardb(self):
+        conn = sqlite3.connect("cash.db")
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM cash')
+        conn.commit()
+
 app = QApplication(sys.argv)
 example = Table()
 example.show()

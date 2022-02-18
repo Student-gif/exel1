@@ -3,8 +3,9 @@ import csv
 import json
 from random import random
 from datemodul import weeknum
-def saveTocsv(lister):
-    filename = 'output'+datetime.date.today().__str__()+'.csv'
+def saveTocsv(lister,file):
+    filename = file
+    # 'output'+datetime.date.today().__str__()+'.csv'
     csv.register_dialect('my_dialect', delimiter=',', lineterminator="\r")
 
     with open(filename, mode="w", encoding='utf-8-sig') as w_file:
