@@ -7,5 +7,5 @@ def saveCsv(file):
             for i, row in enumerate(reader):
                 if i>=1:
                     data.append(row)
-            print(data)
+            
     return data

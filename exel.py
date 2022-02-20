@@ -90,7 +90,8 @@ class Table(QWidget):
               #конфигурация горизонтального хедера таблицы
             header_item = QTableWidgetItem(h[i-2])
             self.tableWidget.setHorizontalHeaderItem(i,header_item)
-      
+        #проверка последних данных
+        self.takeDatafromcashdb()
        
         
            
@@ -117,7 +118,7 @@ class Table(QWidget):
         action_takeSave.triggered.connect(self.sorted)
         action_exit.triggered.connect(self.importxl)
         action_save.triggered.connect(self.giveData)
-        action_changeNext.triggered.connect(self.nextweek)
+        action_changeNext.triggered.connect(self.takeDatafromcashdb)
         action_change.triggered.connect(self.previusweek)
         
 
@@ -135,7 +136,7 @@ class Table(QWidget):
         butup.clicked.connect(self.previusweek)
         butdow.clicked.connect(self.nextweek)
         #диалог файловый
-      
+
         
     def generateMenu(self, pos):
     
@@ -189,11 +190,13 @@ class Table(QWidget):
     #сохраняет данные
     
     def giveData(self):
-        self.cleardb()
-        try:
+        
+            self.cleardb()
+       
            
             self.file = filedio.SaveFileManager.init(filedio.SaveFileManager)
             lister.clear()
+            self.databaseCash(lister)
             #TODO сделать предложение автоисправления
             self.checker()
 
@@ -203,10 +206,10 @@ class Table(QWidget):
                     if cel.lesson!=''or cel.group !='':
                         lister.append(cel)
 
-            
+            self.databaseCash(lister)
             saveTocsv(lister,self.file)
-        except:
-            pass
+       
+        
         
 #Анализ на совпадения   
    
@@ -284,34 +287,34 @@ class Table(QWidget):
                        
             if itWas==True:
                 self.logs_show(y,faust=faust) 
+    #написать отдельную функцию поиска
+    #функция поиска принимает стандартные значения 
+    def search(self,audit,num,weakday,teacher,group,dis):
+        widget= self.tableWidget
+        for i in range(2,columns):
+            for g in range(1,49):
+                if widget.cellWidget(g,i).staticData.auditory == audit.replace('- ', '-') and widget.cellWidget(g,i).staticData.lessonPlace == num and  widget.cellWidget(g,i).staticData.weekday ==  weakday:
+                    widget.cellWidget(g,i).helptoimport(teacher=teacher,group=group,lesson=dis)
     #импорт exl 
-    def importxl(self):
+    def importxl(self,):
         try:
             widget= self.tableWidget
             self.file = filedio.filemanger.init(filedio.filemanger)
             self.lessons =  Converter.openFFFF( self.file)
             self.clearField()
             for l in self.lessons:
-                for i in range(2,columns):
-                    for g in range(1,49):
-                        
-                        if widget.cellWidget(g,i).staticData.auditory == l.audit.replace('- ', '-') and widget.cellWidget(g,i).staticData.lessonPlace == l.num and  widget.cellWidget(g,i).staticData.weekday ==  l.weak_day:
-                            widget.cellWidget(g,i).helptoimport(teacher=l.teather,group=l.group,lesson=l.dis)
+                self.search(l.audit,l.num,l.weak_day,l.teather,l.group,l.dis)
         except:
             pass
 
                     #print(widget.cellWidget(g,i).staticData.auditory,l.audit.replace('- ', '-'))
     def sorted(self):
-        widget= self.tableWidget
         try:
             self.file = filedio.filemanger.init(filedio.filemanger)
             self.needData = savecsvGohome.saveCsv(self.file)
             self.clearField()
             for n in self.needData: 
-                 for i in range(2,columns):
-                     for g in range(1,49):
-                         if widget.cellWidget(g,i).staticData.auditory == n[4] and widget.cellWidget(g,i).staticData.lessonPlace == int(n[3]) and  widget.cellWidget(g,i).staticData.weekday ==  int(n[2]):
-                             widget.cellWidget(g,i).helptoimport(teacher=n[7],group=n[0],lesson=n[9])
+                self.search(n[4],int(n[3]),int(n[2]),n[7],n[0],n[9])
         except:
             pass
         
@@ -353,6 +356,15 @@ class Table(QWidget):
         conn = sqlite3.connect("cash.db")
         cursor = conn.cursor()
         cursor.execute('DELETE FROM cash')
+        conn.commit()
+
+    def takeDatafromcashdb(self):
+        conn = sqlite3.connect("cash.db")
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM cash')
+        datalist = cursor.fetchall()
+        for d in datalist:
+            self.search(d[6],int(d[2]),int(d[7]),d[4],d[0],d[1])
         conn.commit()
 
 app = QApplication(sys.argv)
