@@ -190,15 +190,14 @@ class Table(QWidget):
     #сохраняет данные
     
     def giveData(self):
-        
+         #TODO сделать предложение автоисправления
+        self.checker()
+        try:  
             self.cleardb()
-       
-           
             self.file = filedio.SaveFileManager.init(filedio.SaveFileManager)
             lister.clear()
             self.databaseCash(lister)
-            #TODO сделать предложение автоисправления
-            self.checker()
+           
 
             for i in range(2,columns):
                 for g in range(1,49):
@@ -208,6 +207,8 @@ class Table(QWidget):
 
             self.databaseCash(lister)
             saveTocsv(lister,self.file)
+        except:
+            pass
        
         
         
@@ -227,7 +228,7 @@ class Table(QWidget):
         cname = 'QTextEdit'
         msg.setStyleSheet(
             """{} {} {{ background-color: white; color: black; font-family: Courier; }}""".format(pname, cname))
-        
+        #TODO добавить возможность исправления перед сохранением
         if msg.exec_()==QMessageBox.Ignore:
                 faustrow=[x[0] for x in faust]
                 faustcolumn= [x[1]for x in faust]
@@ -267,9 +268,9 @@ class Table(QWidget):
                                
                                 faust.append((y,g+1,h+1))
                                 first.cellWidget(y,g).setAutoFillBackground(True)
-                                first.cellWidget(y,g).setBackgroundRole(14)
+                                first.cellWidget(y,g).changeTextTeacher('red')
                                 second.cellWidget(y,h).setAutoFillBackground(True)
-                                second.cellWidget(y,h).setBackgroundRole(14)
+                                second.cellWidget(y,h).changeTextTeacher('red')
                                 first.item(y, 1).setBackground(QColor(220,0,0)) 
                                
                         
@@ -278,9 +279,9 @@ class Table(QWidget):
                                 itWas= True
                                 faust.append((y,g+1,h+1))
                                 first.cellWidget(y,g).setAutoFillBackground(True)
-                                first.cellWidget(y,g).setBackgroundRole(15)
+                                first.cellWidget(y,g).changeTextGroup('red')
                                 second.cellWidget(y,h).setAutoFillBackground(True)
-                                second.cellWidget(y,h).setBackgroundRole(15)
+                                second.cellWidget(y,g).changeTextGroup('red')
                                 first.item(y, 1).setBackground(QColor(220,0,0))
                               
                     
@@ -344,7 +345,8 @@ class Table(QWidget):
         for i in range(2,columns):
             for g in range(1,49):
                 self.tableWidget.cellWidget(g,i).helptoimport("","","")
-#TODO открытие последнего сохранённого файла через работу с бд      
+#TODO отслеживание действий пользователя
+ 
     def databaseCash(self,lister):
         conn = sqlite3.connect("cash.db")
         cursor = conn.cursor()

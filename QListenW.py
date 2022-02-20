@@ -165,6 +165,11 @@ class QListensW(QWidget):
     def updateLess(self,lessonplace,weekDay,audit):
         
         self.staticData.notCopyData(lessonplace,weekDay,audit)
+    def changeTextGroup(self,color):
+        self.lineEditGroups.setStyleSheet(f"color:{color};")
+    def changeTextTeacher(self,color):
+        self.lineEditTeacher.setStyleSheet(f"color:{color};")
+
 
 
 
