@@ -190,7 +190,7 @@ class Table(QWidget):
     #сохраняет данные
     
     def giveData(self):
-         #TODO сделать предложение автоисправления
+         #TODO сделать предложение автоисправления, для этого нужно создать привязку педогогов к предметам и группам
         self.checker()
         try:  
             self.cleardb()
@@ -213,7 +213,7 @@ class Table(QWidget):
         
         
 #Анализ на совпадения   
-   
+    #TODO придумать как обьеденить в один кортеж строки и стобцы
    
     def logs_show(self,y,faust):
         msg = QMessageBox()
@@ -236,12 +236,10 @@ class Table(QWidget):
                 for i in faustrow:
                     self.tableWidget.item(i,1).setBackground(QColor(255,255,255))
                     for g in faustcolumn:
-                        self.tableWidget.cellWidget(i,g-1).setBackgroundRole(9)
+                        self.tableWidget.cellWidget(i,g-1).changeTextGroup('white')
                         self.tableWidget.cellWidget(i,g-1).setAutoFillBackground(False)
                         for h in faustcolumn2:
-                           
-                            
-                            self.tableWidget.cellWidget(i,h-1).setBackgroundRole(9)
+                            self.tableWidget.cellWidget(i,h-1).changeTextGroup('white')
                             self.tableWidget.cellWidget(i,h-1).setAutoFillBackground(False)
                             
 
@@ -258,8 +256,10 @@ class Table(QWidget):
                 for g in range(start,columns):
                     for h in range(start+g-1,columns): 
                         if itWas==False:
-                            second.cellWidget(y,h).setBackgroundRole(9)
-                            first.cellWidget(y,g).setBackgroundRole(9)
+                            second.cellWidget(y,h).changeTextTeacher('white')
+                            first.cellWidget(y,g).changeTextTeacher('white')
+                            first.cellWidget(y,g).changeTextGroup('white')
+                            second.cellWidget(y,h).changeTextGroup('white')
                             first.cellWidget(y,g).setAutoFillBackground(False)
                         
                         
@@ -267,9 +267,7 @@ class Table(QWidget):
                                 itWas= True
                                
                                 faust.append((y,g+1,h+1))
-                                first.cellWidget(y,g).setAutoFillBackground(True)
                                 first.cellWidget(y,g).changeTextTeacher('red')
-                                second.cellWidget(y,h).setAutoFillBackground(True)
                                 second.cellWidget(y,h).changeTextTeacher('red')
                                 first.item(y, 1).setBackground(QColor(220,0,0)) 
                                
@@ -281,7 +279,7 @@ class Table(QWidget):
                                 first.cellWidget(y,g).setAutoFillBackground(True)
                                 first.cellWidget(y,g).changeTextGroup('red')
                                 second.cellWidget(y,h).setAutoFillBackground(True)
-                                second.cellWidget(y,g).changeTextGroup('red')
+                                second.cellWidget(y,h).changeTextGroup('red')
                                 first.item(y, 1).setBackground(QColor(220,0,0))
                               
                     
