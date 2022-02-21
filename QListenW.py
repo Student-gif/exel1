@@ -84,7 +84,6 @@ class QListensW(QWidget):
         self.lineEditLesson.editingFinished.connect(self.CustomEventEnter)
         self.lineEditTeacher.editingFinished.connect(self.CustomEventEnter)
         self.lineEditGroups.editingFinished.connect(self.CustomEventEnter)
-    
         
         
 
@@ -105,11 +104,13 @@ class QListensW(QWidget):
         self.lineEditGroups.setText(group)
         self.lineEditLesson.setText(lesson)
         self.staticData.updateImportData(teacher,group,lesson)
+
         try:
             self.staticData.updateTeacherId(IdTeachAddic[self.staticData.teacher])
         except:
             pass
     def CustomEventEnter(self):
+        stackdata=[self.staticData.auditory,self.staticData.lessonPlace,self.staticData.weekday,self.staticData.teacher,self.staticData.group,self.staticData.lesson]
         self.staticData.group = self.lineEditGroups.text()
         self.staticData.teacher = self.lineEditTeacher.text()
         self.staticData.lesson = self.lineEditLesson.text()
@@ -119,6 +120,7 @@ class QListensW(QWidget):
             self.staticData.group = self.lineEditGroups.text()
             self.staticData.lesson = self.lineEditLesson.text()
             self.staticData.teacher = self.lineEditTeacher.text()
+        return stackdata
     def setdateweekday(self):
         
         startday = date.weekday(date.today())
@@ -139,7 +141,7 @@ class QListensW(QWidget):
         else:
             
             pass
-      #TODO поправить даты  ?
+      #TODO поправить даты  ??
     def updateDateWeekdate(self):
         nowdate=self.staticData.weekdate
         nowweek = self.staticData.week
@@ -163,14 +165,13 @@ class QListensW(QWidget):
        
 
     def updateLess(self,lessonplace,weekDay,audit):
-        
         self.staticData.notCopyData(lessonplace,weekDay,audit)
     def changeTextGroup(self,color):
         self.lineEditGroups.setStyleSheet(f"background-color: {color};")
         
     def changeTextTeacher(self,color):
         self.lineEditGroups.setStyleSheet(f"background-color: {color};")
-
+        
 
 
 

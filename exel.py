@@ -15,20 +15,15 @@ lister =[]
 layout = QHBoxLayout()
 columns =len(Logick.Auditories)
 import filedio
-
-
+import stack
 class Table(QWidget):
     def __init__(self):
         super(Table, self).__init__()
         self.initUI()
-    
     def initUI(self):
                  # Установить заголовок и начальный размер
         self.setWindowTitle('Ядро Расписание')
-       
-               
         self.tableWidget = QTableWidget(49,columns)
-    
         #высота ячеек
         for i in range(49):
             self.tableWidget.setRowHeight(i,90)
@@ -38,7 +33,6 @@ class Table(QWidget):
         # отрисовка окна индикации
         self.tableWidget.setColumnWidth(1,20)
         self.tableWidget.setColumnWidth(0,20)
-           
         thing1 = 1  
         # конфигурация колон таблицы
         weekdays = ['п\nо\nн\nе\nд\nе\nл\nь\nн\nи\nк','в\nт\nо\nр\nн\nи\nк','с\nр\nе\nд\nа','ч\nе\nт\nв\nе\nр\nг','п\nя\nт\nн\nи\nц\nа','С\nу\nб\nб\nо\nт\nа']        
@@ -55,7 +49,6 @@ class Table(QWidget):
         Logick.groupList
         lessonsPlace =0
         weekDay= 1
-      
         for i in range(2,columns):
             for g in range(1,49):
                 if lessonsPlace>7:
@@ -68,7 +61,6 @@ class Table(QWidget):
                     if weekDay>6:
                         weekDay = 1
                 self.tableWidget.cellWidget(g,i).setdateweekday()
-      
         #Конфигурации столбца с занятиями 
         for i in range(2,49,8):
             for j in range(0,8):              
@@ -92,11 +84,6 @@ class Table(QWidget):
             self.tableWidget.setHorizontalHeaderItem(i,header_item)
         #проверка последних данных
         self.takeDatafromcashdb()
-       
-        
-           
-            
-        
                  # Разрешить щелчок правой кнопкой мыши для создания меню
         self.tableWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
                  # Привязать контекстное меню к функции слота generateMenu
@@ -113,19 +100,15 @@ class Table(QWidget):
         action_change = menu_file.addAction('неделю назад')
         action_changeNext = menu_file.addAction('неделю вперед')
         action_сlear = menu_file.addAction('очистить')
-
         action_сlear.triggered.connect(self.clearField)
         action_takeSave.triggered.connect(self.sorted)
         action_exit.triggered.connect(self.importxl)
         action_save.triggered.connect(self.giveData)
         action_changeNext.triggered.connect(self.takeDatafromcashdb)
         action_change.triggered.connect(self.previusweek)
-        
-
         layout.setMenuBar(menu_bar)
         ##/////////////
         ##
-    
         self.setLayout(layout)
         self.weeknumCheck()
         #кнопки
@@ -136,21 +119,16 @@ class Table(QWidget):
         butup.clicked.connect(self.previusweek)
         butdow.clicked.connect(self.nextweek)
         #диалог файловый
-
-        
     def generateMenu(self, pos):
-    
         menu = QMenu()
         item1 = menu.addAction (u'копировать')
         item2 = menu.addAction (u'вставить')
         item3 = menu.addAction (u'очистить')
-
         action = menu.exec_(self.tableWidget.mapToGlobal(pos))
                          # Показать текст данных выбранной строки
         # копипаста 
         index = self.tableWidget.selectedIndexes()
         if action == item1:
-            
             #self.indexData = self.tableWidget.cellWidget(index[0].row(),index[0].column())
             addToClipBoard = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData
             data = addToClipBoard.teacher+';'+addToClipBoard.lesson+';'+addToClipBoard.group
@@ -158,8 +136,6 @@ class Table(QWidget):
             win32clipboard.EmptyClipboard()
             win32clipboard.SetClipboardText(data)
             win32clipboard.CloseClipboard()
-
-
         if action == item2:
             #self.v = self.tableWidget.setCellWidget(index[0].row(),index[0].column(),QListensW(self.index2.staticData))
             try:
@@ -167,23 +143,16 @@ class Table(QWidget):
                 data = win32clipboard.GetClipboardData()
                 win32clipboard.EmptyClipboard()
                 win32clipboard.CloseClipboard()
-           
-            
                 w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
-            
                 if data != None:
                     w.update(data)
                 else:
                     data = ""
             except:
                 pass
-        
-            
-                     
         if action == item3:
             try: 
                 w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
-                 
                 w.helptoimport("","","")
             except:
                 pass
@@ -197,14 +166,11 @@ class Table(QWidget):
             self.file = filedio.SaveFileManager.init(filedio.SaveFileManager)
             lister.clear()
             self.databaseCash(lister)
-           
-
             for i in range(2,columns):
                 for g in range(1,49):
                     cel =self.tableWidget.cellWidget(g,i).real()
                     if cel.lesson!=''or cel.group !='':
                         lister.append(cel)
-
             self.databaseCash(lister)
             saveTocsv(lister,self.file)
         except:
@@ -214,7 +180,6 @@ class Table(QWidget):
         
 #Анализ на совпадения   
     #TODO придумать как обьеденить в один кортеж строки и стобцы
-   
     def logs_show(self,y,faust):
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Critical)
@@ -223,7 +188,6 @@ class Table(QWidget):
         msg.setStandardButtons(QMessageBox.Ok|QMessageBox.Ignore,)
         msg.setDetailedText("miror eror строка: {faustrow},\n столбцы{faustcolumn},".format(faustrow=[x[0] for x in faust],faustcolumn= [(x[1],x[2]) for x in faust]))
         msg.setTextInteractionFlags(Qt.TextSelectableByMouse)
-  
         pname = 'QMessageBox'
         cname = 'QTextEdit'
         msg.setStyleSheet(
@@ -241,12 +205,9 @@ class Table(QWidget):
                         for h in faustcolumn2:
                             self.tableWidget.cellWidget(i,h-1).changeTextGroup('white')
                             self.tableWidget.cellWidget(i,h-1).setAutoFillBackground(False)
-                            
-
-      
+                    
     def checker(self,):
             faust = []
-            
             itWas = False
             start= 2
             first= self.tableWidget
@@ -281,9 +242,6 @@ class Table(QWidget):
                                 second.cellWidget(y,h).setAutoFillBackground(True)
                                 second.cellWidget(y,h).changeTextGroup('red')
                                 first.item(y, 1).setBackground(QColor(220,0,0))
-                              
-                    
-                       
             if itWas==True:
                 self.logs_show(y,faust=faust) 
     #написать отдельную функцию поиска
@@ -297,7 +255,6 @@ class Table(QWidget):
     #импорт exl 
     def importxl(self,):
         try:
-            widget= self.tableWidget
             self.file = filedio.filemanger.init(filedio.filemanger)
             self.lessons =  Converter.openFFFF( self.file)
             self.clearField()
@@ -324,11 +281,8 @@ class Table(QWidget):
 
     def weeknumCheck(self):
         self.tableWidget.setItem(0, 0, QTableWidgetItem())
-
         self.tableWidget.item(0, 0).setText("номер недели "+self.tableWidget.cellWidget(6,6).staticData.week.__str__())      
-      
         self.tableWidget.item(0, 0).setFlags(Qt.NoItemFlags|Qt.ItemIsEnabled)
-
     def nextweek(self):
           for i in range(2,columns):
             for g in range(1,49):
@@ -343,8 +297,7 @@ class Table(QWidget):
         for i in range(2,columns):
             for g in range(1,49):
                 self.tableWidget.cellWidget(g,i).helptoimport("","","")
-#TODO отслеживание действий пользователя
- 
+ #TODO обьеденить функции??
     def databaseCash(self,lister):
         conn = sqlite3.connect("cash.db")
         cursor = conn.cursor()
@@ -366,7 +319,13 @@ class Table(QWidget):
         for d in datalist:
             self.search(d[6],int(d[2]),int(d[7]),d[4],d[0],d[1])
         conn.commit()
-
+    #TODO отслеживание действий пользователя
+    def Inbacstack(data):
+       stack.push(stack.push,data)
+    #TODO брать данные из стека 
+    def outbackstack(self):
+        stack.pop()
+        self.search()
 app = QApplication(sys.argv)
 example = Table()
 example.show()
