@@ -100,12 +100,14 @@ class Table(QWidget):
         action_change = menu_file.addAction('неделю назад')
         action_changeNext = menu_file.addAction('неделю вперед')
         action_сlear = menu_file.addAction('очистить')
+
         action_сlear.triggered.connect(self.clearField)
         action_takeSave.triggered.connect(self.sorted)
         action_exit.triggered.connect(self.importxl)
         action_save.triggered.connect(self.giveData)
         action_changeNext.triggered.connect(self.takeDatafromcashdb)
         action_change.triggered.connect(self.previusweek)
+
         layout.setMenuBar(menu_bar)
         ##/////////////
         ##
@@ -184,8 +186,10 @@ class Table(QWidget):
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Critical)
         msg.setText(' "Ошибка "')
+
         msg.setInformativeText('Совпали ячейки',)
         msg.setStandardButtons(QMessageBox.Ok|QMessageBox.Ignore,)
+
         msg.setDetailedText("miror eror строка: {faustrow},\n столбцы{faustcolumn},".format(faustrow=[x[0] for x in faust],faustcolumn= [(x[1],x[2]) for x in faust]))
         msg.setTextInteractionFlags(Qt.TextSelectableByMouse)
         pname = 'QMessageBox'
@@ -276,7 +280,8 @@ class Table(QWidget):
         
 #    def takesafe(self):
 
-
+    def savemodul(self):
+        self.giveData()
 
 
     def weeknumCheck(self):
@@ -294,8 +299,11 @@ class Table(QWidget):
                 self.tableWidget.cellWidget(g,i).degadeweekDate()
                 self.weeknumCheck()
     def clearField(self):
+        data=[]
+        widget = self.tableWidget
         for i in range(2,columns):
             for g in range(1,49):
+                data.append([widget.cellWidget(g,i).staticData.auditory,widget.cellWidget(g,i).staticData.lessonPlace,widget.cellWidget(g,i).staticData.weekday,widget.cellWidget(g,i).staticData.teacher,widget.cellWidget(g,i).staticData.group,widget.cellWidget(g,i).staticData.lesson])
                 self.tableWidget.cellWidget(g,i).helptoimport("","","")
  #TODO обьеденить функции??
     def databaseCash(self,lister):
