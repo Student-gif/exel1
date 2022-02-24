@@ -121,6 +121,7 @@ class Table(QWidget):
         butup.clicked.connect(self.previusweek)
         butdow.clicked.connect(self.nextweek)
         #диалог файловый
+    #htfkbpjdfnm работу с множеством ячеек
     def generateMenu(self, pos):
         menu = QMenu()
         item1 = menu.addAction (u'копировать')
@@ -335,6 +336,8 @@ class Table(QWidget):
     def outbackstack(self):
         stack.pop()
         self.search()
+
+
 app = QApplication(sys.argv)
 example = Table()
 example.show()

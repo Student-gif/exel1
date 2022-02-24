@@ -50,14 +50,14 @@ class lessonData():
 class QListensW(QWidget):
     
     staticData = lessonData
-
+   
+    
     def __init__(self,staticData, *args, **kwargs):
         self.staticData=staticData
         super(QListensW, self).__init__(*args, **kwargs)
         lay = QVBoxLayout(self)
 
-       
-
+        linestyle = "QLineEdit{border-radius: 10px;border-color: black;border-width:1px;border-style: outset;background:  #F2F2F2;}"
         self.setLayout(lay)
         self.lineEditTeacher = QLineEdit()
         fixheigt = 25
@@ -66,6 +66,9 @@ class QListensW(QWidget):
         self.lineEditGroups.setFixedHeight(fixheigt)
         self.lineEditLesson.setFixedHeight(fixheigt)
         self.lineEditTeacher.setFixedHeight(fixheigt)
+        self.lineEditGroups.setStyleSheet(linestyle)
+        self.lineEditLesson.setStyleSheet(linestyle)
+        self.lineEditTeacher.setStyleSheet(linestyle)
         
                   
         completerTeacher = QCompleter([s[0].__str__() for s in Prepods], self.lineEditTeacher)
@@ -158,8 +161,8 @@ class QListensW(QWidget):
         nowdate=self.staticData.weekdate
         nowweek = self.staticData.week
         newweek = nowweek -1
-        if newweek >0:
-            nextdate=nowdate-timedelta(7)
+        #if newweek >0:
+        nextdate=nowdate-timedelta(7)
         #else:
         #   pass
        #if newweek<= 0:
@@ -175,10 +178,4 @@ class QListensW(QWidget):
         
     def changeTextTeacher(self,color):
         self.lineEditGroups.setStyleSheet(f"background-color: {color};")
-        
-
-
-
-
-
-
+    
