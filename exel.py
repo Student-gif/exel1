@@ -209,7 +209,7 @@ class Table(QWidget):
                         self.tableWidget.cellWidget(i,g-1).changeTextGroup('white')
                         self.tableWidget.cellWidget(i,g-1).setAutoFillBackground(False)
                         for h in faustcolumn2:
-                            self.tableWidget.cellWidget(i,h-1).changeTextGroup('white')
+                            self.tableWidget.cellWidget(i,h-1).changeTextTeacher('white')
                             self.tableWidget.cellWidget(i,h-1).setAutoFillBackground(False)
                     
     def checker(self,):
