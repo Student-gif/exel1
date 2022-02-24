@@ -174,8 +174,9 @@ class QListensW(QWidget):
     def updateLess(self,lessonplace,weekDay,audit):
         self.staticData.notCopyData(lessonplace,weekDay,audit)
     def changeTextGroup(self,color):
-        self.lineEditGroups.setStyleSheet(f"background-color: {color};")
+        #self.lineEditGroups.setStyleSheet(f"background: {color};")
         
+        self.lineEditGroups.setStyleSheet(f"background: {color};border-radius: 10px;border-color: black;border-width:1px;border-style: outset;")
     def changeTextTeacher(self,color):
-        self.lineEditGroups.setStyleSheet(f"background-color: {color};")
+        self.lineEditTeacher.setStyleSheet(f"background: {color};border-radius: 10px;border-color: black;border-width:1px;border-style: outset;")
     

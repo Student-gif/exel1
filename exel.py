@@ -168,7 +168,7 @@ class Table(QWidget):
             self.cleardb()
             self.file = filedio.SaveFileManager.init(filedio.SaveFileManager)
             lister.clear()
-            self.databaseCash(lister)
+            
             for i in range(2,columns):
                 for g in range(1,49):
                     cel =self.tableWidget.cellWidget(g,i).real()
@@ -206,11 +206,12 @@ class Table(QWidget):
                 for i in faustrow:
                     self.tableWidget.item(i,1).setBackground(QColor(255,255,255))
                     for g in faustcolumn:
-                        self.tableWidget.cellWidget(i,g-1).changeTextGroup('white')
-                        self.tableWidget.cellWidget(i,g-1).setAutoFillBackground(False)
+                        self.tableWidget.cellWidget(i,g-1).changeTextTeacher('#F2F2F2')
+                        self.tableWidget.cellWidget(i,g-1).changeTextGroup('#F2F2F2')
                         for h in faustcolumn2:
-                            self.tableWidget.cellWidget(i,h-1).changeTextTeacher('white')
-                            self.tableWidget.cellWidget(i,h-1).setAutoFillBackground(False)
+                            self.tableWidget.cellWidget(i,h-1).changeTextTeacher('#F2F2F2')
+                            self.tableWidget.cellWidget(i,h-1).changeTextGroup('#F2F2F2')
+
                     
     def checker(self,):
             faust = []
@@ -223,10 +224,10 @@ class Table(QWidget):
                 for g in range(start,columns):
                     for h in range(start+g-1,columns): 
                         if itWas==False:
-                            second.cellWidget(y,h).changeTextTeacher('white')
-                            first.cellWidget(y,g).changeTextTeacher('white')
-                            first.cellWidget(y,g).changeTextGroup('white')
-                            second.cellWidget(y,h).changeTextGroup('white')
+                            second.cellWidget(y,h).changeTextTeacher('#F2F2F2')
+                            first.cellWidget(y,g).changeTextTeacher('#F2F2F2')
+                            first.cellWidget(y,g).changeTextGroup('#F2F2F2')
+                            second.cellWidget(y,h).changeTextGroup('#F2F2F2')
                             first.cellWidget(y,g).setAutoFillBackground(False)
                         
                         
@@ -243,9 +244,7 @@ class Table(QWidget):
                         if first.cellWidget(y,g).staticData.group==second.cellWidget(y,h).staticData.group and first.cellWidget(y,g).staticData.group !=''and g!=h:
                                 itWas= True
                                 faust.append((y,g+1,h+1))
-                                first.cellWidget(y,g).setAutoFillBackground(True)
                                 first.cellWidget(y,g).changeTextGroup('red')
-                                second.cellWidget(y,h).setAutoFillBackground(True)
                                 second.cellWidget(y,h).changeTextGroup('red')
                                 first.item(y, 1).setBackground(QColor(220,0,0))
             if itWas==True:
