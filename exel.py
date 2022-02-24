@@ -171,10 +171,11 @@ class Table(QWidget):
             for i in range(2,columns):
                 for g in range(1,49):
                     cel =self.tableWidget.cellWidget(g,i).real()
-                    if cel.lesson!=''or cel.group !='':
+                    if cel.lesson!='':
                         lister.append(cel)
             self.databaseCash(lister)
             saveTocsv(lister,self.file)
+            print(lister)
         except:
             pass
        

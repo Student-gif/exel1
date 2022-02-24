@@ -31,6 +31,7 @@ class lessonData():
         self.teacher=ar[0]
         self.group =ar[2]
         self.lesson=ar[1]
+        print(ar)
         return True
     def updateWeekDate(self,dateweekday, newweek):
         self.week = newweek
@@ -152,17 +153,17 @@ class QListensW(QWidget):
         if newweek>= 48:
             newweek=48
         self.staticData.updateWeekDate(nextdate, newweek)
-        
+     #TODO вернуть как было   
     def degadeweekDate(self):
         nowdate=self.staticData.weekdate
         nowweek = self.staticData.week
         newweek = nowweek -1
         if newweek >0:
             nextdate=nowdate-timedelta(7)
-        else:
-            pass
-        if newweek<= 0:
-            newweek=0
+        #else:
+        #   pass
+       #if newweek<= 0:
+           # newweek=0
 
         self.staticData.updateWeekDate(nextdate, newweek)
        
