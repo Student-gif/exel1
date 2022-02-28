@@ -106,7 +106,7 @@ class Table(QWidget):
         action_exit.triggered.connect(self.importxl)
         action_save.triggered.connect(self.giveData)
         action_changeNext.triggered.connect(self.takeDatafromcashdb)
-        action_change.triggered.connect(self.previusweek)
+        action_change.triggered.connect(self.outbackstack)
 
         layout.setMenuBar(menu_bar)
         ##/////////////
@@ -255,7 +255,8 @@ class Table(QWidget):
         widget= self.tableWidget
         for i in range(2,columns):
             for g in range(1,49):
-                if widget.cellWidget(g,i).staticData.auditory == audit.replace('- ', '-') and widget.cellWidget(g,i).staticData.lessonPlace == num and  widget.cellWidget(g,i).staticData.weekday ==  weakday:
+                
+                if widget.cellWidget(g,i).staticData.teacher!=None or '' and widget.cellWidget(g,i).staticData.auditory == audit.replace('- ', '-') and widget.cellWidget(g,i).staticData.lessonPlace == num and  widget.cellWidget(g,i).staticData.weekday ==  weakday:
                     widget.cellWidget(g,i).helptoimport(teacher=teacher,group=group,lesson=dis)
     #импорт exl 
     def importxl(self,):
@@ -306,6 +307,7 @@ class Table(QWidget):
             for g in range(1,49):
                 data.append([widget.cellWidget(g,i).staticData.auditory,widget.cellWidget(g,i).staticData.lessonPlace,widget.cellWidget(g,i).staticData.weekday,widget.cellWidget(g,i).staticData.teacher,widget.cellWidget(g,i).staticData.group,widget.cellWidget(g,i).staticData.lesson])
                 self.tableWidget.cellWidget(g,i).helptoimport("","","")
+        self.Inbacstack(data)
  #TODO обьеденить функции??
     def databaseCash(self,lister):
         conn = sqlite3.connect("cash.db")
@@ -329,13 +331,16 @@ class Table(QWidget):
             self.search(d[6],int(d[2]),int(d[7]),d[4],d[0],d[1])
         conn.commit()
     #TODO отслеживание действий пользователя
-    def Inbacstack(data):
-       stack.push(stack.push,data)
+    def Inbacstack(self,data):
+       stack.stack.push(data)
     #TODO брать данные из стека 
     def outbackstack(self):
-        stack.pop()
-        self.search()
-
+        rem = stack.stack.pop()
+        try:
+            for i in rem:
+                self.search(i[0],i[1],i[2],i[3],i[4],i[5])
+        except:
+            pass
 
 app = QApplication(sys.argv)
 example = Table()
