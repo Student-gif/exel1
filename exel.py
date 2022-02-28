@@ -97,15 +97,13 @@ class Table(QWidget):
         action_exit = menu_file.addAction('взять csv')
         action_takeSave = menu_file.addAction('взять сохранённый csv ')
         action_save = menu_file.addAction('Сохранить')
-        action_change = menu_file.addAction('неделю назад')
-        action_changeNext = menu_file.addAction('неделю вперед')
+        action_change = menu_file.addAction('назад')
         action_сlear = menu_file.addAction('очистить')
 
         action_сlear.triggered.connect(self.clearField)
         action_takeSave.triggered.connect(self.sorted)
         action_exit.triggered.connect(self.importxl)
         action_save.triggered.connect(self.giveData)
-        action_changeNext.triggered.connect(self.takeDatafromcashdb)
         action_change.triggered.connect(self.outbackstack)
 
         layout.setMenuBar(menu_bar)
@@ -255,8 +253,7 @@ class Table(QWidget):
         widget= self.tableWidget
         for i in range(2,columns):
             for g in range(1,49):
-                
-                if widget.cellWidget(g,i).staticData.teacher!=None or '' and widget.cellWidget(g,i).staticData.auditory == audit.replace('- ', '-') and widget.cellWidget(g,i).staticData.lessonPlace == num and  widget.cellWidget(g,i).staticData.weekday ==  weakday:
+                if  widget.cellWidget(g,i).staticData.auditory == audit.replace('- ', '-') and widget.cellWidget(g,i).staticData.lessonPlace == num and  widget.cellWidget(g,i).staticData.weekday ==  weakday and widget.cellWidget(g,i).staticData.teacher != None or '':
                     widget.cellWidget(g,i).helptoimport(teacher=teacher,group=group,lesson=dis)
     #импорт exl 
     def importxl(self,):
@@ -327,6 +324,7 @@ class Table(QWidget):
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM cash')
         datalist = cursor.fetchall()
+        print(datalist)
         for d in datalist:
             self.search(d[6],int(d[2]),int(d[7]),d[4],d[0],d[1])
         conn.commit()
