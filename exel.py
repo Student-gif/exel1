@@ -95,13 +95,15 @@ class Table(QWidget):
         action_exit = menu_file.addAction('взять csv')
         action_takeSave = menu_file.addAction('взять сохранённый csv ')
         action_save = menu_file.addAction('Сохранить')
+        action_saveHow = menu_file.addAction('Сохранить как')
         action_change = menu_file.addAction('назад')
         action_сlear = menu_file.addAction('очистить')
 
         action_сlear.triggered.connect(self.clearField)
         action_takeSave.triggered.connect(self.sorted)
         action_exit.triggered.connect(self.importxl)
-        action_save.triggered.connect(self.giveData)
+        action_saveHow.triggered.connect(self.giveData)
+        action_save.triggered.connect(self.justSave)
         action_change.triggered.connect(self.outbackstack)
 
         layout.setMenuBar(menu_bar)
@@ -128,33 +130,43 @@ class Table(QWidget):
 
         #диалог файловый
     def copyIt(self):
-        print('rr')
+        
+        cutlist = []
         index = self.tableWidget.selectedIndexes()
+        w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
         try:
-            addToClipBoard = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData
-            data = addToClipBoard.teacher+';'+addToClipBoard.lesson+';'+addToClipBoard.group
-            win32clipboard.OpenClipboard()
-            win32clipboard.EmptyClipboard()
-            win32clipboard.SetClipboardText(data)
-            win32clipboard.CloseClipboard()
+                #self.indexData = self.tableWidget.cellWidget(index[0].row(),index[0].column())
+                addToClipBoard = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData
+                data = addToClipBoard.teacher+';'+addToClipBoard.lesson+';'+addToClipBoard.group
+                win32clipboard.OpenClipboard()
+                win32clipboard.EmptyClipboard()
+                win32clipboard.SetClipboardText(data)
+                win32clipboard.CloseClipboard()
+                
         except:
             pass
         
     def paste(self):
-        print('rr')
         index = self.tableWidget.selectedIndexes()
+        cutlist = []
+       
+        
         try:
+            w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
+            cutlist.append([w.staticData.auditory,w.staticData.lessonPlace,w.staticData.weekday,w.staticData.teacher,w.staticData.group,w.staticData.lesson])
             win32clipboard.OpenClipboard()
             data = win32clipboard.GetClipboardData()
             win32clipboard.EmptyClipboard()
             win32clipboard.CloseClipboard()
-            w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
+            
             if data != None:
                 w.update(data)
+                
             else:
                 data = ""
         except:
             pass
+        self.Inbacstack(cutlist)
     #htfkbpjdfnm работу с множеством ячеек
     def generateMenu(self, pos):
         menu = QMenu()
@@ -167,33 +179,19 @@ class Table(QWidget):
         index = self.tableWidget.selectedIndexes()
         if action == item1:
             #self.indexData = self.tableWidget.cellWidget(index[0].row(),index[0].column())
-            addToClipBoard = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData
-            data = addToClipBoard.teacher+';'+addToClipBoard.lesson+';'+addToClipBoard.group
-            win32clipboard.OpenClipboard()
-            win32clipboard.EmptyClipboard()
-            win32clipboard.SetClipboardText(data)
-            win32clipboard.CloseClipboard()
+            self.copyIt()
         if action == item2:
             #self.v = self.tableWidget.setCellWidget(index[0].row(),index[0].column(),QListensW(self.index2.staticData))
-            try:
-                win32clipboard.OpenClipboard()
-                data = win32clipboard.GetClipboardData()
-                win32clipboard.EmptyClipboard()
-                win32clipboard.CloseClipboard()
-                w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
-                if data != None:
-                    w.update(data)
-                else:
-                    data = ""
-            except:
-                pass
+            self.paste()
         if action == item3:
+            data = []
             try: 
                 w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
-                
+                data.append([w.staticData.auditory,w.staticData.lessonPlace,w.staticData.weekday,w.staticData.teacher,w.staticData.group,w.staticData.lesson])
                 w.helptoimport("","","")
             except:
                 pass
+            self.Inbacstack(data)
     #сохраняет данные
     
     def giveData(self):
@@ -209,9 +207,23 @@ class Table(QWidget):
                     cel =self.tableWidget.cellWidget(g,i).real()
                     if cel.lesson!='':
                         lister.append(cel)
-            self.databaseCash(lister)
             saveTocsv(lister,self.file)
 
+        except:
+            pass
+    def justSave(self):
+         #TODO сделать предложение автоисправления, для этого нужно создать привязку педогогов к предметам и группам
+        self.checker()
+        try:  
+            self.cleardb()
+            lister.clear()
+            
+            for i in range(2,columns):
+                for g in range(1,49):
+                    cel =self.tableWidget.cellWidget(g,i).real()
+                    if cel.lesson!='':
+                        lister.append(cel)
+            self.databaseCash(lister)
         except:
             pass
        
@@ -318,8 +330,6 @@ class Table(QWidget):
 
     def savemodul(self):
         self.giveData()
-
-
     def weeknumCheck(self):
         self.tableWidget.setItem(0, 0, QTableWidgetItem())
         self.tableWidget.item(0, 0).setText("номер недели "+self.tableWidget.cellWidget(6,6).staticData.week.__str__())      
@@ -371,7 +381,6 @@ class Table(QWidget):
     #TODO брать данные из стека 
     def outbackstack(self):
         rem = stack.pop()
-        print(rem)
         try:
             for i in rem:
                 self.search(i[0],i[1],i[2],i[3],i[4],i[5])

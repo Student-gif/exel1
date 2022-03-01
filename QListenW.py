@@ -32,7 +32,6 @@ class lessonData():
         self.teacher=ar[0]
         self.group =ar[2]
         self.lesson=ar[1]
-        print(ar)
         return True
     def updateWeekDate(self,dateweekday, newweek):
         self.week = newweek
@@ -90,7 +89,6 @@ class QListensW(QWidget):
         self.lineEditLesson.editingFinished.connect(self.CustomEventEnter)
         self.lineEditTeacher.editingFinished.connect(self.CustomEventEnter)
         self.lineEditGroups.editingFinished.connect(self.CustomEventEnter)
-        
         
        
 
@@ -190,5 +188,4 @@ class QListensW(QWidget):
     def inStack(self, data):
         #indata = [self.staticData.auditory,self.staticData.lessonPlace,self.staticData.weekday,self.staticData.teacher,self.staticData.group,self.staticData.lesson]
         stack.push([data])
-        print(stack.data())
     
