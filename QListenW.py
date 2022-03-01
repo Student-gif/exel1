@@ -1,11 +1,12 @@
 from calendar import weekday
+from cgitb import text
 from datetime import date, datetime, timedelta
 from Logick import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from datemodul import weeknum
-    
+from stack import stack  
 class lessonData():
     teacher: str = ""
     group:str = ""
@@ -42,7 +43,7 @@ class lessonData():
         self.lesson=lesson
         
     def __str__(self) -> str:
-        return f'{self.teacher.__str__()};{self.group.__str__()};{self.lesson.__str__()};{self.week.__str__()};{self.weekday.__str__()};{self.teacherId.__str__()};{self.lessonPlace.__str__()};{self.lessonPlace.__str__()};{self.auditory.__str__()};{self.weekdate.__str__}'
+        return f'{self.teacher.__str__()};{self.group.__str__()};{self.lesson.__str__()};{self.week.__str__()};{self.weekday.__str__()};{self.teacherId.__str__()};{self.lessonPlace.__str__()};{self.lessonPlace.__str__()};{self.auditory.__str__()};{self.weekdate}'
 
         
 
@@ -84,10 +85,18 @@ class QListensW(QWidget):
         lay.addWidget(self.lineEditTeacher)
         lay.addWidget(self.lineEditLesson)
         lay.addWidget(self.lineEditGroups)
-
+        #тригер на окончательный ввод текста
+        
         self.lineEditLesson.editingFinished.connect(self.CustomEventEnter)
         self.lineEditTeacher.editingFinished.connect(self.CustomEventEnter)
         self.lineEditGroups.editingFinished.connect(self.CustomEventEnter)
+        
+        
+       
+
+        #тригер на ввод текста
+      
+
         
         
 
@@ -118,7 +127,9 @@ class QListensW(QWidget):
         self.staticData.group = self.lineEditGroups.text()
         self.staticData.teacher = self.lineEditTeacher.text()
         self.staticData.lesson = self.lineEditLesson.text()
+        
         try:
+            self.inStack(stackdata)
             self.staticData.updateTeacherId(IdTeachAddic[self.staticData.teacher])
         except:
             self.staticData.group = self.lineEditGroups.text()
@@ -165,18 +176,19 @@ class QListensW(QWidget):
         nextdate=nowdate-timedelta(7)
         #else:
         #   pass
-       #if newweek<= 0:
-           # newweek=0
-
+        #if newweek<= 0:
+             # newweek=0
         self.staticData.updateWeekDate(nextdate, newweek)
        
 
     def updateLess(self,lessonplace,weekDay,audit):
         self.staticData.notCopyData(lessonplace,weekDay,audit)
     def changeTextGroup(self,color):
-        #self.lineEditGroups.setStyleSheet(f"background: {color};")
-        
         self.lineEditGroups.setStyleSheet(f"background: {color};border-radius: 10px;border-color: black;border-width:1px;border-style: outset;")
     def changeTextTeacher(self,color):
         self.lineEditTeacher.setStyleSheet(f"background: {color};border-radius: 10px;border-color: black;border-width:1px;border-style: outset;")
+    def inStack(self, data):
+        #indata = [self.staticData.auditory,self.staticData.lessonPlace,self.staticData.weekday,self.staticData.teacher,self.staticData.group,self.staticData.lesson]
+        stack.push([data])
+        print(stack.data())
     

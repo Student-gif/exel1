@@ -1,6 +1,5 @@
 import Converter
 import savecsvGohome
-from tkinter import Button
 import win32clipboard
 from OutputLogick import saveTocsv
 from QListenW import *
@@ -9,13 +8,12 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from PyQt5.Qt import *
 import Logick
 lister =[]
 layout = QHBoxLayout()
 columns =len(Logick.Auditories)
 import filedio
-import stack
+from QListenW import stack
 class Table(QWidget):
     def __init__(self):
         super(Table, self).__init__()
@@ -118,7 +116,45 @@ class Table(QWidget):
         butdow=btn.button2 
         butup.clicked.connect(self.previusweek)
         butdow.clicked.connect(self.nextweek)
+        # кнопочки
+        self.shortcut = QShortcut(QKeySequence("Ctrl+Z"), self)
+        self.shortcut.activated.connect(self.outbackstack)
+        self.shortcutSave = QShortcut(QKeySequence("Ctrl+S"), self)
+        self.shortcutSave.activated.connect(self.giveData)
+        self.shortcutSave = QShortcut(QKeySequence("Ctrl+C"), self)
+        self.shortcutSave.activated.connect(self.copyIt)
+        self.shortcutSave = QShortcut(QKeySequence("Ctrl+V"), self)
+        self.shortcutSave.activated.connect(self.paste)
+
         #диалог файловый
+    def copyIt(self):
+        print('rr')
+        index = self.tableWidget.selectedIndexes()
+        try:
+            addToClipBoard = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData
+            data = addToClipBoard.teacher+';'+addToClipBoard.lesson+';'+addToClipBoard.group
+            win32clipboard.OpenClipboard()
+            win32clipboard.EmptyClipboard()
+            win32clipboard.SetClipboardText(data)
+            win32clipboard.CloseClipboard()
+        except:
+            pass
+        
+    def paste(self):
+        print('rr')
+        index = self.tableWidget.selectedIndexes()
+        try:
+            win32clipboard.OpenClipboard()
+            data = win32clipboard.GetClipboardData()
+            win32clipboard.EmptyClipboard()
+            win32clipboard.CloseClipboard()
+            w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
+            if data != None:
+                w.update(data)
+            else:
+                data = ""
+        except:
+            pass
     #htfkbpjdfnm работу с множеством ячеек
     def generateMenu(self, pos):
         menu = QMenu()
@@ -154,6 +190,7 @@ class Table(QWidget):
         if action == item3:
             try: 
                 w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
+                
                 w.helptoimport("","","")
             except:
                 pass
@@ -174,7 +211,7 @@ class Table(QWidget):
                         lister.append(cel)
             self.databaseCash(lister)
             saveTocsv(lister,self.file)
-            print(lister)
+
         except:
             pass
        
@@ -324,21 +361,24 @@ class Table(QWidget):
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM cash')
         datalist = cursor.fetchall()
-        print(datalist)
+
         for d in datalist:
             self.search(d[6],int(d[2]),int(d[7]),d[4],d[0],d[1])
         conn.commit()
     #TODO отслеживание действий пользователя
     def Inbacstack(self,data):
-       stack.stack.push(data)
+       stack.push(data)
     #TODO брать данные из стека 
     def outbackstack(self):
-        rem = stack.stack.pop()
+        rem = stack.pop()
+        print(rem)
         try:
             for i in rem:
                 self.search(i[0],i[1],i[2],i[3],i[4],i[5])
         except:
             pass
+
+   
 
 app = QApplication(sys.argv)
 example = Table()

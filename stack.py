@@ -1,3 +1,4 @@
+
 class cashStack:
     def __init__(self):
         self.stack=[]
@@ -8,4 +9,7 @@ class cashStack:
             return None
         removed = self.stack.pop()
         return removed
+    def data(self):
+        print(self.stack)
+        return True
 stack = cashStack()
