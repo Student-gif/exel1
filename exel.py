@@ -1,12 +1,14 @@
+from re import S
 import Converter
 import savecsvGohome
 import win32clipboard
 from OutputLogick import saveTocsv
 from QListenW import *
 from twobutton import TwoButton
+from searchwindow import searchWindow
 import sys
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
+from PyQt5.QtCore import QProcess
 from PyQt5.QtGui import *
 import Logick
 lister =[]
@@ -98,7 +100,9 @@ class Table(QWidget):
         action_saveHow = menu_file.addAction('Сохранить как')
         action_change = menu_file.addAction('назад')
         action_сlear = menu_file.addAction('очистить')
+        action_searh = menu_file.addAction('поиск')
 
+        action_searh.triggered.connect(self.callSearch)
         action_сlear.triggered.connect(self.clearField)
         action_takeSave.triggered.connect(self.sorted)
         action_exit.triggered.connect(self.importxl)
@@ -128,12 +132,11 @@ class Table(QWidget):
         self.shortcutSave = QShortcut(QKeySequence("Ctrl+V"), self)
         self.shortcutSave.activated.connect(self.paste)
 
+        
+
         #диалог файловый
     def copyIt(self):
-        
-        cutlist = []
         index = self.tableWidget.selectedIndexes()
-        w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
         try:
                 #self.indexData = self.tableWidget.cellWidget(index[0].row(),index[0].column())
                 addToClipBoard = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData
@@ -386,7 +389,43 @@ class Table(QWidget):
                 self.search(i[0],i[1],i[2],i[3],i[4],i[5])
         except:
             pass
+    def callSearch(self):
+        self.sear = searchWindow()
+        btn = self.sear.searchButton
+        btn2 = self.sear.clearbutton
+        
+        btn.clicked.connect(self.searchDid)
+        btn2.clicked.connect(self.cleardid)
+        self.line = self.sear.searchLine
+        #self.line.editingFinished.connect(print(self.line.text()))
 
+        self.sear.show()
+    
+    def searchDid(self):
+        
+         
+        for i in range(2,columns):
+            for g in range(1,49):
+                if self.tableWidget.cellWidget(g,i).staticData.teacher == self.line.text() and self.tableWidget.cellWidget(g,i).staticData.teacher != "":
+                     self.tableWidget.cellWidget(g,i).changeTextTeacher('green')
+                if self.tableWidget.cellWidget(g,i).staticData.lesson == self.line.text() and self.tableWidget.cellWidget(g,i).staticData.lesson != "":
+                    self.tableWidget.cellWidget(g,i).changeTextTeacher('green')
+                if self.tableWidget.cellWidget(g,i).staticData.group == self.line.text() and self.tableWidget.cellWidget(g,i).staticData.group != "":
+                    self.tableWidget.cellWidget(g,i).changeTextTeacher('green')
+    def cleardid(self):
+        for i in range(2,columns):
+            for g in range(1,49):
+                if self.tableWidget.cellWidget(g,i).staticData.teacher == self.line.text() and self.tableWidget.cellWidget(g,i).staticData.teacher != "":
+                     self.tableWidget.cellWidget(g,i).changeTextTeacher('#F2F2F2')
+                if self.tableWidget.cellWidget(g,i).staticData.lesson == self.line.text() and self.tableWidget.cellWidget(g,i).staticData.lesson != "":
+                    self.tableWidget.cellWidget(g,i).changeTextTeacher('#F2F2F2')
+                if self.tableWidget.cellWidget(g,i).staticData.group == self.line.text() and self.tableWidget.cellWidget(g,i).staticData.group != "":
+                    self.tableWidget.cellWidget(g,i).changeTextTeacher('#F2F2F2')
+
+
+
+
+        
    
 
 app = QApplication(sys.argv)
