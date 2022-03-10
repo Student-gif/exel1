@@ -73,7 +73,7 @@ class Table(QWidget):
                 self.tableWidget.setVerticalHeaderItem(i+j-1,header_item)
         #распаковка данных Аудитории с бд  
         h=[x[0] for x in Logick.Auditories]
-        #конфигурация виджетов аудиторий
+        #конфигурация виджетов аудиторий м 
         for i in range(2,columns):
             self.tableWidget.setItem(0, i, QTableWidgetItem())
             self.tableWidget.item(0, i).setBackground(QColor(220,0,0)) 
