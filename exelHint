@@ -1,0 +1,25 @@
+import xlsxwriter
+import openpyxl
+
+wb = openpyxl.load_workbook('exelDb.xlsx')
+sheet = wb.get_sheet_by_name('plan')
+key_and_names = {}
+check = True
+
+
+for i in range(1,63):
+    g = 1
+    while sheet.cell(row=g, column=i).value != None:
+        key = sheet.cell(row=1, column=i).value
+        if sheet.cell(row=g, column=i) != None:
+            lessons =[]
+            lessons.append(sheet.cell(row=g, column=i).value)
+        g+=1
+         
+#Problem seems to be in this general area
+        if not key in key_and_names:
+            key_and_names[key]=[]
+        #print(lessons)
+        key_and_names[key].append(lessons)   
+
+print(key_and_names)
