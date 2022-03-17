@@ -188,12 +188,11 @@ class QListensW(QWidget):
         #TODO сделать синхронизатор комплитера
         
     def changeCompliiter(self,keyT,keyG):
-        if self.lineEditGroups.text != None:
-            Tdic = SpoDic[keyT]
-            completerLessonV2 =  QCompleter(Tdic, self.lineEditLesson)
-            self.lineEditLesson.setCompleter(completerLessonV2)
-        else:
-            GroupDick= plan[keyG]
-            completerGroupV2 =  QCompleter(GroupDick, self.lineEditLesson)
-            self.lineEditLesson.setCompleter(completerGroupV2)
-
+        completerLessonV2 =  QCompleter(SpoDic[keyT], self.lineEditLesson)
+        self.lineEditLesson.setCompleter(completerLessonV2)
+        completerGroupV2 =  QCompleter(plan[keyG], self.lineEditLesson)
+        self.lineEditLesson.setCompleter(completerGroupV2)
+        if self.lineEditGroups.text != None and self.lineEditTeacher.text != None:
+            bestComliter = [h for h in SpoDic[keyT] for k in plan[keyG]  if h == k] 
+            self.lineEditLesson.setCompleter(QCompleter(bestComliter, self.lineEditLesson))
+            #print("good")
