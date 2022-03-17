@@ -123,7 +123,8 @@ class QListensW(QWidget):
         try:
             self.inStack(stackdata)
             self.staticData.updateTeacherId(IdTeachAddic[self.staticData.teacher])
-            self.changeCompliiter(self.staticData.teacher)
+            self.changeCompliiter(self.staticData.teacher,self.staticData.group)
+            
             
         except:
             self.staticData.group = self.lineEditGroups.text()
@@ -184,8 +185,12 @@ class QListensW(QWidget):
     def inStack(self, data):
         #indata = [self.staticData.auditory,self.staticData.lessonPlace,self.staticData.weekday,self.staticData.teacher,self.staticData.group,self.staticData.lesson]
         stack.push([data])
-    def changeCompliiter(self,key):
-        dick = SpoDic[key]
-        completerGroupV2 =  QCompleter(dick, self.lineEditLesson)
-        self.lineEditGroups.setCompleter(completerGroupV2)
-        print(dick)
+        #TODO сделать синхронизатор комплитера
+        
+    def changeCompliiter(self,keyT,keyG):
+        Tdic = SpoDic[keyT]
+        completerLessonV2 =  QCompleter(Tdic, self.lineEditLesson)
+        self.lineEditLesson.setCompleter(completerLessonV2)
+        GroupDick= plan[keyG]
+        completerGroupV2 =  QCompleter(GroupDick, self.lineEditLesson)
+        self.lineEditLesson.setCompleter(completerGroupV2)
