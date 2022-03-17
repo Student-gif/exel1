@@ -299,7 +299,6 @@ class Table(QWidget):
                                 first.item(y, 1).setBackground(QColor(220,0,0))
             if itWas==True:
                 self.logs_show(y,faust=faust) 
-    #написать отдельную функцию поиска
     #функция поиска принимает стандартные значения 
     def search(self,audit,num,weakday,teacher,group,dis):
         widget= self.tableWidget
@@ -402,8 +401,6 @@ class Table(QWidget):
         self.sear.show()
     
     def searchDid(self):
-        
-         
         for i in range(2,columns):
             for g in range(1,49):
                 if self.tableWidget.cellWidget(g,i).staticData.teacher == self.line.text() and self.tableWidget.cellWidget(g,i).staticData.teacher != "":

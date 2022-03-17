@@ -6,7 +6,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from datemodul import weeknum
-from stack import stack  
+from stack import stack
+from exelHint import Spo, SpoDic,plan
 class lessonData():
     teacher: str = ""
     group:str = ""
@@ -74,8 +75,8 @@ class QListensW(QWidget):
         completerTeacher = QCompleter([s[0].__str__() for s in Prepods], self.lineEditTeacher)
         completerGroup = QCompleter([s[0].__str__() for s in Groups], self.lineEditGroups)
         completerLesson = QCompleter([s[0].__str__() for s in Lessons], self.lineEditLesson)
-
-    
+        
+        
 
         self.lineEditTeacher.setCompleter(completerTeacher)
         self.lineEditGroups.setCompleter(completerGroup)
@@ -89,12 +90,6 @@ class QListensW(QWidget):
         self.lineEditLesson.editingFinished.connect(self.CustomEventEnter)
         self.lineEditTeacher.editingFinished.connect(self.CustomEventEnter)
         self.lineEditGroups.editingFinished.connect(self.CustomEventEnter)
-        
-       
-
-        #тригер на ввод текста
-      
-
         
         
 
@@ -115,7 +110,6 @@ class QListensW(QWidget):
         self.lineEditGroups.setText(group)
         self.lineEditLesson.setText(lesson)
         self.staticData.updateImportData(teacher,group,lesson)
-
         try:
             self.staticData.updateTeacherId(IdTeachAddic[self.staticData.teacher])
         except:
@@ -129,6 +123,8 @@ class QListensW(QWidget):
         try:
             self.inStack(stackdata)
             self.staticData.updateTeacherId(IdTeachAddic[self.staticData.teacher])
+            self.changeCompliiter(self.staticData.teacher)
+            
         except:
             self.staticData.group = self.lineEditGroups.text()
             self.staticData.lesson = self.lineEditLesson.text()
@@ -154,7 +150,7 @@ class QListensW(QWidget):
         else:
             
             pass
-      #TODO поправить даты  ??
+      #TODO поправить даты  ???
     def updateDateWeekdate(self):
         nowdate=self.staticData.weekdate
         nowweek = self.staticData.week
@@ -165,17 +161,17 @@ class QListensW(QWidget):
         if newweek>= 48:
             newweek=48
         self.staticData.updateWeekDate(nextdate, newweek)
-     #TODO вернуть как было   
+     
     def degadeweekDate(self):
         nowdate=self.staticData.weekdate
         nowweek = self.staticData.week
         newweek = nowweek -1
-        #if newweek >0:
-        nextdate=nowdate-timedelta(7)
-        #else:
-        #   pass
-        #if newweek<= 0:
-             # newweek=0
+        if newweek >0:
+            nextdate=nowdate-timedelta(7)
+        else:
+            pass
+        if newweek<= 0:
+              newweek=0
         self.staticData.updateWeekDate(nextdate, newweek)
        
 
@@ -188,4 +184,8 @@ class QListensW(QWidget):
     def inStack(self, data):
         #indata = [self.staticData.auditory,self.staticData.lessonPlace,self.staticData.weekday,self.staticData.teacher,self.staticData.group,self.staticData.lesson]
         stack.push([data])
-    
+    def changeCompliiter(self,key):
+        dick = SpoDic[key]
+        completerGroupV2 =  QCompleter(dick, self.lineEditLesson)
+        self.lineEditGroups.setCompleter(completerGroupV2)
+        print(dick)
