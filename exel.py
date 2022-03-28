@@ -101,7 +101,7 @@ class Table(QWidget):
         action_change = menu_file.addAction('назад')
         action_сlear = menu_file.addAction('очистить')
         action_searh = menu_file.addAction('поиск')
-
+        #соеденительный слой
         action_searh.triggered.connect(self.callSearch)
         action_сlear.triggered.connect(self.clearField)
         action_takeSave.triggered.connect(self.sorted)
@@ -148,12 +148,10 @@ class Table(QWidget):
                 
         except:
             pass
-        
+    #Вставка
     def paste(self):
         index = self.tableWidget.selectedIndexes()
         cutlist = []
-       
-        
         try:
             w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
             cutlist.append([w.staticData.auditory,w.staticData.lessonPlace,w.staticData.weekday,w.staticData.teacher,w.staticData.group,w.staticData.lesson])
@@ -161,10 +159,8 @@ class Table(QWidget):
             data = win32clipboard.GetClipboardData()
             win32clipboard.EmptyClipboard()
             win32clipboard.CloseClipboard()
-            
             if data != None:
                 w.update(data)
-                
             else:
                 data = ""
         except:
@@ -232,7 +228,7 @@ class Table(QWidget):
        
         
         
-#Анализ на совпадения   
+    #Анализ на совпадения   
     #TODO придумать как обьеденить в один кортеж строки и стобцы
     def logs_show(self,y,faust):
         msg = QMessageBox()
@@ -262,7 +258,7 @@ class Table(QWidget):
                             self.tableWidget.cellWidget(i,h-1).changeTextTeacher('#F2F2F2')
                             self.tableWidget.cellWidget(i,h-1).changeTextGroup('#F2F2F2')
 
-                    
+    #проверка 
     def checker(self,):
             faust = []
             itWas = False
@@ -318,6 +314,7 @@ class Table(QWidget):
             pass
 
                     #print(widget.cellWidget(g,i).staticData.auditory,l.audit.replace('- ', '-'))
+    #TODO улучшить алгоритм сортировки
     def sorted(self):
         try:
             self.file = filedio.filemanger.init(filedio.filemanger)
@@ -336,16 +333,19 @@ class Table(QWidget):
         self.tableWidget.setItem(0, 0, QTableWidgetItem())
         self.tableWidget.item(0, 0).setText("номер недели "+self.tableWidget.cellWidget(6,6).staticData.week.__str__())      
         self.tableWidget.item(0, 0).setFlags(Qt.NoItemFlags|Qt.ItemIsEnabled)
+        #функция кнопки переключателя недели
     def nextweek(self):
           for i in range(2,columns):
             for g in range(1,49):
                 self.tableWidget.cellWidget(g,i).updateDateWeekdate()
                 self.weeknumCheck()
+        #функция кнопки переключателя недели
     def previusweek(self):
           for i in range(2,columns):
             for g in range(1,49):
                 self.tableWidget.cellWidget(g,i).degadeweekDate()
                 self.weeknumCheck()
+        #функция кнопки очисти поля
     def clearField(self):
         data=[]
         widget = self.tableWidget
@@ -361,13 +361,13 @@ class Table(QWidget):
         for i in range(len(lister)):
             cursor.execute('INSERT INTO cash VALUES(?,?,?,?,?,?,?,?)',(lister[i].group.__str__(),lister[i].lesson.__str__(),lister[i].weekday.__str__(),lister[i].teacherId.__str__(),lister[i].teacher.__str__(),lister[i].weekdate.__str__(),lister[i].auditory.__str__(),lister[i].lessonPlace.__str__()))
         conn.commit()
-            
+    #Чистить данные временного сейва
     def cleardb(self):
         conn = sqlite3.connect("cash.db")
         cursor = conn.cursor()
         cursor.execute('DELETE FROM cash')
         conn.commit()
-
+    #берёт данные с бд сейва
     def takeDatafromcashdb(self):
         conn = sqlite3.connect("cash.db")
         cursor = conn.cursor()
@@ -378,9 +378,10 @@ class Table(QWidget):
             self.search(d[6],int(d[2]),int(d[7]),d[4],d[0],d[1])
         conn.commit()
     #TODO отслеживание действий пользователя
+    #складывает данные в стек
     def Inbacstack(self,data):
        stack.push(data)
-    #TODO брать данные из стека 
+    #берёт данные из стека
     def outbackstack(self):
         rem = stack.pop()
         try:
@@ -388,18 +389,17 @@ class Table(QWidget):
                 self.search(i[0],i[1],i[2],i[3],i[4],i[5])
         except:
             pass
+        #очередной поиск
     def callSearch(self):
         self.sear = searchWindow()
         btn = self.sear.searchButton
         btn2 = self.sear.clearbutton
-        
         btn.clicked.connect(self.searchDid)
         btn2.clicked.connect(self.cleardid)
         self.line = self.sear.searchLine
         #self.line.editingFinished.connect(print(self.line.text()))
-
         self.sear.show()
-    
+    #ищет совпадения а значит ошибки
     def searchDid(self):
         for i in range(2,columns):
             for g in range(1,49):
@@ -409,6 +409,7 @@ class Table(QWidget):
                     self.tableWidget.cellWidget(g,i).changeTextTeacher('green')
                 if self.tableWidget.cellWidget(g,i).staticData.group == self.line.text() and self.tableWidget.cellWidget(g,i).staticData.group != "":
                     self.tableWidget.cellWidget(g,i).changeTextTeacher('green')
+    #чистит выделленное
     def cleardid(self):
         for i in range(2,columns):
             for g in range(1,49):
@@ -418,13 +419,6 @@ class Table(QWidget):
                     self.tableWidget.cellWidget(g,i).changeTextTeacher('#F2F2F2')
                 if self.tableWidget.cellWidget(g,i).staticData.group == self.line.text() and self.tableWidget.cellWidget(g,i).staticData.group != "":
                     self.tableWidget.cellWidget(g,i).changeTextTeacher('#F2F2F2')
-
-
-
-
-        
-   
-
 app = QApplication(sys.argv)
 example = Table()
 example.show()
