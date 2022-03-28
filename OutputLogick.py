@@ -31,8 +31,8 @@ def saveTocsv(lister,file):
                     l = lister[i].lesson
                 newDataforCsv = [secondsubgroup,0,lister[i].weekday,lister[i].lessonPlace,lister[i].auditory,lister[i].week,0,lister[i].teacher,15,l,"л.",lister[i].weekdate,15,lister[i].teacherId,'По теме занятия',"","","","","","",""]
                 file_writer.writerow(newDataforCsv)
-            if ('/' in lister[i].lesson):
-                lister[i].lesson = lister[i].lesson.replace('/',"") 
-            
-            newDataforCsv = [lister[i].group,0,lister[i].weekday,lister[i].lessonPlace,lister[i].auditory,lister[i].week,0,lister[i].teacher,15,lister[i].lesson,"л.",lister[i].weekdate,15,lister[i].teacherId,'По теме занятия',"","","","","","",""]
-            file_writer.writerow(newDataforCsv)
+            #if ('/' in lister[i].lesson):
+            #    lister[i].lesson = lister[i].lesson.replace('/',"")
+            if  ('/' not in lister[i].group):
+                newDataforCsv = [lister[i].group,0,lister[i].weekday,lister[i].lessonPlace,lister[i].auditory,lister[i].week,0,lister[i].teacher,15,lister[i].lesson,"л.",lister[i].weekdate,15,lister[i].teacherId,'По теме занятия',"","","","","","",""]
+                file_writer.writerow(newDataforCsv)
