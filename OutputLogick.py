@@ -18,7 +18,7 @@ def saveTocsv(lister,file):
         
         for i in range(len(lister)):
             lister[i].lesson = lister[i].lesson.replace(',',"")
-            lister[i].lesson = lister[i].lesson.replace(',',"")
+            #lister[i].lesson = lister[i].lesson.replace(',',"")
             
             if ('/' in lister[i].group):
                 h=lister[i].group.split("/")
@@ -29,10 +29,15 @@ def saveTocsv(lister,file):
                     lister[i].lesson = lister[i].lesson.split("/")[0]
                 else:
                     l = lister[i].lesson
+                if ('/' in lister[i].teacher):
+                    h=lister[i].teacher.split("/")
+                    lister[i].teacher = h[0].replace('/',"")
+                    secondsubgroup = h[1].replace('/',"")
+                    
                 newDataforCsv = [secondsubgroup,0,lister[i].weekday,lister[i].lessonPlace,lister[i].auditory,lister[i].week,0,lister[i].teacher,15,l,"л.",lister[i].weekdate,15,lister[i].teacherId,'По теме занятия',"","","","","","",""]
                 file_writer.writerow(newDataforCsv)
             #if ('/' in lister[i].lesson):
             #    lister[i].lesson = lister[i].lesson.replace('/',"")
-            if  ('/' not in lister[i].group):
+            elif('/' not in lister[i].group):
                 newDataforCsv = [lister[i].group,0,lister[i].weekday,lister[i].lessonPlace,lister[i].auditory,lister[i].week,0,lister[i].teacher,15,lister[i].lesson,"л.",lister[i].weekdate,15,lister[i].teacherId,'По теме занятия',"","","","","","",""]
                 file_writer.writerow(newDataforCsv)

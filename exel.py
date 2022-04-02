@@ -306,13 +306,12 @@ class Table(QWidget):
     def importxl(self,):
         try:
             self.file = filedio.filemanger.init(filedio.filemanger)
-            self.lessons =  Converter.openFFFF( self.file)
+            self.lessons =  Converter.openFFFF(self.file)
             self.clearField()
             for l in self.lessons:
                 self.search(l.audit,l.num,l.weak_day,l.teather,l.group,l.dis)
         except:
             pass
-
                     #print(widget.cellWidget(g,i).staticData.auditory,l.audit.replace('- ', '-'))
     #TODO улучшить алгоритм сортировки
     def sorted(self):

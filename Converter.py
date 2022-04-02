@@ -69,6 +69,7 @@ def openFFFF(file):
 
                             les1.group = au[1]
                             les1.teather = cell.split("/")[0].strip()
+                            
                             if('/' in data[index+1][au[0]]):
                                 les1.group = data[index+1][au[0]
                                                            ].split("/")[0].strip()
@@ -83,6 +84,7 @@ def openFFFF(file):
 
                             les2.group = au[1]
                             les2.teather = cell.split("/")[1].strip()
+                            print(les2.teather)
                             if('/' in data[index+1][au[0]]):
                                 les2.audit = data[index+1][au[0]
                                                            ].split("/")[1].strip()
