@@ -1,4 +1,3 @@
-from re import S
 import Converter
 import savecsvGohome
 import win32clipboard
