@@ -1,4 +1,5 @@
 import Converter
+from PrintWindow import PrintWindow
 import savecsvGohome
 import win32clipboard
 from OutputLogick import saveTocsv
@@ -393,7 +394,7 @@ class Table(QWidget):
         btn = self.sear.searchButton
         btn2 = self.sear.clearbutton
         btn.clicked.connect(self.searchDid)
-        btn2.clicked.connect(self.cleardid)
+        btn2.clicked.connect(self.callPrint)
         self.line = self.sear.searchLine
         #self.line.editingFinished.connect(print(self.line.text()))
         self.sear.show()
@@ -417,7 +418,18 @@ class Table(QWidget):
                     self.tableWidget.cellWidget(g,i).changeTextTeacher('#F2F2F2')
                 if self.tableWidget.cellWidget(g,i).staticData.group == self.line.text() and self.tableWidget.cellWidget(g,i).staticData.group != "":
                     self.tableWidget.cellWidget(g,i).changeTextTeacher('#F2F2F2')
+    def dataToPrintForm(self,group,):
+        allData = []
+        for i in range(2,columns):
+            for g in range(1,49):               
+                if  self.tableWidget.cellWidget(g,i).staticData.group == group:
+                    allData.append(self.tableWidget.cellWidget(g,i))
+        return allData
+    def callPrint(self):
+        data =self.dataToPrintForm(self.sear.searchLine.text(),)
+        self.obj =  PrintWindow(Data = data,QuestionData=self.sear.searchLine.text() )
+        self.obj.show()
 app = QApplication(sys.argv)
 example = Table()
-example.show()
+example.show()   
 sys.exit(app.exec_())
