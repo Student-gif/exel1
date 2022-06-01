@@ -147,6 +147,7 @@ class Table(QWidget):
                 win32clipboard.CloseClipboard()
                 
         except:
+            print("copy eror")
             pass
     #Вставка
     def paste(self):
@@ -164,6 +165,7 @@ class Table(QWidget):
             else:
                 data = ""
         except:
+            print("paste eror")
             pass
         self.Inbacstack(cutlist)
     #htfkbpjdfnm работу с множеством ячеек
@@ -189,6 +191,7 @@ class Table(QWidget):
                 data.append([w.staticData.auditory,w.staticData.lessonPlace,w.staticData.weekday,w.staticData.teacher,w.staticData.group,w.staticData.lesson])
                 w.helptoimport("","","")
             except:
+                print("menuEror")
                 pass
             self.Inbacstack(data)
     #сохраняет данные
@@ -209,6 +212,7 @@ class Table(QWidget):
             saveTocsv(lister,self.file)
 
         except:
+            print("cheker eror")
             pass
     def justSave(self):
          #TODO сделать предложение автоисправления, для этого нужно создать привязку педогогов к предметам и группам
@@ -224,6 +228,7 @@ class Table(QWidget):
                         lister.append(cel)
             self.databaseCash(lister)
         except:
+            print("saveEror")
             pass
        
         
@@ -311,6 +316,7 @@ class Table(QWidget):
             for l in self.lessons:
                 self.search(l.audit,l.num,l.weak_day,l.teather,l.group,l.dis)
         except:
+            print("import eror")
             pass
                     #print(widget.cellWidget(g,i).staticData.auditory,l.audit.replace('- ', '-'))
     #TODO улучшить алгоритм сортировки
@@ -322,6 +328,7 @@ class Table(QWidget):
             for n in self.needData: 
                 self.search(n[4],int(n[3]),int(n[2]),n[7],n[0],n[9])
         except:
+            print("sorted eror")
             pass
         
 #    def takesafe(self):
@@ -387,6 +394,7 @@ class Table(QWidget):
             for i in rem:
                 self.search(i[0],i[1],i[2],i[3],i[4],i[5])
         except:
+            print("eror with outback")
             pass
         #очередной поиск
     def callSearch(self):
@@ -418,16 +426,16 @@ class Table(QWidget):
                     self.tableWidget.cellWidget(g,i).changeTextTeacher('#F2F2F2')
                 if self.tableWidget.cellWidget(g,i).staticData.group == self.line.text() and self.tableWidget.cellWidget(g,i).staticData.group != "":
                     self.tableWidget.cellWidget(g,i).changeTextTeacher('#F2F2F2')
-    def dataToPrintForm(self,group,):
+    def dataToPrintForm(self,ask,):
         allData = []
         for i in range(2,columns):
             for g in range(1,49):               
-                if  self.tableWidget.cellWidget(g,i).staticData.group == group:
+                if   ask != " " and ask == self.tableWidget.cellWidget(g,i).staticData.group or ask == self.tableWidget.cellWidget(g,i).staticData.teacher:
                     allData.append(self.tableWidget.cellWidget(g,i))
         return allData
     def callPrint(self):
-        data =self.dataToPrintForm(self.sear.searchLine.text(),)
-        self.obj =  PrintWindow(Data = data,QuestionData=self.sear.searchLine.text() )
+        data = self.dataToPrintForm(self.sear.searchLine.text())
+        self.obj = PrintWindow(Data = data,QuestionData=self.sear.searchLine.text())
         self.obj.show()
 app = QApplication(sys.argv)
 example = Table()
