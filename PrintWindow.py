@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget,QLineEdit,QPushButton,QVBoxLayout,QHBoxLayout,QLabel,QFrame
 from PyQt5.QtCore import Qt
-from fpdf import FPDF
+from TestPdfMaker import PDF
 
 
 
@@ -15,12 +15,12 @@ class WorkWithData():
                 6:"16:40",
                 7:"18:20",
                 8:"19:50"}
-    WeekDayDict = {1:"пн",
-                    2:"вт",
-                    3:"ср",
-                    4:"чт",
-                    5:"пт",
-                    6:"сб"}
+    WeekDayDict = {1:"Понедельник",
+                    2:"Вторник",
+                    3:"Среда",
+                    4:"Четверг",
+                    5:"Пятница",
+                    6:"Суббота"}
 
     def structureBuilder(self,dataWeekList):
         structuredata =[]
@@ -43,8 +43,9 @@ class WorkWithData():
         lessonPlace = data[i].staticData.auditory
         groupName = data[i].staticData.group
         lessonTime = self.timeDict[data[i].staticData.lessonPlace]
+        teacheName = data[i].staticData.teacher
         
-        return [lessonTime,lesson,lessonPlace,groupName,weekdayData]
+        return [lessonTime,lesson,lessonPlace,groupName,weekdayData,teacheName]
 class CustomLine(QWidget):
     def __init__(self,Time= None,Lesson=None,Audit=None,parent = None):
         super(CustomLine, self,).__init__(parent)
@@ -64,28 +65,41 @@ class CustomLine(QWidget):
             GoodLabel.setText(str(data[i])) 
             lay.addWidget(GoodLabel)
 class mainData(QWidget):
+    PrintData = [["Понедельник"]]
+    def pdfmake(self):
+        PdfMaker = PDF()
+        PdfMaker.print_chapter(self.PrintData)
+        PdfMaker.output("test.pdf")
+        self.PrintData.clear()
+        print("succes")
     def __init__(self, parent = None,SortedData = [],SearchQuestion = None):
         super(mainData, self,).__init__(parent)
         head = QLabel(self,text=str(SearchQuestion))
-        monday = QLabel(text="пн",)
+        monday = QLabel(text="Понедельник",)
         monday.setAlignment(Qt.AlignCenter)
         lay = QVBoxLayout(self)
         self.setLayout(lay)
         lay.addWidget(head)
         lay.addWidget(monday)
-        
 
+        
+        
         for i in range(len(SortedData)):         
             DictData = WorkWithData().sorterS(data=SortedData,i=i)
             if SortedData[i].staticData.weekday > SortedData[i-1].staticData.weekday or SortedData[i].staticData.weekday == 6:
                 weekday = QLabel(self,text=DictData[4])  
                 weekday.setAlignment(Qt.AlignCenter)         
-                lay.addWidget(weekday)     
+                lay.addWidget(weekday)
+                self.PrintData.append([DictData[4]])     
             lay.addWidget(CustomLine(Time = DictData[0],Lesson=DictData[1],Audit=DictData[2]))
+            self.PrintData.append([DictData[0],DictData[1],DictData[2],DictData[5]])
+
         GiveDataButton = QPushButton(text="проверить")
 
-        #GiveDataButton.clicked.connect( )
+        GiveDataButton.clicked.connect(self.pdfmake)
+
         lay.addWidget(GiveDataButton)
+        
             
 
             

@@ -215,7 +215,6 @@ class Table(QWidget):
 
         except:
             print("cheker eror")
-            pass
     def justSave(self):
          #TODO сделать предложение автоисправления, для этого нужно создать привязку педогогов к предметам и группам
         self.checker()
@@ -231,7 +230,7 @@ class Table(QWidget):
             self.databaseCash(lister)
         except:
             print("saveEror")
-            pass
+
        
         
         
@@ -319,7 +318,7 @@ class Table(QWidget):
                 self.search(l.audit,l.num,l.weak_day,l.teather,l.group,l.dis)
         except:
             print("import eror")
-            pass
+            
                     #print(widget.cellWidget(g,i).staticData.auditory,l.audit.replace('- ', '-'))
     #TODO улучшить алгоритм сортировки
     def sorted(self):
@@ -331,7 +330,7 @@ class Table(QWidget):
                 self.search(n[4],int(n[3]),int(n[2]),n[7],n[0],n[9])
         except:
             print("sorted eror")
-            pass
+
         
 #    def takesafe(self):
 
