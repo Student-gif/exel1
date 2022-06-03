@@ -101,6 +101,7 @@ class Table(QWidget):
         action_change = menu_file.addAction('назад')
         action_сlear = menu_file.addAction('очистить')
         action_searh = menu_file.addAction('поиск')
+        action_view = menu_file.addAction('Вывести по имени')
         #соеденительный слой
         action_searh.triggered.connect(self.callSearch)
         action_сlear.triggered.connect(self.clearField)
@@ -109,6 +110,7 @@ class Table(QWidget):
         action_saveHow.triggered.connect(self.giveData)
         action_save.triggered.connect(self.justSave)
         action_change.triggered.connect(self.outbackstack)
+        action_view.triggered.connect(self.callSearchPrintWindow)
 
         layout.setMenuBar(menu_bar)
         ##/////////////
@@ -397,16 +399,16 @@ class Table(QWidget):
             print("eror with outback")
             pass
         #очередной поиск
-    def callSearch(self):
+    def callSearch(self,func):
         self.sear = searchWindow()
         btn = self.sear.searchButton
         btn2 = self.sear.clearbutton
         btn.clicked.connect(self.searchDid)
-        btn2.clicked.connect(self.callPrint)
+        btn2.clicked.connect(self.cleardid)
         self.line = self.sear.searchLine
         #self.line.editingFinished.connect(print(self.line.text()))
         self.sear.show()
-    #ищет совпадения а значит ошибки
+    #ищет совпадения 
     def searchDid(self):
         for i in range(2,columns):
             for g in range(1,49):
@@ -426,17 +428,37 @@ class Table(QWidget):
                     self.tableWidget.cellWidget(g,i).changeTextTeacher('#F2F2F2')
                 if self.tableWidget.cellWidget(g,i).staticData.group == self.line.text() and self.tableWidget.cellWidget(g,i).staticData.group != "":
                     self.tableWidget.cellWidget(g,i).changeTextTeacher('#F2F2F2')
+    # блок в котором будет работать печать
     def dataToPrintForm(self,ask,):
         allData = []
+
         for i in range(2,columns):
-            for g in range(1,49):               
+            for g in range(1,49):
+                if ('/' in self.tableWidget.cellWidget(g,i).staticData.group):
+                    h=self.tableWidget.cellWidget(g,i).staticData.group.split("/")
+                    self.tableWidget.cellWidget(g,i).staticData.group = h[0].replace('/',"")
+                    secondsubgroup = h[1].replace('/',"")
+
+                    if   secondsubgroup == ask:
+                         self.tableWidget.cellWidget(g,i).staticData.group = secondsubgroup            
                 if   ask != " " and ask == self.tableWidget.cellWidget(g,i).staticData.group or ask == self.tableWidget.cellWidget(g,i).staticData.teacher:
                     allData.append(self.tableWidget.cellWidget(g,i))
+       
+                
         return allData
     def callPrint(self):
-        data = self.dataToPrintForm(self.sear.searchLine.text())
-        self.obj = PrintWindow(Data = data,QuestionData=self.sear.searchLine.text())
+        data = self.dataToPrintForm(self.searc.searchLine.text())
+        self.obj = PrintWindow(Data = data,QuestionData=self.searc.searchLine.text())
         self.obj.show()
+    def callSearchPrintWindow(self,func):
+        self.searc = searchWindow()
+        btn = self.searc.searchButton
+        btn2 = self.searc.clearbutton
+        btn.clicked.connect(self.callPrint)  
+        self.line = self.searc.searchLine
+        btn2.clicked.connect(self.line.clear)
+
+        self.searc.show()
 app = QApplication(sys.argv)
 example = Table()
 example.show()   

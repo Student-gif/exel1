@@ -19,7 +19,5 @@ class searchWindow(QWidget):
         lay.addWidget(self.searchButton)
         lay.addWidget(self.clearbutton)
         
-    def check(self):
-        self.searchLine.text
-        searchWindow.show()
+
 
