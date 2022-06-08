@@ -170,7 +170,7 @@ class Table(QWidget):
             print("paste eror")
             pass
         self.Inbacstack(cutlist)
-    #htfkbpjdfnm работу с множеством ячеек
+    #TODO m работу с множеством ячеек
     def generateMenu(self, pos):
         menu = QMenu()
         item1 = menu.addAction (u'копировать')

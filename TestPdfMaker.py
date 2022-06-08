@@ -68,6 +68,7 @@ class PDF(FPDF):
             self.cell(w=40,h=6, txt = str(inputData[3]),border=1,align="C",ln=1)
         else:
             self.cell(w=195,h=15, txt = str(inputData[0]),border=1,align="C",ln=1)
+    
 
     def print_chapter(self,inputData):
         self.add_font("Sans", style="", fname="font/DejaVuSans.ttf", uni=True)
