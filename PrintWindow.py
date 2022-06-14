@@ -31,27 +31,21 @@ class WorkWithData():
             for i in range(len(dataWeekList)):              
                 if dataWeekList[i].staticData.weekday == day:
                     structuredata.append(dataWeekList[i])
-                    print(structuredata)
             time = 0
             while time !=9:            
                     time +=1
                     for i in range(len(structuredata)):
                         if  structuredata[i].staticData.lessonPlace == time:
                             morestructData.append(structuredata[i]) 
-                                
         return morestructData
-
-
     
     def sorterS(self,data, i ):
-
         weekdayData = self.WeekDayDict[data[i].staticData.weekday]
         lesson = data[i].staticData.lesson
         lessonPlace = data[i].staticData.auditory
         groupName = data[i].staticData.group
         lessonTime = self.timeDict[data[i].staticData.lessonPlace]
-        teacheName = data[i].staticData.teacher
-        
+        teacheName = data[i].staticData.teacher      
         return [lessonTime,lesson,lessonPlace,groupName,weekdayData,teacheName]
 class CustomLine(QWidget):
     def __init__(self,Time= None,Lesson=None,Audit=None,parent = None):
@@ -61,15 +55,18 @@ class CustomLine(QWidget):
         for i in range(3):
             GoodLabel = QLabel(self,margin=10,)
             GoodLabel.setStyleSheet("border: 1px solid black;")
+            data = [Time,Lesson,Audit]
             if i == 0:
                 GoodLabel.setMaximumWidth(84)
                 GoodLabel.setAlignment(Qt.AlignLeft)
             else:
-                GoodLabel.setMaximumWidth(240)
+                GoodLabel.setMinimumWidth(240)
+                GoodLabel.setMaximumWidth(self.size().width()+240)
+                GoodLabel.setAlignment(Qt.AlignLeft)
             if i == 2:
                 GoodLabel.setMaximumWidth(60)
             GoodLabel.setMaximumHeight(60)
-            data = [Time,Lesson,Audit]
+            
             GoodLabel.setText(str(data[i])) 
             lay.addWidget(GoodLabel)
 class mainData(QWidget):
@@ -95,15 +92,24 @@ class mainData(QWidget):
         
         self.PrintData.clear()
         
-        for i in range(len(SortedData)):         
+        for i in range(len(SortedData)):            
             DictData = WorkWithData().sorterS(data=SortedData,i=i)
 
             if SortedData[i].staticData.weekday > SortedData[i-1].staticData.weekday or SortedData[i].staticData.weekday == 6:
+                
                 weekday = QLabel(self,text=DictData[4])  
                 weekday.setAlignment(Qt.AlignCenter)         
                 lay.addWidget(weekday)
                 self.PrintData.append([DictData[4]])     
+
+            WindowCount = SortedData[i].staticData.lessonPlace - SortedData[i-1].staticData.lessonPlace
+            if WindowCount >=1:
+                timeKey = SortedData[i-1].staticData.lessonPlace
+                for i in range(WindowCount-1):
+                    lay.addWidget(CustomLine(Time =WorkWithData().timeDict[timeKey+(i+1)],Lesson="ОКНО",Audit=""),)
             lay.addWidget(CustomLine(Time = DictData[0],Lesson=DictData[1],Audit=DictData[2]))
+                
+
             self.PrintData.append([DictData[0],DictData[1],DictData[2],DictData[5]])
 
         GiveDataButton = QPushButton(text="проверить")

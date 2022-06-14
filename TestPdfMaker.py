@@ -61,7 +61,20 @@ class PDF(FPDF):
         self.cell(w=40,h=12, txt = "Преп",align="C",ln=1)
 
     def mainTable_Data(self,inputData):
+        
         if len(inputData) != 1:
+            if len(inputData[1])>90:
+                f = ""
+                inputData[1] = inputData[1].split()
+                for k in inputData[1]:
+                    if len(k) > 10:
+                        k = k[0:3]
+                        print(k)
+                    f+=k
+                    f+=" "
+                print(f)
+                inputData[1] = f
+            print(len(inputData[1]))
             self.cell(w=20,h=6, txt = str(inputData[0]),border=1,align="C",ln=0)
             self.cell(w=115,h=6, txt = str(inputData[1]),border=1,align="C",ln=0)
             self.cell(w=20,h=6, txt = str(inputData[2]),border=1,align="C",ln=0)
@@ -75,5 +88,4 @@ class PDF(FPDF):
         self.add_page()
         self.secTableData()
         for i in inputData:
-            print(i)
             self.mainTable_Data(i)
