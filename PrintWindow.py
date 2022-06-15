@@ -59,9 +59,8 @@ class CustomLine(QWidget):
             if i == 0:
                 GoodLabel.setMaximumWidth(84)
                 GoodLabel.setAlignment(Qt.AlignLeft)
-            else:
+            if i == 1:
                 GoodLabel.setMinimumWidth(240)
-                GoodLabel.setMaximumWidth(self.size().width()+240)
                 GoodLabel.setAlignment(Qt.AlignLeft)
             if i == 2:
                 GoodLabel.setMaximumWidth(60)
@@ -70,7 +69,7 @@ class CustomLine(QWidget):
             GoodLabel.setText(str(data[i])) 
             lay.addWidget(GoodLabel)
 class mainData(QWidget):
-    PrintData = [["Понедельник"]]
+    PrintData = []
     SortedData = []
     def pdfmake(self):
         PdfMaker = PDF()
@@ -83,24 +82,26 @@ class mainData(QWidget):
     def __init__(self, parent = None,SortedData = [],SearchQuestion = None):
         super(mainData, self,).__init__(parent)
         head = QLabel(self,text=str(SearchQuestion))
-        monday = QLabel(text="Понедельник",)
-        monday.setAlignment(Qt.AlignCenter)
         lay = QVBoxLayout(self)
         self.setLayout(lay)
         lay.addWidget(head)
-        lay.addWidget(monday)
+
         
         self.PrintData.clear()
         
         for i in range(len(SortedData)):            
             DictData = WorkWithData().sorterS(data=SortedData,i=i)
-
+            if i == 0:
+                weekday = QLabel(self,text=DictData[4])
+                weekday.setAlignment(Qt.AlignCenter)
+                lay.addWidget(weekday)
+                self.PrintData.append([DictData[4]])
             if SortedData[i].staticData.weekday > SortedData[i-1].staticData.weekday or SortedData[i].staticData.weekday == 6:
                 
-                weekday = QLabel(self,text=DictData[4])  
-                weekday.setAlignment(Qt.AlignCenter)         
-                lay.addWidget(weekday)
-                self.PrintData.append([DictData[4]])     
+                    weekday = QLabel(self,text=DictData[4])  
+                    weekday.setAlignment(Qt.AlignCenter)         
+                    lay.addWidget(weekday)
+                    self.PrintData.append([DictData[4]])     
 
             WindowCount = SortedData[i].staticData.lessonPlace - SortedData[i-1].staticData.lessonPlace
             if WindowCount >=1:
