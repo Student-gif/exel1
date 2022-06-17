@@ -203,7 +203,7 @@ class Table(QWidget):
         self.checker()
         try:  
             self.cleardb()
-            self.file = filedio.SaveFileManager.init(filedio.SaveFileManager)
+            self.file = filedio.SaveFileManager.init(filedio.SaveFileManager,format="csv")
             lister.clear()
             
             for i in range(2,columns):

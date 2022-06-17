@@ -22,6 +22,6 @@ class filemanger():
 
 class SaveFileManager():
     fild = None
-    def init(self):  
+    def init(self,format):  
         self.fild = FileDiolog()
-        return  self.fild.filedioObj.getSaveFileName(filter='exel files (*.csv)')[0]
+        return  self.fild.filedioObj.getSaveFileName(filter=f'exel files (*{format})')[0]

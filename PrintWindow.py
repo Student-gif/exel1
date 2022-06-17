@@ -99,6 +99,10 @@ class CustomWindowLine(QWidget):
             GoodLabel.setMinimumWidth(MinimumWidth)
             if MinimumWidth != 160:
                 GoodLabel.setMaximumWidth(MaximumWidth)
+            else:
+                GoodLabel.setStyleSheet("""
+                  background-color: red;
+        """)
             GoodLabel.setText(Text)
             lay.addWidget(GoodLabel)
             GoodLabel.setMaximumHeight(60)
@@ -110,14 +114,15 @@ class mainData(QWidget):
     PrintData = []
     SortedData = []
     def pdfmake(self):
+        file = filedio.SaveFileManager.init(filedio.SaveFileManager,format=".pdf")
         PdfMaker = PDF()
         #TODO make better
         scan = self.PrintData
         PdfMaker.print_chapter(scan)
-        PdfMaker.output("test.pdf")
+        PdfMaker.output(f"{file}")
         
 
-    def __init__(self, parent = None,SortedData = [],SearchQuestion = None):
+    def __init__(self, parent = None,SortedData = [],SearchQuestion = None,viewmod = False):
         super(mainData, self,).__init__(parent)
         head = QLabel(self,text=str(SearchQuestion))
         lay = QVBoxLayout(self)
@@ -148,7 +153,7 @@ class mainData(QWidget):
                 for i in range(WindowCount-1):
                     WindowWidget = CustomWindowLine(Time =WorkWithData().timeDict[timeKey+(i+1)],Lesson="ОКНО",)
                     lay.addWidget(WindowWidget)
-            lay.addWidget(CustomLine(Time = DictData[0],Lesson=DictData[1],Audit=DictData[2],group=DictData[3],teacher=DictData[5]))
+            lay.addWidget(CustomLine(Time = DictData[0],Lesson=DictData[1],Audit=DictData[2],group=DictData[3],teacher=DictData[5],ViewMod=viewmod))
                 
 
             self.PrintData.append([DictData[0],DictData[1],DictData[2],DictData[5]])
@@ -172,7 +177,10 @@ class PrintWindow(QWidget):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollArea.setEnabled(True)
-        self.scrollArea.setWidget(mainData(SortedData=data,SearchQuestion= QuestionData))
+        if len(QuestionData) <=11:
+            self.scrollArea.setWidget(mainData(SortedData=data,SearchQuestion= QuestionData,viewmod=False))
+        else:
+            self.scrollArea.setWidget(mainData(SortedData=data,SearchQuestion= QuestionData,viewmod=True))
         lay.addWidget(self.scrollArea)
         # lay.addWidget(mainData(SortedData=data,SearchQuestion= QuestionData))
         
