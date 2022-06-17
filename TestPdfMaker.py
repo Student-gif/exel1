@@ -41,7 +41,7 @@ class PDF(FPDF):
 
         self.headerSculptor(6,"Отделение среднего профессианального образования",2,12)
         self.cell(txt="Отделение среднего профессианального образования",h=5,align="C",w = self.get_string_width("Отделение среднего профессианального образования"),)
-        self.ln(10)
+        self.ln(8)
         self.LowerHeading()
         # Выполнение разрыва строки в 10 мм
         self.ln(8)
@@ -66,27 +66,35 @@ class PDF(FPDF):
     def mainTable_Data(self,inputData):
         
         if len(inputData) != 1:
-            if len(inputData[1])>90:
+            if len(inputData[1])>80:
                 f = ""
                 inputData[1] = inputData[1].split()
                 for k in inputData[1]:
                     if len(k) > 10:
+
                         k = k[0:3]
                         print(k)
                     f+=k
                     f+=" "
-                print(f)
+                
+
+                s1 = f[:len(f)//2]
+                s2 = f[len(f)//2:]
+                f=" "
+                f=s1+"\n"+s2
+                
                 inputData[1] = f
-            print(len(inputData[1]))
-            self.cell(w=20,h=6, txt = str(inputData[0]),border=1,align="C",ln=0)
-            self.cell(w=115,h=6, txt = str(inputData[1]),border=1,align="C",ln=0)
-            self.cell(w=40,h=6, txt = str(inputData[3]),border=1,align="C",ln=0)
-            self.cell(w=20,h=6, txt = str(inputData[2]),border=1,align="C",ln=1)
+                print(f)
+
+            self.cell(w=20,h=7, txt = str(inputData[0]),border=1,align="C",ln=0)
+            self.multi_cell(w=115,h=7, txt = str(inputData[1]),border=1,align="L")
+            self.cell(w=40,h=7, txt = str(inputData[3]),border=1,align="C",ln=0)
+            self.cell(w=20,h=7, txt = str(inputData[2]),border=1,align="C",ln=1)
             
         else:
-            self.cell(w=195,h=15, txt = str(inputData[0]),border=1,align="C",ln=1)
+            self.cell(w=195,h=5, txt = str(inputData[0]),border=1,align="C",ln=1)
     def downData(self):
-        self.ln(10)
+        self.ln(8)
         self.cell(txt="ЭИОС - электронно информационно образовательная среда",h=5,align="С",w = len("ЭИОС - электронно информационно образовательная среда"),ln=1)
 
         self.cell(txt="СОГЛАСОВАНО",h=5,align="C",w = self.get_string_width("СОГЛАСОВАНО") + 1,ln=1)

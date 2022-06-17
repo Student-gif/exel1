@@ -203,7 +203,7 @@ class Table(QWidget):
         self.checker()
         try:  
             self.cleardb()
-            self.file = filedio.SaveFileManager.init(filedio.SaveFileManager,format="csv")
+            self.file = filedio.SaveFileManager.init(filedio.SaveFileManager,format=".csv")
             lister.clear()
             
             for i in range(2,columns):
@@ -437,11 +437,24 @@ class Table(QWidget):
                     h=self.tableWidget.cellWidget(g,i).staticData.group.split("/")
                     self.tableWidget.cellWidget(g,i).staticData.group = h[0].replace('/',"")
                     secondsubgroup = h[1].replace('/',"")
-
+                    if ('/' in self.tableWidget.cellWidget(g,i).staticData.lesson):
+                        h=self.tableWidget.cellWidget(g,i).staticData.lesson.split("/")
+                        self.tableWidget.cellWidget(g,i).staticData.lesson = h[0].replace('/',"")
+                        secondsubless = h[1].replace('/',"")
                     if   secondsubgroup == ask:
-                         self.tableWidget.cellWidget(g,i).staticData.group = secondsubgroup            
+                            self.tableWidget.cellWidget(g,i).staticData.group = secondsubgroup
+                            self.tableWidget.cellWidget(g,i).staticData.lesson = secondsubless
+
+                
+                if ('/' in self.tableWidget.cellWidget(g,i).staticData.lesson):
+                    h=self.tableWidget.cellWidget(g,i).staticData.group.split("/")
+                    print(h)
+                    self.tableWidget.cellWidget(g,i).staticData.group = h[0].replace('/',"")
+                    secondsubless = h[1].replace('/',"")
+
                 if   ask != " " and ask == self.tableWidget.cellWidget(g,i).staticData.group or ask == self.tableWidget.cellWidget(g,i).staticData.teacher:
                     allData.append(self.tableWidget.cellWidget(g,i))
+                    
        
                 
         return allData

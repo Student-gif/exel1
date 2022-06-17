@@ -139,8 +139,7 @@ class mainData(QWidget):
                 weekday.setAlignment(Qt.AlignCenter)
                 lay.addWidget(weekday)
                 self.PrintData.append([DictData[4]])
-            if SortedData[i].staticData.weekday > SortedData[i-1].staticData.weekday or SortedData[i].staticData.weekday == 6:
-                
+            if SortedData[i].staticData.weekday > SortedData[i-1].staticData.weekday :     
                     weekday = QLabel(self,text=DictData[4])  
                     weekday.setAlignment(Qt.AlignCenter)         
                     lay.addWidget(weekday)
