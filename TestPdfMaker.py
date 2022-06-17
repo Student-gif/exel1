@@ -87,9 +87,11 @@ class PDF(FPDF):
             self.cell(w=195,h=15, txt = str(inputData[0]),border=1,align="C",ln=1)
     def downData(self):
         self.ln(10)
-        self.cell(txt="ЭИОС - электронно информационно образовательная среда",h=5,align="С",w = self.get_string_width("Отделение среднего профессианального образования"),ln=1)
-        self.cell(txt="СОГЛАСОВАНО",h=5,align="C",w = self.get_string_width("СОГЛАСОВАНО"),ln=1)
-        self.cell(txt="Руководитель СПО Е.В. Дымов___________",h=5,align="C",w = self.get_string_width("Руководитель СПО Е.В. Дымов___________"),ln=1)
+        self.cell(txt="ЭИОС - электронно информационно образовательная среда",h=5,align="С",w = len("ЭИОС - электронно информационно образовательная среда"),ln=1)
+
+        self.cell(txt="СОГЛАСОВАНО",h=5,align="C",w = self.get_string_width("СОГЛАСОВАНО") + 1,ln=1)
+
+        self.cell(txt="Руководитель СПО Е.В. Дымов___________",h=5,align="C",w = self.get_string_width("Руководитель СПО Е.В. Дымов___________")+1,ln=1)
         
 
 
