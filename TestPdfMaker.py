@@ -14,7 +14,8 @@ class PDF(FPDF):
     def SomeLowerHeading(self):
          from datetime import date
          #Second block text
-         for i in ["УТВЕРЖДАЮ","Зам. директора по образовательной деятельности","________Т.В Мирошниченко",f"{date.today().day}.0{date.today().month}.{date.today().year}"]:
+         s = date.today()
+         for i in ["УТВЕРЖДАЮ","Зам. директора по образовательной деятельности","________Т.В Мирошниченко",f"{s.day}.0{s.month}.{s.year}"]:
             self.set_font("Sans", "", 9)
             self.set_x(120)
             self.cell(txt=i,
@@ -24,7 +25,9 @@ class PDF(FPDF):
     def LowerHeading(self):
         from datetime import date
         t = date.today().isocalendar()
-        for i in ["РАСПИСАНИЕ",f"учебных занятий на ВЕСЕННИЙ СЕМЕСТР {date.today().year-1}-{date.today().year} учебного года",f"{date.today()}г. по {date.fromisocalendar(t.year,t.week+1,t.weekday)}.г"]:
+        TodayDate = date.today()
+        redactT = date.fromisocalendar(t.year,t.week+1,t.weekday)
+        for i in ["РАСПИСАНИЕ",f"учебных занятий на ВЕСЕННИЙ СЕМЕСТР {date.today().year-1}-{date.today().year} учебного года",f"{TodayDate.day}.0{TodayDate.month}.{TodayDate.year}г. по {redactT.day}.0{redactT.month}.{redactT.year}г."]:
             self.headerSculptor(6,i,2,9)
             self.cell(txt=i,
                    h=5,align="C",

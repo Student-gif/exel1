@@ -1,6 +1,10 @@
+from ctypes import alignment
+from email.headerregistry import Group
+from operator import gt
 from PyQt5.QtWidgets import QWidget,QLineEdit,QPushButton,QVBoxLayout,QHBoxLayout,QLabel,QFrame,QScrollArea
 from PyQt5.QtCore import Qt
 from TestPdfMaker import PDF
+import filedio
 
 
 
@@ -14,7 +18,8 @@ class WorkWithData():
                 5:"15:10-16:40",
                 6:"16:50-18:20",
                 7:"18:30-20:00",
-                8:"20:00"}
+                8:"20:00",
+                9:"21:00"}
     WeekDayDict = {1:"Понедельник",
                     2:"Вторник",
                     3:"Среда",
@@ -48,26 +53,59 @@ class WorkWithData():
         teacheName = data[i].staticData.teacher      
         return [lessonTime,lesson,lessonPlace,groupName,weekdayData,teacheName]
 class CustomLine(QWidget):
-    def __init__(self,Time= None,Lesson=None,Audit=None,parent = None):
+    
+    def __init__(self,Time= None,Lesson=None,Audit=None, teacher=None, group= None, ViewMod = False, parent = None, ):
         super(CustomLine, self,).__init__(parent)
         lay = QHBoxLayout(self)
-        self.setLayout(lay)               
-        for i in range(3):
+        self.setLayout(lay)
+        i = -1
+        def dry_func (MaximumWidth,MinimumWidth, Text, Alignment = Qt.Alignment):
             GoodLabel = QLabel(self,margin=10,)
             GoodLabel.setStyleSheet("border: 1px solid black;")
-            data = [Time,Lesson,Audit]
-            if i == 0:
-                GoodLabel.setMaximumWidth(84)
-                GoodLabel.setAlignment(Qt.AlignLeft)
-            if i == 1:
-                GoodLabel.setMinimumWidth(240)
-                GoodLabel.setAlignment(Qt.AlignLeft)
-            if i == 2:
-                GoodLabel.setMaximumWidth(60)
-            GoodLabel.setMaximumHeight(60)
-            
-            GoodLabel.setText(str(data[i])) 
+            GoodLabel.setMinimumWidth(MinimumWidth)
+            if MinimumWidth != 160:
+                GoodLabel.setMaximumWidth(MaximumWidth)
+            if Alignment != None:
+                    GoodLabel.setAlignment(Alignment)
+            GoodLabel.setText(Text)
             lay.addWidget(GoodLabel)
+            GoodLabel.setMaximumHeight(60)
+        while i !=4:
+            i+=1
+            if i == 0:
+                dry_func (84,85, str(Time), Alignment = Qt.AlignLeft)
+            if ViewMod == False:
+                if i == 1:
+                    dry_func(1,160,str(Lesson),Alignment = Qt.AlignLeft)
+                elif i == 2:
+                    dry_func(85,80, teacher,None)
+                elif i == 3:
+                    dry_func(60,65, Audit,None)
+            else:
+                if i == 1:
+                    dry_func(61,60, group,None)
+                elif i == 2:
+                    dry_func(1,160,Lesson,None)
+                elif i == 3:
+                    dry_func(80,85, Audit,None)
+class CustomWindowLine(QWidget):
+     def __init__(self,Time= None,Lesson=None,parent = None, ):
+        super(CustomWindowLine, self,).__init__(parent)
+        lay = QHBoxLayout(self)
+        self.setLayout(lay)
+        def dry_func (MinimumWidth, Text,MaximumWidth,):
+            GoodLabel = QLabel(self,margin=10,)
+            GoodLabel.setStyleSheet("border: 1px solid black;")
+            GoodLabel.setMinimumWidth(MinimumWidth)
+            if MinimumWidth != 160:
+                GoodLabel.setMaximumWidth(MaximumWidth)
+            GoodLabel.setText(Text)
+            lay.addWidget(GoodLabel)
+            GoodLabel.setMaximumHeight(60)
+        dry_func(83,Time,84)
+        dry_func(160,Lesson,1)
+
+            
 class mainData(QWidget):
     PrintData = []
     SortedData = []
@@ -106,9 +144,11 @@ class mainData(QWidget):
             WindowCount = SortedData[i].staticData.lessonPlace - SortedData[i-1].staticData.lessonPlace
             if WindowCount >=1:
                 timeKey = SortedData[i-1].staticData.lessonPlace
+                
                 for i in range(WindowCount-1):
-                    lay.addWidget(CustomLine(Time =WorkWithData().timeDict[timeKey+(i+1)],Lesson="ОКНО",Audit=""),)
-            lay.addWidget(CustomLine(Time = DictData[0],Lesson=DictData[1],Audit=DictData[2]))
+                    WindowWidget = CustomWindowLine(Time =WorkWithData().timeDict[timeKey+(i+1)],Lesson="ОКНО",)
+                    lay.addWidget(WindowWidget)
+            lay.addWidget(CustomLine(Time = DictData[0],Lesson=DictData[1],Audit=DictData[2],group=DictData[3],teacher=DictData[5]))
                 
 
             self.PrintData.append([DictData[0],DictData[1],DictData[2],DictData[5]])
